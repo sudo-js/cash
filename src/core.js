@@ -1,11 +1,26 @@
 (function(win) {
-  var undefined, ary = [], slice = ary.slice, filter = ary.filter,
-    doc = win.document, keys = Object.keys,
-    // not using __proto__ as it is deprecated  
-    cash = function(arg) {return new cash.fn.init(arg);};
+  var ary = [], slice = ary.slice, keys = Object.keys,
+    // not creating a new instance, just setting the current query and returning
+    cash = function(arg) {return cash.init(arg);},
     
-    cash._cache_ = {display: {}, events: {}, id: 0},
+    isString = function(arg) {return typeof arg === "string";},
+    isObject = function(arg) {return Object.prototype.toString.call(arg) === '[object Object]';},
+    isArray = ary.isArray,
+    isFunction = function(arg) {return typeof arg === "function";};
     
+    cash._cache_ = {events: {}, id: 0},
+    
+    cash.each = function(fn) {
+      // this.query may be a single element
+      if(this.length < 2) fn(this.query);
+      // or a NodeList
+      else {
+        for(var i = 0, len = this.length; i < len; i++) {
+          fn(this.query[i], i, this.query);
+        } 
+      }
+      return this;
+    };
     // ###extend
     // Copy the (non-inherited) key:value pairs from <n> source objects to a single target object.
     //
@@ -23,60 +38,88 @@
         }
         return targ;
     };
-    // ###forEach
-    // This method will simply construct a `for` loop around the passed in list and call the
-    // provided function with item, index and list. Returns the list.
-    //
-    // `param` {NodeList | Array} `list`
-    // `param` {function} `fn`
-    // `returns` {nodeList} `list`
-    cash.forEach = function(list, fn) {
-      var len = list.length, i;
-      for (i = 0; i < len; i++) {
-        // use the same argument signature as the native array.forEach
-        fn(list[i], i, list);
-      }
-      return list;
-    };
-    // ###merge
-    //
-    // `param` {object} `_this`
-    // `param` {node | nodeList} arg
-    // `returns` {object} `_this`
-    cash.merge = function(_this, arg) {
-      var len = arg.length, _t = _this.length, i = 0;
-      // as the arg could be a nodeList, we must iterate
-      while (i < len) _this[_t++] = arg[i++];
-      _this.length = _t;
-      return _this;
-    };
-    
-    cash.fn = cash.prototype = {
-      pop: ary.pop,
-      push: ary.push,
-      reverse: ary.reverse,
-      shift: ary.shift,
-      sort: ary.sort,
-      splice: ary.splice,
-      slice: slice,
-      indexOf: ary.indexOf,
-      forEach: ary.forEach,
-      unshift: ary.unshift,
-      concat: ary.concat,
-      join: ary.join,
-      every: ary.every,
-      some: ary.some,
-      filter: ary.filter,
-      map: ary.map,
-      reduce: ary.reduce,
-      reduceRight: ary.reduceRight,
-      length: 0,
       
-      init: function(arg) {return cash.merge(this, Array.isArray(arg) ? arg : [arg]);}
+    cash.init = function(arg) {
+      this.query = arg;
+      this.length = arg.length || 1;
+      return this;
+    },
+      
+    cash.css = function(key, value) {
+      var setter;
+      // Getter for a single el
+      if (isString(key) && !value) return win.getComputedStyle(this.query)[key];
+      // Setter
+      if (value) setter = function(el) {el.style[key] = value;};
+      else if (isObject(key)) {
+        setter = function(el) {
+          keys(key).forEach(function(name) {
+            el.style[name] = key[name];
+          });
+        };
+      }
+      this.each(setter);
+      return this;
+    },
+    // ###show
+    // Makes an element visible in the DOM by modifying
+    // the `display` attribute, if necessary.
+    //
+    // `param` {node} `node`
+    // `returns` {node}
+    cash.show = function() {
+      this.each(function(el) {
+        var old = el.getAttribute('data-old-display');
+        // is the element already visible?
+        if(getComputedStyle(el).display !== 'none') {
+          // remove display value
+          if(old !== 'none') el.removeAttribute('data-old-display');
+        // does an old display value exist?
+        } else if (old && old !== 'none') {
+          el.style.display = old;
+          el.removeAttribute('data-old-display');
+        // the element is not visible and does not have an old display value
+        } else {
+          // is the element hidden with inline styling?
+          if(el.style.display === 'none') {
+            el.setAttribute('data-old-display', el.style.display);
+            el.style.display = '';
+          // the element is hidden through css
+          } else el.style.display = 'block';
+        }
+      });
+      return this;
+    };
+    // ###hide
+    // Makes an element invisible in the DOM by modifying
+    // the `display` attribute, if necessary.
+    //
+    // `param` {node} `node`
+    // `returns` {node}
+    cash.hide = function() {
+      this.each(function(el) {
+        var old = el.getAttribute('data-old-display');
+        // is the element already hidden?
+        if(getComputedStyle(el).display === 'none') {
+          if(old === 'none') el.removeAttribute('data-old-display');
+        // does an old display value exist?
+        } else if (old === 'none') {
+          el.style.display = old;
+          el.removeAttribute('data-old-display');
+        // the element is visible and does not have an old display value
+        } else {
+          // is the element visible with inline styling?
+          if(el.style.display && el.style.display !== 'none') {
+            el.setAttribute('data-old-display', el.style.display);
+            el.style.display = 'none';
+          // the element is visible through css
+          } else el.style.display = 'none';
+        }  
+      });
+      return this;
     };
     
-    cash.fn.constructor = cash;
-    cash.fn.init.prototype = cash.fn;
+    cash.isObject = isObject;
     
     // Not checking for window ATM, or trying to play nice
     win.$ = cash;
