@@ -8,7 +8,7 @@ describe('Show', function () {
     var body = document.querySelector('#testTarget'),
         div  = document.createElement('div'),
         style = document.createElement('style'),
-        $el;
+        el;
 
     div.innerHTML   = '<span id="el">foobar</span>';
     style.innerHTML = '';
@@ -28,7 +28,7 @@ describe('Show', function () {
     var body = document.querySelector('#testTarget'),
         div  = document.createElement('div'),
         style = document.createElement('style'),
-        $el;
+        el;
 
     div.innerHTML   = '<span id="el" style="display: block;">foobar</span>';
     style.innerHTML = '';
@@ -63,7 +63,7 @@ describe('Show', function () {
 
     expect(getComputedStyle(el).display).toEqual('inline');
     expect(el.style.display).toBe('');
-    expect(el.getAttribute('data-old-display')).toEqual('none');
+    expect($.cache.display[el.cid]).toEqual('none');
   });
 
   it('shows an element with css "display"', function() {
@@ -84,7 +84,7 @@ describe('Show', function () {
 
     expect(getComputedStyle(el).display).toEqual('block');
     expect(el.style.display).toEqual('');
-    expect(el.getAttribute('data-old-display')).toBe(null);
+    expect($.cache.display[el.cid]).toBe(undefined);
   });
 
   it('shows a node with css "display: none"', function() {
@@ -147,6 +147,6 @@ describe('Show', function () {
 
     expect(getComputedStyle(el).display).toEqual('block');
     expect(el.style.display).toEqual('');
-    expect(el.getAttribute('data-old-display')).toBe('none');
+    expect($.cache.display[el.cid]).toBe('none');
   });
 });
