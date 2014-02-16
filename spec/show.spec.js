@@ -19,7 +19,7 @@ describe('Show', function () {
     el = body.querySelector('#el');
     $(el).show();
 
-    expect($(el).css('display')).toBe('inline');
+    expect(getComputedStyle(el).display).toBe('inline');
     expect(el.style.display).toBe('');
     expect(el.getAttribute('data-old-display')).toBe(null);
   });

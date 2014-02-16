@@ -1,20 +1,19 @@
 (function(win) {
-  var ary = [], slice = ary.slice, keys = Object.keys,
-    // not creating a new instance, just setting the current query and returning
+  var proto = Array.prototype, slice = proto.slice, keys = Object.keys,
     cash = function(arg) {return cash.init(arg);},
     isString = function(arg) {return typeof arg === "string";},
     isObject = function(arg) {return Object.prototype.toString.call(arg) === '[object Object]';},
-    isArray = ary.isArray,
     isFunction = function(arg) {return typeof arg === "function";};
     
     cash.cache = {events: {}, display: {}};
     
     cash.cid = 0;
-    
+    // ###css
+    //
+    // NOTE: the getter case is not supported, just use getComputedStyle
+    //
     cash.css = function(key, value) {
       var setter;
-      // Getter for a single el. TODO Is there a real use-case for multiple here?
-      if (isString(key) && !value) return win.getComputedStyle(this.query)[key];
       // Setter
       if (value) setter = function(el) {el.style[key] = value;};
       else if (isObject(key)) {
@@ -24,18 +23,7 @@
           });
         };
       }
-      return this.each(setter);
-    };
-    
-    cash.each = function(fn) {
-      // this.query may be a single element
-      if(this.length < 2) fn(this.query);
-      // or a NodeList
-      else {
-        for(var i = 0, len = this.length; i < len; i++) {
-          fn(this.query[i], i, this.query);
-        } 
-      }
+      this.q.forEach(setter);
       return this;
     };
     // ###extend
@@ -55,7 +43,6 @@
         }
         return targ;
     };
-    
     // ###hide
     // Makes an element(s) invisible in the DOM by modifying
     // the `display` attribute, if necessary.
@@ -63,7 +50,7 @@
     // `param` {node} `node`
     // `returns` {node}
     cash.hide = function() {
-      return this.each(function(el) {
+      this.q.forEach(function(el) {
         // setCache sets an entry in the cache if needed and returns it
         var display = $.setCache('display', el),
           old = display[el.cid];
@@ -84,11 +71,11 @@
           } else el.style.display = 'none';
         }  
       });
+      return this;
     };
     
     cash.init = function(arg) {
-      this.query = arg;
-      this.length = arg.length || 1;
+      this.q = arg.length ? slice.call(arg) : [arg];
       return this;
     };
     
@@ -109,7 +96,7 @@
     // `param` {node} `node`
     // `returns` {node}
     cash.show = function() {
-      return this.each(function(el) {
+      this.q.forEach(function(el) {
         var display = $.setCache('display', el),
           old = display[el.cid];
         // is the element already visible?
@@ -130,6 +117,7 @@
           } else el.style.display = 'block';
         }
       });
+      return this;
     };
     
     // Not checking for window ATM, or trying to play nice
