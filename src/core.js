@@ -5,16 +5,16 @@
     cash.cid = 0;
     // ###contains
     // See if any element in the current q contains the passed in element,
-    // returning the container if found.
+    // setting the q as the container if found.
     //
     // `param` {element} `el`
-    // `returns` {element} `res`
+    // `returns` cash
     cash.contains = function(el) {
       var res;
       this.q.reverse().some(function(node) {
         if(node.contains(el)) return res = node;
       });
-      return res;
+      return $(res);
     };
     // ###create
     // Given a string, create a DOM element and store place in at the q. Notice 
@@ -115,7 +115,8 @@
     // `param` {element|nodeList|array} `arg`
     // `returns` cash
     cash.init = function(arg) {
-      this.q = arg.length ? slice.call(arg) : [arg];
+      // guard against falsey arg
+      this.q = arg && arg.length ? slice.call(arg) : (arg ? [arg] : []);
       return this;
     };
     // ###matches
@@ -134,12 +135,39 @@
       }
       return this._matchesSelector_.call(el, sel);
     };
-    
+    // ###off
+    cash.off = function(type, fn) {
+      this.q.forEach(function(el) {
+        var cid = el === window ? 'window' : el.cid, 
+          events = $.cache.events[cid], cb;
+        if(!events) return;
+        if(events[type]) {
+          events[type].forEach(function(obj, i) {
+            if(fn && fn === obj.fn || !fn) cb = obj.cb;
+            // TODO would these ever not match?
+            if(events[type][i].cb === cb) {
+                el.removeEventListener(type, cb);
+                delete $.cache.events[cid][type][i];
+            }
+          });
+        }
+      });
+      return this;
+    };
+    // ###on
+    // Given an event type, a callback, an optional selector for delegation, and
+    // an optional hash of data to be appended to the event, bind them to each
+    // element in the q.
+    //
+    // `param` {string} `type`
+    // `param` {function} `fn`
+    // `param` {string} `sel` optional CSS selector for delegation
+    // `param` {object} `data` optional hash to be appended to the event object
+    // `returns` cash
     cash.on = function(type, fn, sel, data) {
       var cb, events, targ;
-      
       this.q.forEach(function(el) {
-        events = $._setCache_('events', el);
+        events = $._setCache_('events', el)[el.cid];
         events[type] || (events[type] = []);
         cb = function(e) {
           // pass any custom data along to the listener
@@ -147,13 +175,14 @@
           // base case is that this is not 'delegated'
           if(!sel) fn.call(el, e);
           // there is a sel, check for matches and call if so.
-          else if(~$(el).find(sel).q.indexOf(e.target) || (targ = $.contains(e.target))) {
+          else if(~$(el).find(sel).q.indexOf(e.target) || (targ = $.contains(e.target).q[0])) {
             targ || (targ = e.target);
             e.currentTarget = targ;
             fn.call(targ, e);
           }
         };
-        events[type].push({cb: cb, fn: fn});
+        // cb === ours, fn === theirs.
+        events[type].push({cb:cb,fn:fn});
         el.addEventListener && el.addEventListener(type, cb);
       });
       return this;
@@ -208,7 +237,20 @@
           $(el).show() : $(el).hide();
       });
       $.q = _q;
-      return cash;
+      return this;
+    };
+    // ###trigger
+    // Given an event type, init a DOM event and dispatch it to each element in the q.
+    //
+    // `param` {string} `e`
+    // `returns` cash
+    cash.trigger = function(e) {
+      var evt = document.createEvent('Event');
+      evt.initEvent(e, true, true);
+      this.q.forEach(function(el) {
+        el.dispatchEvent && el.dispatchEvent(evt);
+      });
+      return this;
     };
 
     // Not checking for window ATM, or trying to play nice

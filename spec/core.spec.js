@@ -26,10 +26,23 @@ describe('Core $', function() {
     expect($.q[0].classList.contains('bar')).toBe(true);
   });
   
-  it('can reduce the q to a specified selector via find', function() {
+  it('can rebuild the q to a specified selector via find', function() {
     $.q[0].innerHTML = '<div id="baz"><ul><li></li><li></li></ul></div><div id="qux"><ul><li></li><li class="me"></li></ul></div>';
     expect($.find('div').q.length).toBe(2);
     expect($.find('li').q.length).toBe(4);
+  });
+  
+  it('can reduce the q to a specified el via find', function() {
+    $.q[0].innerHTML = '<div id="baz"><ul><li></li><li></li></ul></div><div id="qux"><ul><li></li><li class="me"></li></ul></div>';
+    expect($.find('.me').q.length).toBe(1);
+  });
+  
+  it('can reduce the q to a specified selectors parent via contains', function() {
+    $.q[0].innerHTML = '<div id="baz"><ul><li></li><li></li></ul></div><div id="qux"><ul><li></li><li class="me"></li></ul></div>';
+    var parent = $.q[0].querySelectorAll('div')[1],
+      me = parent.querySelector('.me');
+    expect($.find('div').contains(me).q.length).toBe(1);
+    expect($.q[0]).toEqual(parent);
   });
 });
 
