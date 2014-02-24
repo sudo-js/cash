@@ -1,8 +1,29 @@
 (function(win) {
-  var proto = Array.prototype, slice = proto.slice, keys = Object.keys,
+  var proto = Array.prototype, slice = proto.slice,
     cash = function(arg) {return cash.init(arg);};
+    function isDocument(arg) {return arg && arg.nodeType === arg.DOCUMENT_NODE;}
+    function isWindow(arg) {return arg === win;}
+    function isObject(arg) {return Object.prototype.toString.call(arg) === '[object Object]';}
+    function isString(arg) {return typeof arg === 'string';}
+    // ###cache
+    // Hash that holds the event and display data
     cash.cache = {events: {}, display: {}};
+    // generate a unique id for elements
     cash.cid = 0;
+    // ###closest
+    // Given a string selector, return the first parent node that matches it
+    // for each element in the q.
+    // 
+    // `param` {string} `sel`
+    // `returns` cash
+    cash.closest = function(sel) {
+      var ary = [];
+      this.q.forEach(function(el) {
+        while(el && !$.matches(el, sel)) el = !isDocument(el) && el.parentNode;
+        if(!(~ary.indexOf(el))) ary.push(el);
+      });
+      return $(ary);
+    };
     // ###contains
     // See if any element in the current q contains the passed in element,
     // setting the q as the container if found.
@@ -28,19 +49,20 @@
       wrap.innerHTML = str;
       return $(wrap.firstElementChild);
     };
-    // ###css
-    // Given a key and a value, set them on the 
-    // element.style for each element in the current q. Notice that the 
-    // 'getter' case in not supported as you should just use 
-    // getComputedStyce(el)[key] in that scenario. Also notice that the
-    // object argument case is not supported.
+    // ###deserialize
+    // Given a 'paramaterized' string, convert it to a hash and return it
     //
-    // `param` {string} `key`
-    // `param` {string} `value`.
-    // `returns` cash
-    cash.css = function(key, value) {
-      this.q.forEach(function(el) {el.style[key] = value;});
-      return this;
+    // `param` {string} `str`
+    // `returns` {object}
+    cash.deserialize = function(str) {
+      var obj = {}, ary;
+      str.split('&').forEach(function(spl) {
+        if(spl) {
+          ary = spl.split('=');
+          obj[ary[0]] = ary[1];
+        }
+      });
+      return obj;
     };
     // ###extend
     // Copy the (non-inherited) key:value pairs from <n> source objects to a single target object.
@@ -49,12 +71,12 @@
     // `returns` {object} A single object
     cash.extend = function() {
       var args = slice.call(arguments),
-        targ = args.shift(), i, len, obj, _keys;
+        targ = args.shift(), i, len, obj, keys;
         // iterate over each passed in obj remaining
       for(obj; args.length && (obj = args.shift());) {
-        _keys = keys(obj);
-        for(i = 0, len = _keys.length; i < len; i++) {
-          targ[_keys[i]] = obj[_keys[i]];
+        keys = Object.keys(obj);
+        for(i = 0, len = keys.length; i < len; i++) {
+          targ[keys[i]] = obj[keys[i]];
         }
       }
       return targ;
@@ -75,50 +97,60 @@
           });
         }
       });
-      this.q = ary;
-      return this;
+      return $(ary);
     };
+    // ###height
+    // Given a value this method is a setter for each element in the q.
+    // If the arg is truthy and a number it is converted to a string with 'px'
+    // added, if it is a string nothing is added.
+    // Minus that, it returns the height of the 0th item in the q;
+    //
+    // `param` {number|string} `val`. Optional value to be set
+    // `returns` {number|object} The height if a getter, cash if a setter
+    cash.height = function(val) {return this._hw_('height', val);};
     // ###hide
     // Makes elements in the q invisible in the DOM by modifying
     // the `display` attribute, if necessary.
     //
     // `returns` cash
-    cash.hide = function() {
+    cash.hide = function() {return this._sh_('hide');};
+    // ###_hw_
+    // Abstracted logic for the height and width operations
+    // `private`
+    cash._hw_ = function(key, val) {
+      var obj = {
+        height: {w:'innerHeight',d:'scrollHeight',e:'offsetHeight'},
+        width: {w:'innerWidth',d:'scrollWidth',e:'offsetWidth'}
+      }, node = this.q[0], type = obj[key];
+      function what(el) {return isWindow(el) ? type.w : isDocument(el) ? type.d : type.e;}
+      if(!val) return node[what(node)];
       this.q.forEach(function(el) {
-        // setCache sets an entry in the cache if needed and returns it
-        var display = $._setCache_('display', el),
-          old = display[el.cid];
-        // is the element already hidden?
-        if(getComputedStyle(el).display === 'none') {
-          if(old === 'none') delete display[el.cid];
-        // does an old display value exist?
-        } else if (old === 'none') {
-          el.style.display = old;
-          delete display[el.cid];
-        // the element is visible and does not have an old display value
-        } else {
-          // is the element visible with inline styling?
-          if(el.style.display && el.style.display !== 'none') {
-            display[el.cid] = el.style.display;
-            el.style.display = 'none';
-          // the element is visible through css
-          } else el.style.display = 'none';
-        }  
+        el.style[what(el)] = isString(val) ? val : val + 'px';
       });
       return this;
     };
     // init
     // Breaking from the jQuery pattern, only a singile DOM node or NodeList is
-    // expected as arguments. The passed in arg is normalized into an array and 
-    // set as $.q. All chainable methods then operate on the q.
+    // expected as arguments (though an array is acceptable). The passed in arg 
+    // is normalized into an array and set as $.q. All chainable methods then 
+    // operate on the q.
     //
     // `param` {element|nodeList|array} `arg`
     // `returns` cash
     cash.init = function(arg) {
       // guard against falsey arg
-      this.q = arg && arg.length ? slice.call(arg) : (arg ? [arg] : []);
+      this.q = arg && arg.length ? (Array.isArray(arg) ? arg : 
+        slice.call(arg)) : (arg ? [arg] : []);
       return this;
     };
+    // ###isObject
+    // Ye olde toString fallback to see if a passed in argument is an object.
+    // Really you should test the other cases (Array.isArray for example) but this
+    // does 'even' the API a little
+    //
+    // `param` {*}
+    // `returns` {bool}
+    cash.isObject = isObject;
     // ###matches
     // Unfortunately the matchesSelector methods are all hidden behind prefixes ATM.
     // set the useable one, if not, then return the bool.
@@ -138,16 +170,16 @@
     // ###off
     cash.off = function(type, fn) {
       this.q.forEach(function(el) {
-        var cid = el === window ? 'window' : el.cid, 
+        var cid = isWindow(el) ? 'window' : el.cid, 
           events = $.cache.events[cid], cb;
         if(!events) return;
         if(events[type]) {
           events[type].forEach(function(obj, i) {
             if(fn && fn === obj.fn || !fn) cb = obj.cb;
-            // TODO would these ever not match?
             if(events[type][i].cb === cb) {
-                el.removeEventListener(type, cb);
-                delete $.cache.events[cid][type][i];
+              el.removeEventListener(type, cb);
+              // this does leave the array in a strange state, but acceptable
+              delete $.cache.events[cid][type][i];
             }
           });
         }
@@ -187,10 +219,22 @@
       });
       return this;
     };
+    // ###serialize
+    // Given a hash of data, convert it to a 'paramaterized' string and return it.
+    //
+    // `param` {object} `obj`
+    // `returns` {string}
+    cash.serialize = function(obj) {
+      var ary = [];
+      Object.keys(obj).forEach(function(key) {
+        ary.push(escape(key) +'='+ escape(obj[key]));
+      });
+      return ary.join('&').replace(/%20/g, '+');
+    };
     // ###setCache
     // private. 
     cash._setCache_ = function(ref, el) {
-      var cid = el === win ? 'window' : el.cid,
+      var cid = isWindow(el) ? 'window' : el.cid,
         obj = this.cache[ref];
       if(!cid) el.cid = cid = String(++this.cid);
       obj[cid] || (obj[cid] = ref === 'events' ? {} : undefined);
@@ -201,26 +245,33 @@
     // the `display` attribute, if necessary.
     //
     // `returns` cash
-    cash.show = function() {
+    cash.show = function() {return this._sh_('show');};
+    // ###_sh_
+    // Abstracted logic for the show and hide methods
+    // `private`
+    cash._sh_ = function(key) {
+      var isShow = key === 'show';
+      function state(el) {return isShow ? getComputedStyle(el).display !== 'none' : getComputedStyle(el).display === 'none';}
+      function none(arg) {return isShow ? arg !== 'none': arg === 'none';}
+      function notNone(arg) {return isShow ? arg === 'none': arg !== 'none';}
+      
       this.q.forEach(function(el) {
         var display = $._setCache_('display', el),
           old = display[el.cid];
-        // is the element already visible?
-        if(getComputedStyle(el).display !== 'none') {
-          // remove display value
-          if(old !== 'none') delete display[el.cid];
+        if(state(el)) {
+          if(none(old)) delete display[el.cid];
         // does an old display value exist?
-        } else if (old && old !== 'none') {
+        } else if (old && none(old)) {
           el.style.display = old;
           delete display[el.cid];
         // the element is not visible and does not have an old display value
         } else {
           // is the element hidden with inline styling?
-          if(el.style.display === 'none') {
+          if(el.style.display && notNone(el.style.display)) {
             display[el.cid] = el.style.display;
-            el.style.display = '';
+            el.style.display = isShow ? '' : 'none';
           // the element is hidden through css
-          } else el.style.display = 'block';
+          } else el.style.display = isShow ? 'block': 'none';
         }
       });
       return this;
@@ -231,13 +282,12 @@
     //
     // `returns` cash
     cash.toggle = function() {
-      var _q = slice.call(this.q);
-      _q.forEach(function(el) {
+      var ary = slice.call(this.q);
+      ary.forEach(function(el) {
         getComputedStyle(el).display === 'none' ?
           $(el).show() : $(el).hide();
       });
-      $.q = _q;
-      return this;
+      return $(ary);
     };
     // ###trigger
     // Given an event type, init a DOM event and dispatch it to each element in the q.
@@ -252,6 +302,15 @@
       });
       return this;
     };
+    // ###width
+    // Given a value this method is a setter for each element in the q.
+    // If the arg is truthy and a number it is converted to a string with 'px'
+    // added, if it is a string nothing is added.
+    // Minus that, it returns the width of the 0th item in the q;
+    //
+    // `param` {number|string} `val`. Optional value to be set
+    // `returns` {number|object} The height if a getter, cash if a setter
+    cash.width = function(val) {return this._hw_('width', val);};
 
     // Not checking for window ATM, or trying to play nice
     win.$ = cash;
