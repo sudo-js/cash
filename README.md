@@ -45,8 +45,13 @@ chainable fashion, ready to be used.
 
     $(things).q.forEach(function(el) {el.classList.remove('foo');})
     
+**NOTE**: Calling $(...) resets the `q` to what you pass in. Sometimes you may
+want to re-use an existing `q`, but that's not the preferred pattern. All chainable methods
+operate on, and possibly modify the `q`, **including event callbacks**.
+
+It's not expensive to call `$()` so don't fear to simply reset the `q`.
+
 ###Chainable Methods
 Some jQuery-type methods are still needed, which ones will be an ongoing debate
-that is part of the future development of **cash**.
-
+that is part of the future development of **cash**. 
 
