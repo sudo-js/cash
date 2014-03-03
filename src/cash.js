@@ -237,17 +237,19 @@
     cash.noop = function() {},
     // ###off
     cash.off = function(type, fn) {
+      var sp = type.split('.'), ev = sp[0], ns = sp.splice(1).join('.'),
+        cb, events, cid; 
       this.q.forEach(function(el) {
-        var cid = isWindow(el) ? 'window' : el.cid, 
-          events = $.cache.events[cid], cb;
-        if(!events) return;
-        if(events[type]) {
-          events[type].forEach(function(obj, i) {
-            if(fn && fn === obj.fn || !fn) cb = obj.cb;
-            if(events[type][i].cb === cb) {
-              el.removeEventListener(type, cb);
+        cid = isWindow(el) ? 'window' : el.cid, 
+          events = $.cache.events[cid];
+        if(events && events[ev]) {
+          events[ev].forEach(function(obj, i) {
+            // namespace or passed fn or both?
+            if((!ns || ns === obj.ns) && (!fn || fn === obj.fn)) cb = obj.cb;
+            if(events[ev][i].cb === cb) {
+              el.removeEventListener(ev, cb);
               // this does leave the array in a strange state, but acceptable
-              delete $.cache.events[cid][type][i];
+              delete $.cache.events[cid][ev][i];
             }
           });
         }
@@ -259,17 +261,20 @@
     // an optional hash of data to be appended to the event, bind them to each
     // element in the q.
     //
-    // `param` {string} `type`
+    // `param` {string} `type`. Can be "namespaced" i.e click.foo
     // `param` {function} `fn`
     // `param` {string} `sel` optional CSS selector for delegation
     // `param` {object} `data` optional hash to be appended to the event object
     // `returns` cash
     cash.on = function(type, fn, sel, data) {
-      var cb, events, targ;
+      var sp = type.split('.'), ev = sp[0], ns = sp.splice(1).join('.'), 
+        cb, events, targ;
       this.q.forEach(function(el) {
-        events = $._setCache_('events', el)[el.cid];
-        events[type] || (events[type] = []);
+        events = $._setCache_('events', el)[el.cid || 'window'];
+        events[ev] || (events[ev] = []);
         cb = function(e) {
+          // pass the namespace along to the listener
+          if(ns) e.namespace = ns;
           // pass any custom data along to the listener
           if(data) e.data = data;
           // base case is that this is not 'delegated'
@@ -282,8 +287,8 @@
           }
         };
         // cb === ours, fn === theirs.
-        events[type].push({cb:cb,fn:fn});
-        el.addEventListener && el.addEventListener(type, cb);
+        events[ev].push({ns: ns, cb: cb, fn: fn});
+        el.addEventListener && el.addEventListener(ev, cb);
       });
       return this;
     };
