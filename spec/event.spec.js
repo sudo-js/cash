@@ -36,7 +36,7 @@ describe('cash event binding', function() {
     expect(spy.callCount).toBe(0);
     $(document.querySelector('#testTarget')).on('click', window.callBack).trigger('click');
     expect(spy.callCount).toBe(1);
-    $.off('click').trigger('click');
+    $(document.querySelector('#testTarget')).off('click').trigger('click');
     expect(spy.callCount).toBe(1);
   });
   
@@ -52,7 +52,6 @@ describe('cash event binding', function() {
     expect(spy.callCount).toBe(2);        
     $(document.querySelector('#testTarget')).off('click').find('li.me').trigger('click');
     expect(spy.callCount).toBe(2);
-    $(document.querySelector('#testTarget')).off('click');
   });
   
   it('passes custom data with the event', function() {
@@ -61,7 +60,8 @@ describe('cash event binding', function() {
       {custom: 'soCustom'}).trigger('click').off('click');
     expect(spy).toHaveBeenCalled();
     $(document.querySelector('#testTarget')).on('click', window.callBackWithData, 'div:last-child', 
-      {custom: 'soSoCustom'}).find('div:last-child').trigger('click').off('click');
+      {custom: 'soSoCustom'}).find('div:last-child').trigger('click');
+    $(document.querySelector('#testTarget')).off('click');
     expect(spy).toHaveBeenCalled();
   });
   

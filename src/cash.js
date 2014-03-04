@@ -238,21 +238,19 @@
     // ###off
     cash.off = function(type, fn) {
       var sp = type.split('.'), ev = sp[0], ns = sp.splice(1).join('.'),
-        cb, events, cid; 
+        events, cid; 
       this.q.forEach(function(el) {
-        cid = isWindow(el) ? 'window' : el.cid, 
-          events = $.cache.events[cid];
+        cid = isWindow(el) ? 'window' : el.cid, events = $.cache.events[cid];
         if(events && events[ev]) {
-          events[ev].forEach(function(obj, i) {
+          events[ev].forEach(function(obj, i, ary) {
             // namespace or passed fn or both?
-            if((!ns || ns === obj.ns) && (!fn || fn === obj.fn)) cb = obj.cb;
-            if(events[ev][i].cb === cb) {
-              el.removeEventListener(ev, cb);
-              delete $.cache.events[cid][ev][i];
+            if((!ns || ns === obj.ns) && (!fn || fn === obj.fn)) {
+              el.removeEventListener(ev, obj.cb);
+              delete ary[i];
             }
           });
-          // intentional coersion to remove the falsey indices
-          events[ev].filter(function(i) {return i != null;}); 
+          // remove the falsey indices that were deleted
+          events[ev] = events[ev].filter(function(i) {return i !== undefined;}); 
         }
       });
       return this;
