@@ -248,10 +248,11 @@
             if((!ns || ns === obj.ns) && (!fn || fn === obj.fn)) cb = obj.cb;
             if(events[ev][i].cb === cb) {
               el.removeEventListener(ev, cb);
-              // this does leave the array in a strange state, but acceptable
               delete $.cache.events[cid][ev][i];
             }
           });
+          // intentional coersion to remove the falsey indices
+          events[ev].filter(function(i) {return i != null;}); 
         }
       });
       return this;
