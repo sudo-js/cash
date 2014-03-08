@@ -1,10 +1,13 @@
 (function(win) {
-  var proto = Array.prototype, slice = proto.slice,
-    cash = function(arg) {return cash.init(arg);};
+  var proto = Array.prototype, slice = proto.slice, keys = Object.keys,
+    cssNum = {'column-count':1,'columns':1,'font-weight':1,'line-height':1,'opacity': 1,'z-index':1,'zoom':1};
+    // value first as there may be no key
+    function addPx(v, k) {return (typeof v === 'number' && (!k || !cssNum[k])) ? v + 'px' : v;}
+    function cash(arg) {return cash.init(arg);}
     function isDocument(arg) {return arg && arg.nodeType === arg.DOCUMENT_NODE;}
-    function isWindow(arg) {return arg === win;}
     function isObject(arg) {return Object.prototype.toString.call(arg) === '[object Object]';}
     function isString(arg) {return typeof arg === 'string';}
+    function isWindow(arg) {return arg === win;}
     // ###cache
     // Hash that holds the event and display data
     cash.cache = {events: {}, display: {}};
@@ -49,6 +52,21 @@
       wrap.innerHTML = str;
       return $(wrap.firstElementChild);
     };
+    // ###css
+    // Given a key and a value, or a hash of key:value pairs, set each on the style property of
+    // each element in the `q`.
+    // This method does not function as a getter (use getComputedStyle for that).
+    //
+    // `param` {string | object} `k`
+    // `param` {string} `v`
+    // `returns` cash
+    cash.css = function(k, v) {
+      var ary = isString(k) ? undefined : keys(k),
+      set = ary ? function(el) {ary.forEach(function(i) {el.style[i] = addPx(k[i], i);});} :
+        function(el) {el.style[k] = addPx(v, k);};
+      this.q.forEach(set);
+      return this;
+    };
     // ###deserialize
     // Given a 'paramaterized' string, convert it to a hash and return it
     //
@@ -70,15 +88,10 @@
     // `params` {objects} A target object followed by <n> source objects
     // `returns` {object} A single object
     cash.extend = function() {
-      var args = slice.call(arguments),
-        targ = args.shift(), i, len, obj, keys;
-        // iterate over each passed in obj remaining
-      for(obj; args.length && (obj = args.shift());) {
-        keys = Object.keys(obj);
-        for(i = 0, len = keys.length; i < len; i++) {
-          targ[keys[i]] = obj[keys[i]];
-        }
-      }
+      var args = slice.call(arguments), targ = args.shift(), obj;
+      function fn(k) {targ[k] = obj[k];}
+      // iterate over each passed in obj remaining
+      for(; args.length && (obj = args.shift());) {keys(obj).forEach(fn);}
       return targ;
     };
     // ###find
@@ -90,12 +103,9 @@
     // `returns` cash
     cash.find = function(sel) {
       var ary = [];
+      function fn(n) {ary.push(n);}
       this.q.forEach(function(el) {
-        if(el.querySelectorAll) {
-          proto.forEach.call(el.querySelectorAll(sel), function(node) {
-            ary.push(node);
-          });
-        }
+        if(el.querySelectorAll) proto.forEach.call(el.querySelectorAll(sel),fn);
       });
       return $(ary);
     };
@@ -150,7 +160,7 @@
         }
       }
       // set any custom headers
-      Object.keys(this.xhrHeaders).forEach(function(h) {xhr.setRequestHeader(h, $.xhrHeaders[h]);});
+      keys(this.xhrHeaders).forEach(function(h) {xhr.setRequestHeader(h, $.xhrHeaders[h]);});
       // The native xhr considers many status codes a success that we do not, wrap the onload
       // so that we can call success or error based on code
       xhr.onload = function(e) {
@@ -188,9 +198,9 @@
         width: {w:'innerWidth',d:'scrollWidth',e:'offsetWidth'}
       }, node = this.q[0], type = obj[key];
       function what(el) {return isWindow(el) ? type.w : isDocument(el) ? type.d : type.e;}
-      if(!val) return node[what(node)];
+      if(!val) return node.style[what(node)];
       this.q.forEach(function(el) {
-        el.style[what(el)] = isString(val) ? val : val + 'px';
+        el.style[what(el)] = addPx(val);
       });
       return this;
     };
@@ -298,7 +308,7 @@
     // `returns` {string}
     cash.serialize = function(obj) {
       var ary = [];
-      Object.keys(obj).forEach(function(key) {
+      keys(obj).forEach(function(key) {
         ary.push(escape(key) +'='+ escape(obj[key]));
       });
       return ary.join('&').replace(/%20/g, '+');
