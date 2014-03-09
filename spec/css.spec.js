@@ -34,19 +34,19 @@ describe('CSS methods', function() {
   });
   
   it('can set a single style on foo', function() {
-    $.css('background-color', 'green');
+    $.css('backgroundColor', 'green');
     expect($.q[0].style.backgroundColor).toBe('green');
   });
   
   it('can set multiple styles on foo', function() {
-    $.css({color: '#666', 'text-align': 'right', padding: 2});
+    $.css({color: '#666', 'textAlign': 'right', padding: 2});
     expect($.q[0].style.color).toBe('rgb(102, 102, 102)');
     expect($.q[0].style.textAlign).toBe('right');
     expect($.q[0].style.padding).toBe('2px');
   });
   
   it('can set a single style on multiple elements', function() {
-    $.find('li').css('background-color', 'blue');
+    $.find('li').css('backgroundColor', 'blue');
     expect($.q[0].style.backgroundColor).toBe('blue');
     expect($.q[1].style.backgroundColor).toBe('blue');
     expect($.q[2].style.backgroundColor).toBe('blue');
@@ -54,7 +54,7 @@ describe('CSS methods', function() {
   });
   
   it('can set multiple styles on multiple elements', function() {
-    $.find('li').css({'text-align': 'center', 'margin-top': 5});
+    $.find('li').css({'textAlign': 'center', 'marginTop': 5});
     expect($.q[0].style.textAlign).toBe('center');
     expect($.q[0].style.marginTop).toBe('5px');
     expect($.q[1].style.textAlign).toBe('center');
