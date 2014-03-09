@@ -25,6 +25,20 @@ describe('Core $', function() {
     expect($.q.length).toBe(3);
   });
   
+  it('assigns an empty array to q when passed a falsey arg', function() {
+    $(undefined);
+    expect(Array.isArray($.q)).toBe(true);
+    expect($.q.length).toBe(0);
+  });
+  
+  it('assigns the empty array passed to it as q when passed one', function() {
+    var ary = [];
+    $(ary);
+    expect(Array.isArray($.q)).toBe(true);
+    expect($.q.length).toBe(0);
+    expect($.q).toBe(ary);
+  });
+  
   it('can create an element with class and id', function() {
     expect($.q[0].id).toBe('foo');
     expect($.q[0].classList.contains('bar')).toBe(true);

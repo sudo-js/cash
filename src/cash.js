@@ -213,9 +213,8 @@
     // `param` {element|nodeList|array} `arg`
     // `returns` cash
     cash.init = function(arg) {
-      // guard against falsey arg
-      this.q = arg && arg.length ? (Array.isArray(arg) ? arg : 
-        slice.call(arg)) : (arg ? [arg] : []);
+      // base case is already an array, then handle node(List) and falsey
+      this.q = Array.isArray(arg) ? arg : (arg ? (arg.length ? slice.call(arg) : [arg]) : []);
       return this;
     };
     // ###isObject
