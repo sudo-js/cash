@@ -289,7 +289,7 @@
           // base case is that this is not 'delegated'
           if(!sel) fn.call(el, e);
           // there is a sel, check for matches and call if so.
-          else if(~$(el).find(sel).q.indexOf(e.target) || (targ = $(el).find(sel).contains(e.target).q[0])) {
+          else if(~$(el).find(sel).q.indexOf(e.target) || (targ = $.contains(e.target).q[0])) {
             targ || (targ = e.target);
             e.currentTarget = targ;
             fn.call(targ, e);
