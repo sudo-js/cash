@@ -28,7 +28,7 @@ afterEach(function() {
   tt.innerHTML = '';
 
   // make sure to clean up bound events
-  $(tt).off('click').off('change');
+  $(tt).off('*');
 });
 
 describe('cash event binding', function() {

@@ -245,6 +245,13 @@
     // Empty function
     cash.noop = function() {},
     // ###off
+    // Remove event bindings from the q which match the given type and/or function.
+    // By supplying "*.yourNamespace" as the event type, you can remove all events
+    // in a namespace.
+    //
+    // `param` {string} `type`. An event trigger, can be namespaced
+    // `param` {function}  `fn`. The function which should be removed, optional.
+    // `returns` cash
     cash.off = function(type, fn) {
       var sp = type.split('.'), ev = sp[0], ns = sp.splice(1).join('.'),
         events, cid;
