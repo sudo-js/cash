@@ -16,7 +16,7 @@
     // ###closest
     // Given a string selector, return the first parent node that matches it
     // for each element in the q.
-    // 
+    //
     // `param` {string} `sel`
     // `returns` cash
     cash.closest = function(sel) {
@@ -41,8 +41,8 @@
       return $(res);
     };
     // ###create
-    // Given a string, create a DOM element and store place in at the q. Notice 
-    // that the input must be a single 'top-level' Element, but it may contain 
+    // Given a string, create a DOM element and store place in at the q. Notice
+    // that the input must be a single 'top-level' Element, but it may contain
     // any number of children.
     //
     // `param` {string} `str`. An innerHTML compatible string
@@ -96,7 +96,7 @@
     };
     // ###find
     // From the existing q, rebuild it by performing a querySelectorAll
-    // with the given selector on each element in the q, pushing those elements 
+    // with the given selector on each element in the q, pushing those elements
     // found into the new q.
     //
     // `param` {string} `sel`
@@ -110,7 +110,7 @@
       return $(ary);
     };
     // ###getXhr
-    // While getting a new XMLHttpRequest is standardized now, we are still going 
+    // While getting a new XMLHttpRequest is standardized now, we are still going
     // to provide this syntactic sugar to allow the setting of global headers (will
     // be set on each request) as well as the onload, onerrer, onloadend, timeout and
     // ontimeout properties and methods to be set with one call.
@@ -128,10 +128,10 @@
     //     user: optional,
     //     password: optional
     //   }
-    // If the verb is 'GET' and params is truthy it will be appended to the url as a 
+    // If the verb is 'GET' and params is truthy it will be appended to the url as a
     // queryString (after being serialized if a hash -- assumed to be a string if not).
     // This method does not call send() so do that once you have the xhr back, remember
-    // to set any pertinant MIME types if sending data via setRequestHeader (unless its 
+    // to set any pertinant MIME types if sending data via setRequestHeader (unless its
     // already in the $.xhrHeaders).
     //
     // `param` {object} `obj`. attributes for the XHR
@@ -147,7 +147,7 @@
       }
       xhr.open(obj.verb, obj.url, true, obj.user, obj.password);
       xhr.responseType = obj.responseType || 'text';
-      // so that some common use-case request headers can be set automagically, for blob, 
+      // so that some common use-case request headers can be set automagically, for blob,
       // document, buffer and others handle manually after getting the xhr back.
       if(xhr.responseType === 'text') {
         // could be json or plain string TODO expand this to a hash lookup for other types later
@@ -206,8 +206,8 @@
     };
     // init
     // Breaking from the jQuery pattern, only a singile DOM node or NodeList is
-    // expected as arguments (though an array is acceptable). The passed in arg 
-    // is normalized into an array and set as $.q. All chainable methods then 
+    // expected as arguments (though an array is acceptable). The passed in arg
+    // is normalized into an array and set as $.q. All chainable methods then
     // operate on the q.
     //
     // `param` {element|nodeList|array} `arg`
@@ -245,21 +245,33 @@
     // Empty function
     cash.noop = function() {},
     // ###off
+    // Remove event bindings from the q which match the given type and/or function.
+    // By supplying "*.yourNamespace" as the event type, you can remove all events
+    // in a namespace.
+    //
+    // `param` {string} `type`. An event trigger, can be namespaced
+    // `param` {function}  `fn`. The function which should be removed, optional.
+    // `returns` cash
     cash.off = function(type, fn) {
       var sp = type.split('.'), ev = sp[0], ns = sp.splice(1).join('.'),
-        events, cid; 
+        events, cid;
       this.q.forEach(function(el) {
         cid = isWindow(el) ? 'window' : el.cid, events = $.cache.events[cid];
-        if(events && events[ev]) {
-          events[ev].forEach(function(obj, i, ary) {
-            // namespace or passed fn or both?
-            if((!ns || ns === obj.ns) && (!fn || fn === obj.fn)) {
-              el.removeEventListener(ev, obj.cb);
-              delete ary[i];
+        if(events) {
+          (ev === '*' ? Object.keys(events) : [ev]).forEach(function(k){
+            // still need to check for the [ev] case
+            if(events[k]) {
+              events[k].forEach(function(obj, i, ary) {
+                // namespace or passed fn or both?
+                if((!ns || ns === obj.ns) && (!fn || fn === obj.fn)) {
+                  el.removeEventListener(k, obj.cb);
+                  delete ary[i];
+                }
+              });
+              // remove the falsey indices that were deleted
+              events[k] = events[k].filter(function(i) {return i !== undefined;});
             }
           });
-          // remove the falsey indices that were deleted
-          events[ev] = events[ev].filter(function(i) {return i !== undefined;}); 
         }
       });
       return this;
@@ -275,12 +287,13 @@
     // `param` {object} `data` optional hash to be appended to the event object
     // `returns` cash
     cash.on = function(type, fn, sel, data) {
-      var sp = type.split('.'), ev = sp[0], ns = sp.splice(1).join('.'), 
-        cb, events, targ;
+      var sp = type.split('.'), ev = sp[0], ns = sp.splice(1).join('.'),
+        cb, events;
       this.q.forEach(function(el) {
         events = $._setCache_('events', el)[el.cid || 'window'];
         events[ev] || (events[ev] = []);
         cb = function(e) {
+          var targ;
           // pass the namespace along to the listener
           if(ns) e.namespace = ns;
           // pass any custom data along to the listener
@@ -290,7 +303,7 @@
           // there is a sel, check for matches and call if so.
           else if(~$(el).find(sel).q.indexOf(e.target) || (targ = $.contains(e.target).q[0])) {
             targ || (targ = e.target);
-            e.currentTarget = targ;
+            e.delegateTarget = targ;
             fn.call(targ, e);
           }
         };
@@ -313,7 +326,7 @@
       return ary.join('&').replace(/%20/g, '+');
     };
     // ###setCache
-    // private. 
+    // private.
     cash._setCache_ = function(ref, el) {
       var cid = isWindow(el) ? 'window' : el.cid,
         obj = this.cache[ref];
@@ -335,7 +348,7 @@
       function state(el) {return isShow ? getComputedStyle(el).display !== 'none' : getComputedStyle(el).display === 'none';}
       function none(arg) {return isShow ? arg !== 'none': arg === 'none';}
       function notNone(arg) {return isShow ? arg === 'none': arg !== 'none';}
-      
+
       this.q.forEach(function(el) {
         var display = $._setCache_('display', el),
           old = display[el.cid];
@@ -393,7 +406,7 @@
     // `returns` {number|object} The height if a getter, cash if a setter
     cash.width = function(val) {return this._hw_('width', val);};
     // ###xhrHeaders
-    // Any 'global' headers that should go out with every XHR request 
+    // Any 'global' headers that should go out with every XHR request
     cash.xhrHeaders = {};
 
     // Not checking for window ATM, or trying to play nice
