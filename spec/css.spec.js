@@ -64,4 +64,15 @@ describe('CSS methods', function() {
     expect($.q[3].style.textAlign).toBe('center');
     expect($.q[3].style.marginTop).toBe('5px');
   });
+  
+  it('can use offset to fetch a hash of measurement data', function() {
+    var tt = document.querySelector('#testTarget');
+    tt.appendChild($.q[0]);
+    var offset = $(tt).css({padding: 10, margin: 10}).show().find('#foo').offset();
+    $(tt).hide();
+    expect(offset.top).toBeTruthy();
+    expect(offset.left).toBeTruthy();
+    expect(offset.width).toBeTruthy();
+    expect(offset.height).toBeTruthy();
+  });
 });

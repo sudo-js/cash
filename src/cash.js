@@ -279,6 +279,23 @@
       });
       return this;
     };
+    // ###offset
+    // Get a hash of key:value pairs: `top`, `left`, `width` and `height` - representing
+    // the position in the document of the 0th element in the q. This method is a getter only
+    // (use `css()` as a setter). Takes into consideration the page[X|Y]Offsets for
+    // `left` and `top` as well as rounds the width and height
+    //
+    // `returns` {object}
+    cash.offset = function() {
+      if(!this.q.length) return null;
+      var obj = this.q[0].getBoundingClientRect();
+      return {
+        left: obj.left + window.pageXOffset,
+        top: obj.top + window.pageYOffset,
+        width: Math.round(obj.width),
+        height: Math.round(obj.height)
+      };
+    };
     // ###on
     // Given an event type, a callback, an optional selector for delegation, and
     // an optional hash of data to be appended to the event, bind them to each
@@ -319,6 +336,19 @@
         // cb === ours, fn === theirs.
         events[ev].push({ns: ns, sel: sel, cb: cb, fn: fn, cap: cap});
         el.addEventListener && el.addEventListener(ev, cb, cap);
+      });
+      return this;
+    };
+    // ###remove
+    // Used to not only remove the elements in the q from the DOM, but to 
+    // remove any references they have in the $.cache as well.
+    //
+    // `returns` cash
+    cash.remove = function() {
+      this.q.forEach(function(el) {
+        // not concerned with the display hash
+        delete $.cache.events[el.cid];
+        el.parentNode && el.parentNode.removeChild(el);
       });
       return this;
     };
@@ -400,9 +430,7 @@
     cash.trigger = function(e) {
       var evt = document.createEvent('Event');
       evt.initEvent(e, true, true);
-      this.q.forEach(function(el) {
-        el.dispatchEvent && el.dispatchEvent(evt);
-      });
+      this.q.forEach(function(el) {el.dispatchEvent && el.dispatchEvent(evt);});
       return this;
     };
     // ###width
@@ -418,6 +446,6 @@
     // Any 'global' headers that should go out with every XHR request
     cash.xhrHeaders = {};
 
-    // Not checking for window ATM, or trying to play nice
+    // Not checking for window, or trying to play nice
     win.$ = cash;
 }(window));

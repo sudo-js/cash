@@ -68,5 +68,15 @@ describe('Core $', function() {
   it('when using closest, does not insert copies', function() {
      expect($.find('li').closest('ul').q.length).toEqual(2);
   });
+  
+  it('removes cache entries for an element removed with remove', function() {
+    var div = $.q[0];
+    expect($(div).find('li').q.length).toBe(4);
+    $(div).find('li.me').on('click', $.noop);
+    expect($.cache.events[$.q[0].cid]).toBeTruthy();
+    $(div).find('li.me').remove();
+    expect($(div).find('li').q.length).toBe(3);
+    expect($.cache.events[$.q[0].cid]).toBeFalsy();
+  });
 });
 
