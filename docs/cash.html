@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>cash.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>cash.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>(<span class="function"><span class="keyword">function</span><span class="params">(win)</span> {</span>
+  <span class="keyword">var</span> proto = Array.prototype, slice = proto.slice, keys = Object.keys,
+    cssNum = {<span class="string">'column-count'</span>:<span class="number">1</span>,<span class="string">'columns'</span>:<span class="number">1</span>,<span class="string">'font-weight'</span>:<span class="number">1</span>,<span class="string">'line-height'</span>:<span class="number">1</span>,<span class="string">'opacity'</span>: <span class="number">1</span>,<span class="string">'z-index'</span>:<span class="number">1</span>,<span class="string">'zoom'</span>:<span class="number">1</span>};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>value first as there may be no key</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="function"><span class="keyword">function</span> <span class="title">addPx</span><span class="params">(v, k)</span> {</span><span class="keyword">return</span> (<span class="keyword">typeof</span> v === <span class="string">'number'</span> &amp;&amp; (!k || !cssNum[k])) ? v + <span class="string">'px'</span> : v;}
+    <span class="function"><span class="keyword">function</span> <span class="title">cash</span><span class="params">(arg)</span> {</span><span class="keyword">return</span> cash.init(arg);}
+    <span class="function"><span class="keyword">function</span> <span class="title">isDocument</span><span class="params">(arg)</span> {</span><span class="keyword">return</span> arg &amp;&amp; arg.nodeType === arg.DOCUMENT_NODE;}
+    <span class="function"><span class="keyword">function</span> <span class="title">isObject</span><span class="params">(arg)</span> {</span><span class="keyword">return</span> Object.prototype.toString.call(arg) === <span class="string">'[object Object]'</span>;}
+    <span class="function"><span class="keyword">function</span> <span class="title">isString</span><span class="params">(arg)</span> {</span><span class="keyword">return</span> <span class="keyword">typeof</span> arg === <span class="string">'string'</span>;}
+    <span class="function"><span class="keyword">function</span> <span class="title">isWindow</span><span class="params">(arg)</span> {</span><span class="keyword">return</span> arg === win;}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <h3 id="cache">cache</h3>
+<p>Hash that holds the event and display data</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cash.cache = {events: {}, display: {}};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>generate a unique id for elements</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cash.cid = <span class="number">0</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <h3 id="closest">closest</h3>
+<p>Given a string selector, return the first parent node that matches it
+for each element in the q.</p>
+<p><code>param</code> {string} <code>sel</code>
+<code>returns</code> cash</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cash.closest = <span class="function"><span class="keyword">function</span><span class="params">(sel)</span> {</span>
+      <span class="keyword">var</span> ary = [];
+      <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
+        <span class="keyword">while</span>(el &amp;&amp; !$.matches(el, sel)) el = !isDocument(el) &amp;&amp; el.parentNode;
+        <span class="keyword">if</span>(!(~ary.indexOf(el))) ary.push(el);
+      });
+      <span class="keyword">return</span> $(ary);
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <h3 id="contains">contains</h3>
+<p>See if any element in the current q contains the passed in element,
+setting the q as the container if found.</p>
+<p><code>param</code> {element} <code>el</code>
+<code>returns</code> cash</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cash.contains = <span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
+      <span class="keyword">var</span> res;
+      <span class="keyword">this</span>.q.reverse().some(<span class="function"><span class="keyword">function</span><span class="params">(node)</span> {</span>
+        <span class="keyword">if</span>(node.contains(el)) <span class="keyword">return</span> res = node;
+      });
+      <span class="keyword">return</span> $(res);
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <h3 id="create">create</h3>
+<p>Given a string, create a DOM element and store place in at the q. Notice
+that the input must be a single &#39;top-level&#39; Element, but it may contain
+any number of children.</p>
+<p><code>param</code> {string} <code>str</code>. An innerHTML compatible string
+<code>returns</code> cash</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cash.create = <span class="function"><span class="keyword">function</span><span class="params">(str)</span> {</span>
+      <span class="keyword">var</span> wrap = document.createElement(<span class="string">'div'</span>);
+      wrap.innerHTML = str;
+      <span class="keyword">return</span> $(wrap.firstElementChild);
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <h3 id="css">css</h3>
+<p>Given a key and a value, or a hash of key:value pairs, set each on the style property of
+each element in the <code>q</code>.
+This method does not function as a getter (use getComputedStyle for that).</p>
+<p><code>param</code> {string | object} <code>k</code>
+<code>param</code> {string} <code>v</code>
+<code>returns</code> cash</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cash.css = <span class="function"><span class="keyword">function</span><span class="params">(k, v)</span> {</span>
+      <span class="keyword">var</span> ary = isString(k) ? <span class="literal">undefined</span> : keys(k),
+      set = ary ? <span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>ary.forEach(<span class="function"><span class="keyword">function</span><span class="params">(i)</span> {</span>el.style[i] = addPx(k[i], i);});} :
+        <span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>el.style[k] = addPx(v, k);};
+      <span class="keyword">this</span>.q.forEach(set);
+      <span class="keyword">return</span> <span class="keyword">this</span>;
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <h3 id="deserialize">deserialize</h3>
+<p>Given a &#39;paramaterized&#39; string, convert it to a hash and return it</p>
+<p><code>param</code> {string} <code>str</code>
+<code>returns</code> {object}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cash.deserialize = <span class="function"><span class="keyword">function</span><span class="params">(str)</span> {</span>
+      <span class="keyword">var</span> obj = {}, ary;
+      str.split(<span class="string">'&amp;'</span>).forEach(<span class="function"><span class="keyword">function</span><span class="params">(spl)</span> {</span>
+        <span class="keyword">if</span>(spl) {
+          ary = spl.split(<span class="string">'='</span>);
+          obj[ary[<span class="number">0</span>]] = ary[<span class="number">1</span>];
+        }
+      });
+      <span class="keyword">return</span> obj;
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <h3 id="extend">extend</h3>
+<p>Copy the (non-inherited) key:value pairs from <n> source objects to a single target object.</p>
+<p><code>params</code> {objects} A target object followed by <n> source objects
+<code>returns</code> {object} A single object</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cash.extend = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+      <span class="keyword">var</span> args = slice.call(arguments), targ = args.shift(), obj;
+      <span class="function"><span class="keyword">function</span> <span class="title">fn</span><span class="params">(k)</span> {</span>targ[k] = obj[k];}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>iterate over each passed in obj remaining</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="keyword">for</span>(; args.length &amp;&amp; (obj = args.shift());) {keys(obj).forEach(fn);}
+      <span class="keyword">return</span> targ;
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <h3 id="find">find</h3>
+<p>From the existing q, rebuild it by performing a querySelectorAll
+with the given selector on each element in the q, pushing those elements
+found into the new q.</p>
+<p><code>param</code> {string} <code>sel</code>
+<code>returns</code> cash</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cash.find = <span class="function"><span class="keyword">function</span><span class="params">(sel)</span> {</span>
+      <span class="keyword">var</span> ary = [];
+      <span class="function"><span class="keyword">function</span> <span class="title">fn</span><span class="params">(n)</span> {</span>ary.push(n);}
+      <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
+        <span class="keyword">if</span>(el.querySelectorAll) proto.forEach.call(el.querySelectorAll(sel),fn);
+      });
+      <span class="keyword">return</span> $(ary);
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <h3 id="getxhr">getXhr</h3>
+<p>While getting a new XMLHttpRequest is standardized now, we are still going
+to provide this syntactic sugar to allow the setting of global headers (will
+be set on each request) as well as the onload, onerrer, onloadend, timeout and
+ontimeout properties and methods to be set with one call.
+Does not have a default for obj.url all others are:
+  {
+    verb: &#39;GET&#39;,
+    responseType: &#39;text&#39;,
+    url: mandatory,
+    params: optional,
+    onload: _.noop,
+    onerror: optional,
+    onloadend: optional,
+    timeout: optional,
+    ontimeout: optional,
+    user: optional,
+    password: optional
+  }
+If the verb is &#39;GET&#39; and params is truthy it will be appended to the url as a
+queryString (after being serialized if a hash -- assumed to be a string if not).
+This method does not call send() so do that once you have the xhr back, remember
+to set any pertinant MIME types if sending data via setRequestHeader (unless its
+already in the $.xhrHeaders).</p>
+<p><code>param</code> {object} <code>obj</code>. attributes for the XHR
+<code>returns</code> {object} the xhr object</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cash.getXhr = <span class="function"><span class="keyword">function</span><span class="params">(obj)</span> {</span>
+      <span class="keyword">var</span> xhr =  <span class="keyword">new</span> XMLHttpRequest();
+      obj.verb || (obj.verb = <span class="string">'GET'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>check if we need a QS</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="keyword">if</span>(obj.verb === <span class="string">'GET'</span> &amp;&amp; obj.params) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>assumed to be an object literal if not a string</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">if</span>(<span class="keyword">typeof</span> obj.params !== <span class="string">'string'</span>) obj.params = <span class="keyword">this</span>.serialize(obj.params);
+        obj.url += (<span class="string">'?'</span> + obj.params);
+      }
+      xhr.open(obj.verb, obj.url, <span class="literal">true</span>, obj.user, obj.password);
+      xhr.responseType = obj.responseType || <span class="string">'text'</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>so that some common use-case request headers can be set automagically, for blob,
+document, buffer and others handle manually after getting the xhr back.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="keyword">if</span>(xhr.responseType === <span class="string">'text'</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>could be json or plain string TODO expand this to a hash lookup for other types later</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">if</span>(obj.contentType &amp;&amp; obj.contentType === <span class="string">'json'</span>) {
+          xhr.setRequestHeader(<span class="string">'Accept'</span>, <span class="string">'application/json'</span>);
+          xhr.setRequestHeader(<span class="string">'Content-Type'</span>, <span class="string">'application/json'</span>);
+        } <span class="keyword">else</span> {
+          xhr.setRequestHeader(<span class="string">'Accept'</span>, <span class="string">'text/plain'</span>);
+          xhr.setRequestHeader(<span class="string">'Content-Type'</span>, <span class="string">'text/plain'</span>);
+        }
+      }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>set any custom headers</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      keys(<span class="keyword">this</span>.xhrHeaders).forEach(<span class="function"><span class="keyword">function</span><span class="params">(h)</span> {</span>xhr.setRequestHeader(h, $.xhrHeaders[h]);});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>The native xhr considers many status codes a success that we do not, wrap the onload
+so that we can call success or error based on code</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      xhr.onload = <span class="function"><span class="keyword">function</span><span class="params">(e)</span> {</span>
+        <span class="keyword">if</span>(<span class="keyword">this</span>.status &gt;= <span class="number">200</span> &amp;&amp; <span class="keyword">this</span>.status &lt; <span class="number">300</span> || <span class="keyword">this</span>.status === <span class="number">304</span>) <span class="keyword">this</span>._onload_(e);
+        <span class="keyword">else</span> <span class="keyword">this</span>.onerror(e);
+      };
+      xhr._onload_ = obj.onload || <span class="keyword">this</span>.noop;
+      xhr.onerror = obj.onerror || <span class="keyword">this</span>.noop;
+      <span class="keyword">if</span>(obj.onloadend) xhr.onloadend = obj.onloadend;
+      <span class="keyword">if</span>(obj.timeout) xhr.timeout = obj.timeout;
+      <span class="keyword">if</span>(obj.ontimeout) xhr.ontimeout = obj.ontimeout;
+      <span class="keyword">return</span> xhr;
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <h3 id="height">height</h3>
+<p>Given a value this method is a setter for each element in the q.
+If the arg is truthy and a number it is converted to a string with &#39;px&#39;
+added, if it is a string nothing is added.
+Minus that, it returns the height of the 0th item in the q;</p>
+<p><code>param</code> {number|string} <code>val</code>. Optional value to be set
+<code>returns</code> {number|object} The height if a getter, cash if a setter</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cash.height = <span class="function"><span class="keyword">function</span><span class="params">(val)</span> {</span><span class="keyword">return</span> <span class="keyword">this</span>._hw_(<span class="string">'height'</span>, val);};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <h3 id="hide">hide</h3>
+<p>Makes elements in the q invisible in the DOM by modifying
+the <code>display</code> attribute, if necessary.</p>
+<p><code>returns</code> cash</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cash.hide = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span><span class="keyword">return</span> <span class="keyword">this</span>._sh_(<span class="string">'hide'</span>);};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <h3 id="_hw_"><em>hw</em></h3>
+<p>Abstracted logic for the height and width operations
+<code>private</code></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cash._hw_ = <span class="function"><span class="keyword">function</span><span class="params">(key, val)</span> {</span>
+      <span class="keyword">var</span> obj = {
+        height: {w:<span class="string">'innerHeight'</span>,d:<span class="string">'scrollHeight'</span>,e:<span class="string">'offsetHeight'</span>},
+        width: {w:<span class="string">'innerWidth'</span>,d:<span class="string">'scrollWidth'</span>,e:<span class="string">'offsetWidth'</span>}
+      }, node = <span class="keyword">this</span>.q[<span class="number">0</span>], type = obj[key];
+      <span class="function"><span class="keyword">function</span> <span class="title">what</span><span class="params">(el)</span> {</span><span class="keyword">return</span> isWindow(el) ? type.w : isDocument(el) ? type.d : type.e;}
+      <span class="keyword">if</span>(!val) <span class="keyword">return</span> node.style[what(node)];
+      <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
+        el.style[what(el)] = addPx(val);
+      });
+      <span class="keyword">return</span> <span class="keyword">this</span>;
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>init
+Breaking from the jQuery pattern, only a singile DOM node or NodeList is
+expected as arguments (though an array is acceptable). The passed in arg
+is normalized into an array and set as $.q. All chainable methods then
+operate on the q.</p>
+<p><code>param</code> {element|nodeList|array} <code>arg</code>
+<code>returns</code> cash</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cash.init = <span class="function"><span class="keyword">function</span><span class="params">(arg)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>base case is already an array, then handle node(List) and falsey</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="keyword">this</span>.q = Array.isArray(arg) ? arg : (arg ? (arg <span class="keyword">instanceof</span> NodeList ? slice.call(arg) : [arg]) : []);
+      <span class="keyword">return</span> <span class="keyword">this</span>;
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <h3 id="isobject">isObject</h3>
+<p>Ye olde toString fallback to see if a passed in argument is an object.
+Really you should test the other cases (Array.isArray for example) but this
+does &#39;even&#39; the API a little</p>
+<p><code>param</code> {*}
+<code>returns</code> {bool}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cash.isObject = isObject;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <h3 id="matches">matches</h3>
+<p>Unfortunately the matchesSelector methods are all hidden behind prefixes ATM.
+set the useable one, if not, then return the bool.</p>
+<p><code>param</code> {element} <code>el</code>. A DOM 1 nodetype
+<code>param</code> {string}  <code>sel</code>. A CSS selector
+<code>returns</code> {bool}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cash.matches = <span class="function"><span class="keyword">function</span><span class="params">(el, sel)</span> {</span>
+      <span class="keyword">if</span> (el.nodeType !== <span class="number">1</span>) <span class="keyword">return</span> <span class="literal">false</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>normalize the native selector match fn until all the prefixes are dropped</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="keyword">if</span>(!<span class="keyword">this</span>._matchesSelector_) {
+        <span class="keyword">this</span>._matchesSelector_ = el.webkitMatchesSelector || el.mozMatchesSelector ||
+        el.msMatchesSelector || el.oMatchesSelector || el.matchesSelector;
+      }
+      <span class="keyword">return</span> <span class="keyword">this</span>._matchesSelector_.call(el, sel);
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <h3 id="noop">noop</h3>
+<p>Empty function</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cash.noop = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <h3 id="off">off</h3>
+<p>Remove event bindings from the q which match the given type and/or function.
+By supplying &quot;<em>.yourNamespace&quot; as the event type, you can remove all events
+in a namespace, or simply &#39;</em>&#39; to remove all events.
+The optional third argument, &#39;cap&#39;, is a boolean than will need to be
+<code>true</code> if you bound the event originally with <code>cap = true</code>. 
+NOTE: You do not need to pass the &#39;cap&#39; bool in the &#39;forced capture phase&#39;
+case, that is the event is &#39;focus&#39; or &#39;blur&#39; and is delegated. Cash will 
+handle the capture phase bool for you in that case. </p>
+<p><code>param</code> {string} <code>type</code>. An event trigger, can be namespaced
+<code>param</code> {function}  <code>fn</code>. The function which should be removed, optional.
+<code>returns</code> cash</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cash.off = <span class="function"><span class="keyword">function</span><span class="params">(type, fn, cap)</span> {</span>
+      <span class="keyword">var</span> sp = type.split(<span class="string">'.'</span>), ev = sp[<span class="number">0</span>], ns = sp.splice(<span class="number">1</span>).join(<span class="string">'.'</span>),
+        all = ev === <span class="string">'*'</span>, events, cid;
+      <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
+        cid = isWindow(el) ? <span class="string">'window'</span> : el.cid, events = $.cache.events[cid];
+        <span class="keyword">if</span>(events) {
+          (all ? Object.keys(events) : [ev]).forEach(<span class="function"><span class="keyword">function</span><span class="params">(k)</span> {</span>
+            events[k] &amp;&amp; events[k].forEach(<span class="function"><span class="keyword">function</span><span class="params">(obj, i, ary)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>we may have forced the cap</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>              <span class="keyword">if</span>(!cap &amp;&amp; (k === <span class="string">'focus'</span> || k === <span class="string">'blur'</span>) &amp;&amp; obj.sel) cap = <span class="literal">true</span>;
+              <span class="keyword">if</span>((!ns || ns === obj.ns) &amp;&amp; (!fn || fn === obj.fn) &amp;&amp; (cap === obj.cap)) {
+                el.removeEventListener(k, obj.cb, obj.cap);
+                <span class="keyword">delete</span> ary[i];
+              }
+            });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>remove the falsey indices that were deleted</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            events[k] = events[k].filter(<span class="function"><span class="keyword">function</span><span class="params">(i)</span> {</span><span class="keyword">return</span> i !== <span class="literal">undefined</span>;});
+          });
+        }
+      });
+      <span class="keyword">return</span> <span class="keyword">this</span>;
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <h3 id="on">on</h3>
+<p>Given an event type, a callback, an optional selector for delegation, and
+an optional hash of data to be appended to the event, bind them to each
+element in the q. Capture phase is supported by passing true as the 
+optional 5th argument. NOTE: if the event being bound is &#39;focus&#39; or &#39;blur&#39;
+and a selector is present capture phase is forced as delegation will not work otherwise.</p>
+<p><code>param</code> {string} <code>type</code>. Can be &quot;namespaced&quot; i.e click.foo
+<code>param</code> {function} <code>fn</code>
+<code>param</code> {string} <code>sel</code> optional CSS selector for delegation
+<code>param</code> {object} <code>data</code> optional hash to be appended to the event object
+<code>param</code> {bool} <code>cap</code> optional bool to force capture phase
+<code>returns</code> cash</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cash.on = <span class="function"><span class="keyword">function</span><span class="params">(type, fn, sel, data, cap)</span> {</span>
+      <span class="keyword">var</span> sp = type.split(<span class="string">'.'</span>), ev = sp[<span class="number">0</span>], ns = sp.splice(<span class="number">1</span>).join(<span class="string">'.'</span>),
+        cb, events;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>we force capture phase here so that delegation works</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="keyword">if</span>(!cap &amp;&amp; (ev === <span class="string">'focus'</span> || ev === <span class="string">'blur'</span>) &amp;&amp; sel) cap = <span class="literal">true</span>;
+      <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
+        events = $._setCache_(<span class="string">'events'</span>, el)[el.cid || <span class="string">'window'</span>];
+        events[ev] || (events[ev] = []);
+        cb = <span class="function"><span class="keyword">function</span><span class="params">(e)</span> {</span>
+          <span class="keyword">var</span> targ;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <p>pass the namespace along to the listener</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          <span class="keyword">if</span>(ns) e.namespace = ns;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              <p>pass any custom data along to the listener</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          <span class="keyword">if</span>(data) e.data = data;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
+              </div>
+              <p>base case is that this is not &#39;delegated&#39;</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          <span class="keyword">if</span>(!sel) fn.call(el, e);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-37">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-37">&#182;</a>
+              </div>
+              <p>there is a sel, check for matches and call if so.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          <span class="keyword">else</span> <span class="keyword">if</span>(~$(el).find(sel).q.indexOf(e.target) || (targ = $.contains(e.target).q[<span class="number">0</span>])) {
+            targ || (targ = e.target);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-38">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-38">&#182;</a>
+              </div>
+              <p>as defined by us rather than currentTarget</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            e.delegateTarget = targ;
+            fn.call(targ, e);
+          }
+        };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-39">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-39">&#182;</a>
+              </div>
+              <p>cb === ours, fn === theirs.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        events[ev].push({ns: ns, sel: sel, cb: cb, fn: fn, cap: cap});
+        el.addEventListener &amp;&amp; el.addEventListener(ev, cb, cap);
+      });
+      <span class="keyword">return</span> <span class="keyword">this</span>;
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-40">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-40">&#182;</a>
+              </div>
+              <h3 id="serialize">serialize</h3>
+<p>Given a hash of data, convert it to a &#39;paramaterized&#39; string and return it.</p>
+<p><code>param</code> {object} <code>obj</code>
+<code>returns</code> {string}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cash.serialize = <span class="function"><span class="keyword">function</span><span class="params">(obj)</span> {</span>
+      <span class="keyword">var</span> ary = [];
+      keys(obj).forEach(<span class="function"><span class="keyword">function</span><span class="params">(key)</span> {</span>
+        ary.push(escape(key) +<span class="string">'='</span>+ escape(obj[key]));
+      });
+      <span class="keyword">return</span> ary.join(<span class="string">'&amp;'</span>).replace(<span class="regexp">/%20/g</span>, <span class="string">'+'</span>);
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-41">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-41">&#182;</a>
+              </div>
+              <h3 id="setcache">setCache</h3>
+<p>private.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cash._setCache_ = <span class="function"><span class="keyword">function</span><span class="params">(ref, el)</span> {</span>
+      <span class="keyword">var</span> cid = isWindow(el) ? <span class="string">'window'</span> : el.cid,
+        obj = <span class="keyword">this</span>.cache[ref];
+      <span class="keyword">if</span>(!cid) el.cid = cid = String(++<span class="keyword">this</span>.cid);
+      obj[cid] || (obj[cid] = ref === <span class="string">'events'</span> ? {} : <span class="literal">undefined</span>);
+      <span class="keyword">return</span> obj;
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-42">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-42">&#182;</a>
+              </div>
+              <h3 id="show">show</h3>
+<p>Makes elements in the q visible in the DOM by modifying
+the <code>display</code> attribute, if necessary.</p>
+<p><code>returns</code> cash</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cash.show = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span><span class="keyword">return</span> <span class="keyword">this</span>._sh_(<span class="string">'show'</span>);};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-43">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-43">&#182;</a>
+              </div>
+              <h3 id="_sh_"><em>sh</em></h3>
+<p>Abstracted logic for the show and hide methods
+<code>private</code></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cash._sh_ = <span class="function"><span class="keyword">function</span><span class="params">(key)</span> {</span>
+      <span class="keyword">var</span> isShow = key === <span class="string">'show'</span>;
+      <span class="function"><span class="keyword">function</span> <span class="title">state</span><span class="params">(el)</span> {</span><span class="keyword">return</span> isShow ? getComputedStyle(el).display !== <span class="string">'none'</span> : getComputedStyle(el).display === <span class="string">'none'</span>;}
+      <span class="function"><span class="keyword">function</span> <span class="title">none</span><span class="params">(arg)</span> {</span><span class="keyword">return</span> isShow ? arg !== <span class="string">'none'</span>: arg === <span class="string">'none'</span>;}
+      <span class="function"><span class="keyword">function</span> <span class="title">notNone</span><span class="params">(arg)</span> {</span><span class="keyword">return</span> isShow ? arg === <span class="string">'none'</span>: arg !== <span class="string">'none'</span>;}
+
+      <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
+        <span class="keyword">var</span> display = $._setCache_(<span class="string">'display'</span>, el),
+          old = display[el.cid];
+        <span class="keyword">if</span>(state(el)) {
+          <span class="keyword">if</span>(none(old)) <span class="keyword">delete</span> display[el.cid];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-44">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-44">&#182;</a>
+              </div>
+              <p>does an old display value exist?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        } <span class="keyword">else</span> <span class="keyword">if</span> (old &amp;&amp; none(old)) {
+          el.style.display = old;
+          <span class="keyword">delete</span> display[el.cid];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-45">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-45">&#182;</a>
+              </div>
+              <p>the element is not visible and does not have an old display value</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        } <span class="keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-46">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-46">&#182;</a>
+              </div>
+              <p>is the element hidden with inline styling?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          <span class="keyword">if</span>(el.style.display &amp;&amp; notNone(el.style.display)) {
+            display[el.cid] = el.style.display;
+            el.style.display = isShow ? <span class="string">''</span> : <span class="string">'none'</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-47">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-47">&#182;</a>
+              </div>
+              <p>the element is hidden through css</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          } <span class="keyword">else</span> el.style.display = isShow ? <span class="string">'block'</span>: <span class="string">'none'</span>;
+        }
+      });
+      <span class="keyword">return</span> <span class="keyword">this</span>;
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-48">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-48">&#182;</a>
+              </div>
+              <h3 id="toggle">toggle</h3>
+<p>Toggles the visibility of elements in the DOM by modifying
+the <code>display</code> attribute, if necessary.</p>
+<p><code>returns</code> cash</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cash.toggle = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+      <span class="keyword">var</span> ary = slice.call(<span class="keyword">this</span>.q);
+      ary.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
+        getComputedStyle(el).display === <span class="string">'none'</span> ?
+          $(el).show() : $(el).hide();
+      });
+      <span class="keyword">return</span> $(ary);
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-49">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-49">&#182;</a>
+              </div>
+              <h3 id="trigger">trigger</h3>
+<p>Given an event type, init a DOM event and dispatch it to each element in the q.</p>
+<p><code>param</code> {string} <code>e</code>
+<code>returns</code> cash</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cash.trigger = <span class="function"><span class="keyword">function</span><span class="params">(e)</span> {</span>
+      <span class="keyword">var</span> evt = document.createEvent(<span class="string">'Event'</span>);
+      evt.initEvent(e, <span class="literal">true</span>, <span class="literal">true</span>);
+      <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
+        el.dispatchEvent &amp;&amp; el.dispatchEvent(evt);
+      });
+      <span class="keyword">return</span> <span class="keyword">this</span>;
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-50">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-50">&#182;</a>
+              </div>
+              <h3 id="width">width</h3>
+<p>Given a value this method is a setter for each element in the q.
+If the arg is truthy and a number it is converted to a string with &#39;px&#39;
+added, if it is a string nothing is added.
+Minus that, it returns the width of the 0th item in the q;</p>
+<p><code>param</code> {number|string} <code>val</code>. Optional value to be set
+<code>returns</code> {number|object} The height if a getter, cash if a setter</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cash.width = <span class="function"><span class="keyword">function</span><span class="params">(val)</span> {</span><span class="keyword">return</span> <span class="keyword">this</span>._hw_(<span class="string">'width'</span>, val);};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-51">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-51">&#182;</a>
+              </div>
+              <h3 id="xhrheaders">xhrHeaders</h3>
+<p>Any &#39;global&#39; headers that should go out with every XHR request</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cash.xhrHeaders = {};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-52">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-52">&#182;</a>
+              </div>
+              <p>Not checking for window ATM, or trying to play nice</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    win.$ = cash;
+}(window));</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

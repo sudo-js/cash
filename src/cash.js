@@ -247,30 +247,33 @@
     // ###off
     // Remove event bindings from the q which match the given type and/or function.
     // By supplying "*.yourNamespace" as the event type, you can remove all events
-    // in a namespace.
+    // in a namespace, or simply '*' to remove all events.
+    // The optional third argument, 'cap', is a boolean than will need to be
+    // `true` if you bound the event originally with `cap = true`. 
+    // NOTE: You do not need to pass the 'cap' bool in the 'forced capture phase'
+    // case, that is the event is 'focus' or 'blur' and is delegated. Cash will 
+    // handle the capture phase bool for you in that case. 
     //
     // `param` {string} `type`. An event trigger, can be namespaced
     // `param` {function}  `fn`. The function which should be removed, optional.
     // `returns` cash
-    cash.off = function(type, fn) {
+    cash.off = function(type, fn, cap) {
       var sp = type.split('.'), ev = sp[0], ns = sp.splice(1).join('.'),
-        events, cid;
+        all = ev === '*', events, cid;
       this.q.forEach(function(el) {
         cid = isWindow(el) ? 'window' : el.cid, events = $.cache.events[cid];
         if(events) {
-          (ev === '*' ? Object.keys(events) : [ev]).forEach(function(k){
-            // still need to check for the [ev] case
-            if(events[k]) {
-              events[k].forEach(function(obj, i, ary) {
-                // namespace or passed fn or both?
-                if((!ns || ns === obj.ns) && (!fn || fn === obj.fn)) {
-                  el.removeEventListener(k, obj.cb);
-                  delete ary[i];
-                }
-              });
-              // remove the falsey indices that were deleted
-              events[k] = events[k].filter(function(i) {return i !== undefined;});
-            }
+          (all ? Object.keys(events) : [ev]).forEach(function(k) {
+            events[k] && events[k].forEach(function(obj, i, ary) {
+              // we may have forced the cap
+              if(!cap && (k === 'focus' || k === 'blur') && obj.sel) cap = true;
+              if((!ns || ns === obj.ns) && (!fn || fn === obj.fn) && (cap === obj.cap)) {
+                el.removeEventListener(k, obj.cb, obj.cap);
+                delete ary[i];
+              }
+            });
+            // remove the falsey indices that were deleted
+            events[k] = events[k].filter(function(i) {return i !== undefined;});
           });
         }
       });
@@ -279,16 +282,21 @@
     // ###on
     // Given an event type, a callback, an optional selector for delegation, and
     // an optional hash of data to be appended to the event, bind them to each
-    // element in the q.
+    // element in the q. Capture phase is supported by passing true as the 
+    // optional 5th argument. NOTE: if the event being bound is 'focus' or 'blur'
+    // and a selector is present capture phase is forced as delegation will not work otherwise.
     //
     // `param` {string} `type`. Can be "namespaced" i.e click.foo
     // `param` {function} `fn`
     // `param` {string} `sel` optional CSS selector for delegation
     // `param` {object} `data` optional hash to be appended to the event object
+    // `param` {bool} `cap` optional bool to force capture phase
     // `returns` cash
-    cash.on = function(type, fn, sel, data) {
+    cash.on = function(type, fn, sel, data, cap) {
       var sp = type.split('.'), ev = sp[0], ns = sp.splice(1).join('.'),
         cb, events;
+      // we force capture phase here so that delegation works
+      if(!cap && (ev === 'focus' || ev === 'blur') && sel) cap = true;
       this.q.forEach(function(el) {
         events = $._setCache_('events', el)[el.cid || 'window'];
         events[ev] || (events[ev] = []);
@@ -309,8 +317,8 @@
           }
         };
         // cb === ours, fn === theirs.
-        events[ev].push({ns: ns, cb: cb, fn: fn});
-        el.addEventListener && el.addEventListener(ev, cb);
+        events[ev].push({ns: ns, sel: sel, cb: cb, fn: fn, cap: cap});
+        el.addEventListener && el.addEventListener(ev, cb, cap);
       });
       return this;
     };

@@ -161,5 +161,56 @@ describe('cash event binding', function() {
     expect(target.id).toEqual(li2.id);
 
   });
+  
+  it('on can be insructed to use the capture phase for on and off', function() {
+    var tt = document.querySelector('#testTarget'), ary = [];
+    window.meFirst = function(e) {ary.push('capture');}
+    window.meSecond = function(e) {ary.push('bubble');}
+    
+    $(tt).on('click', window.meFirst, null, null, true).on('click', window.meSecond);
+    expect($.cache.events[tt.cid].click[0].cap).toBe(true);
+    $.trigger('click');
+    expect(ary[0]).toBe('capture');
+    expect(ary[1]).toBe('bubble');
+    // should not work
+    $.off('click', window.meFirst).trigger('click');
+    expect(ary[2]).toBe('capture');
+    expect(ary[3]).toBe('bubble');
+    
+    $.off('click', window.meFirst, true).trigger('click');
+    expect(ary[4]).toBe('bubble');
+    $.off('click', window.meSecond).trigger('click');
+    expect(ary.length).toBe(5);  
+  });
+  
+  it('will force capture on focus and blur if delegated', function() {
+    window.focused = 0;
+    window.blurred = 0;
+    window.handleFocus = function(e) {
+      window.focused++;
+      window.whoCalled = e.target.name;
+    };
+    window.handleBlur = function(e) {
+      window.blurred++;
+      window.whoCalled = e.target.name;
+    };
+    var tt = document.querySelector('#testTarget');
+    tt.innerHTML = '<div><input type="text" name="one"></input><input type="text" name="two"></input></div>';
+    $(tt).on('focus', window.handleFocus, 'input[name="two"]').on('blur', window.handleBlur, 'input[name="two"]');
+    expect($.cache.events[tt.cid].focus[0].cap).toBe(true);
+    expect($.cache.events[tt.cid].blur[0].cap).toBe(true);
+    $(tt).find('input[name="two"]').trigger('focus');
+    expect(window.focused).toBe(1);
+    expect(window.whoCalled).toBe('two');
+    window.whoCalled = '';
+    $(tt).find('input[name="two"]').trigger('blur');
+    expect(window.blurred).toBe(1);
+    expect(window.whoCalled).toBe('two');
+    window.whoCalled = '';
+    $(tt).find('input[name="one"]').trigger('focus').trigger('blur');
+    expect(window.focused).toBe(1);
+    expect(window.blurred).toBe(1);
+    expect(window.whoCalled).toBe('');
+  });
 
 });
