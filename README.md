@@ -165,6 +165,8 @@ few reasons that having this method available is advantageous. One, you can pass
 numbers and 'px' will be added when appropriate. Two, by passing a hash of key:value
 pairs the setting of multiple styles at once is possible.
 
+Note: `css` is a setter only.
+
 #####itGoesLikeThis, not-like-this
 when passing arguments to the `css` method camel case the keys, do not pass them
 'dasherized`. This applies to both the single key and val case and the hash one.
