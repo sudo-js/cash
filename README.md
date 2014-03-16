@@ -68,7 +68,7 @@ The familiar `on` and `off` methods are provided as, though event binding is sta
 now in all good browsers, unbinding can produce much boilerplate in a large project.
 Particularly in a single-page-app where removing event listeners is paramount.
 
-####on(event, callback[,selector][, data])
+####on(event, callback[,selector][, data][, cap])
 Adds an event listener to each element in the `q`. Very similar to the jQuery `on`
 method with the exception of the order of arguments:
 
@@ -76,11 +76,13 @@ method with the exception of the order of arguments:
 + **callback** A function to be called when the event occurs
 + **selector** Optional CSS selector allowing delegatation of events to the target element.
 + **data** Optional object literal passed to the callback as `e.data`
++ **cap** Optional boolean that, if truthy, will force capture phase to be used.
 
+######delegateTarget
 All events bound by cash will have a delegateTarget attribute. If a selector was used
-the delegateTarget will match the provided selector.
+(the event was delegated) the delegateTarget will match the provided selector.
 
-####off(event[, callback])
+####off(event[, callback][, cap])
 Removes all events bound to the `event` name, or just the passed in `callback`
 (if present), for each element in the `q`. Maintaining the correct reference to
 a `callback` can be ugly so if you are looking to remove a specific `callback` on
@@ -90,6 +92,18 @@ may be a better choice.
 You may use a `*` event name to capture sets of events. For instance, `*.ns` would
 remove all events which were bound to the `ns` namespace. Similarly `*` would
 remove all events, regardless of event name or namespace.
+
+######Cap'n
+The `cap` argument will need to be passed for the event to be unbound **if you
+passed the argument when binding it**.
+
+It is worth nothing that the `blur` and `focus` DOM events do not bubble and therefore
+do not (normally) work correctly with delegation. You can however use the capture phase
+to remedy this. Cash, if it sees that `on` is being used with either `focus` or
+`blur` **and** there is a `sel` (delegation being used) with force the `cap` arg
+to true (therefore using capture phase). If `off` is called on either `focus` or
+`blur` and you had used delegation you **do not need to pass the cap** argument.
+Cash will know to use it for you.
 
 #####Event Namespacing
 Similar in practice to the jQuery event namespace, you can append a value to an
@@ -110,6 +124,15 @@ pass the namespaced event name to `off`:
 
 There is no need to pass the second argument.
 
+#####Baby You're A *
+The '*' character has a special meaning for the `off()` method. Passed with a namespace
+it will remove all listeners that share the namespace.
+
+    $(things).off('*.foo');
+    
+In a more drastic move you can remove all listeners simply by passing the *.
+
+    $(things).off('*');
 
 ######Caveat
 Cash does not override the native event passed to your listeners. This means that
@@ -122,3 +145,31 @@ The latter would recieve the namespace attached to the event passed to it howeve
 `event.namespace` (it would be 'foo'). The former would not, `event.namespace` would be
 falsey.
 
+###Styles
+Methods for the getting or setting of styles. 
+
+####offset()
+Calling this method will return a hash of key:value pairs that represent the 
+position in the document of the 'zeroth' element in the `q`. Note that the 
+`top` and `left` properties will take into account page[X|Y]Offset and the 
+`width` and `height` properties will be rounded.
+
+    $(someElement).offset();
+    // => {top: xx, left: xx, width: xx, left: xx}
+    
+Note: `offset` is a getter only.
+
+####css(key|obj[, value])
+Though you could interact with the `element.style` object directly there are a 
+few reasons that having this method available is advantageous. One, you can pass it
+numbers and 'px' will be added when appropriate. Two, by passing a hash of key:value
+pairs the setting of multiple styles at once is possible.
+
+#####itGoesLikeThis, not-like-this
+when passing arguments to the `css` method camel case the keys, do not pass them
+'dasherized`. This applies to both the single key and val case and the hash one.
+
+    // the single style case
+    $(things).css('paddingTop', 10);
+    // multiple
+    $(things).css({paddingTop: 10, marginLeft: 5});
