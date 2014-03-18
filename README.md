@@ -145,6 +145,27 @@ The latter would recieve the namespace attached to the event passed to it howeve
 `event.namespace` (it would be 'foo'). The former would not, `event.namespace` would be
 falsey.
 
+###Traversal
+Methods that alter the `q` based on some DOM related criteria.
+
+####closest(selector)
+For each element in the `q` traverse upwards to find the first element that matches 
+the given CSS selector. The `q` will be accordingly rehydrated with the found elements.
+
+    $(someInput).closest('form');
+    
+####find(selector)
+Given a CSS selector query each element in the `q` for all matches to that selector.
+Rehdrate the `q` with any and all of those matches.
+
+  $(someUl).find('li');
+  
+####contains(element)
+Qeury each element in the `q` for which contains the passed in element. Reset 
+the `q` with that container if found.
+
+    $(things).contains(someElement);
+
 ###Styles
 Methods for the getting or setting of styles. 
 
@@ -160,12 +181,30 @@ position in the document of the 'zeroth' element in the `q`. Note that the
 Note: `offset` is a getter only.
 
 ####css(key|obj[, value])
+Set one, or multiple, style properties on each element in the `q`.
+
 Though you could interact with the `element.style` object directly there are a 
 few reasons that having this method available is advantageous. One, you can pass it
 numbers and 'px' will be added when appropriate. Two, by passing a hash of key:value
 pairs the setting of multiple styles at once is possible.
 
 Note: `css` is a setter only.
+
+####height([value])
+To normalize the different attributes one needs to set on `window`, `document`,
+or an `element` for height, we provide this method. Passed a value (string or number), 
+`height` works as a setter for each element in the `q`. If the value is a string cash 
+will not attempt to append the unit of measure for you ('px' for example), if a 
+number 'px' will be added.
+
+    $(foo).find(bar).height(25);
+    
+Passed no value `height` functions as a getter for the zeroth element.
+
+    $(foo).find(bar).height(); //=> 25
+    
+####width([value])
+The same as height, except it's spelled differently and gets or sets the width property. 
 
 #####itGoesLikeThis, not-like-this
 when passing arguments to the `css` method camel case the keys, do not pass them
