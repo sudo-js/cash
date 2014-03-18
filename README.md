@@ -158,7 +158,7 @@ the given CSS selector. The `q` will be accordingly rehydrated with the found el
 Given a CSS selector query each element in the `q` for all matches to that selector.
 Rehdrate the `q` with any and all of those matches.
 
-  $(someUl).find('li');
+    $(someUl).find('li');
   
 ####contains(element)
 Qeury each element in the `q` for which contains the passed in element. Reset 
@@ -190,6 +190,15 @@ pairs the setting of multiple styles at once is possible.
 
 Note: `css` is a setter only.
 
+#####itGoesLikeThis, not-like-this
+when passing arguments to the `css` method camel case the keys, do not pass them
+'dasherized`. This applies to both the single key and val case and the hash one.
+
+    // the single style case
+    $(things).css('paddingTop', 10);
+    // multiple
+    $(things).css({paddingTop: 10, marginLeft: 5});
+
 ####height([value])
 To normalize the different attributes one needs to set on `window`, `document`,
 or an `element` for height, we provide this method. Passed a value (string or number), 
@@ -205,12 +214,3 @@ Passed no value `height` functions as a getter for the zeroth element.
     
 ####width([value])
 The same as height, except it's spelled differently and gets or sets the width property. 
-
-#####itGoesLikeThis, not-like-this
-when passing arguments to the `css` method camel case the keys, do not pass them
-'dasherized`. This applies to both the single key and val case and the hash one.
-
-    // the single style case
-    $(things).css('paddingTop', 10);
-    // multiple
-    $(things).css({paddingTop: 10, marginLeft: 5});
