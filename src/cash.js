@@ -77,7 +77,7 @@
       str.split('&').forEach(function(spl) {
         if(spl) {
           ary = spl.split('=');
-          obj[ary[0]] = ary[1];
+          obj[decodeURIComponent(ary[0])] = decodeURIComponent(ary[1]);
         }
       });
       return obj;
@@ -360,9 +360,9 @@
     cash.serialize = function(obj) {
       var ary = [];
       keys(obj).forEach(function(key) {
-        ary.push(escape(key) +'='+ escape(obj[key]));
+        ary.push(encodeURIComponent(key) +'='+ encodeURIComponent(obj[key]));
       });
-      return ary.join('&').replace(/%20/g, '+');
+      return ary.join('&');
     };
     // ###setCache
     // private.
