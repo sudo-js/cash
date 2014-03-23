@@ -23,7 +23,7 @@
       var ary = [];
       this.q.forEach(function(el) {
         while(el && !$.matches(el, sel)) el = !isDocument(el) && el.parentNode;
-        if(!(~ary.indexOf(el))) ary.push(el);
+        if(!~ary.indexOf(el)) ary.push(el);
       });
       return $(ary);
     };
@@ -50,7 +50,7 @@
     cash.create = function(str) {
       var wrap = document.createElement('div');
       wrap.innerHTML = str;
-      return $(wrap.firstElementChild);
+      return $(wrap.removeChild(wrap.firstElementChild));
     };
     // ###css
     // Given a key and a value, or a hash of key:value pairs, set each on the style property of
@@ -108,6 +108,17 @@
         if(el.querySelectorAll) proto.forEach.call(el.querySelectorAll(sel),fn);
       });
       return $(ary);
+    };
+    // ###get
+    // Return the entire `q` or a particular element located at an index by 
+    // passing nothing or a number respectively. Note that you can pass a 
+    // negative number to fetch from the **end** of the `q` (-1 for the last for example).
+    //
+    // `param` {number} `i`
+    // `returns` {array|element}
+    cash.get = function(i) {
+      // intentional coercion 
+      return i == null ? this.q : (i > -1 ? this.q[i]: this.q[this.q.length + (i)]);
     };
     // ###getXhr
     // While getting a new XMLHttpRequest is standardized now, we are still going
@@ -244,6 +255,16 @@
     // ###noop
     // Empty function
     cash.noop = function() {},
+    // #not
+    // As querySelector cannot take psuedo selectors we provide this method to
+    // easily filter the `q` to elements that do not match the passed in selector
+    //
+    // `param` {string} `sel`
+    // `returns` cash
+    cash.not = function(sel) {
+      this.q = this.q.filter(function(el) {return !$.matches(el, sel);});
+      return this;
+    };
     // ###off
     // Remove event bindings from the q which match the given type and/or function.
     // By supplying "*.yourNamespace" as the event type, you can remove all events
@@ -338,6 +359,33 @@
         el.addEventListener && el.addEventListener(ev, cb, cap);
       });
       return this;
+    };
+    // ###parent
+    // Rehydrate the `q` with the parent element of each element in the `q`
+    // 
+    // `returns` cash
+    cash.parent = function() {
+      var ary = [], p;
+      this.q.forEach(function(el) {
+        if(!~ary.indexOf(p = el.parentElement) && p) {
+          ary.push(p);
+        }
+      });
+      return $(ary);
+    };
+    // ###parents
+    // Rehydrate the `q` with the ascestor elements of each element in the `q`
+    // 
+    // `returns` cash
+    cash.parents = function() {
+      var ary = [], p;
+      this.q.forEach(function(el) {
+        p = el;
+        while((p = p.parentElement) && !isDocument(p)) {
+          if(!~ary.indexOf(p)) ary.push(p);
+        }
+      });
+      return $(ary);
     };
     // ###remove
     // Used to not only remove the elements in the q from the DOM, but to 
@@ -445,7 +493,6 @@
     // ###xhrHeaders
     // Any 'global' headers that should go out with every XHR request
     cash.xhrHeaders = {};
-
     // Not checking for window, or trying to play nice
     win.$ = cash;
 }(window));
