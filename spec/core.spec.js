@@ -100,9 +100,34 @@ describe('Core $', function() {
     expect($.get(1).tagName).toBe('UL');
   });
   
-  it('rehydrates the q with parents via parents', function() {
-    var parents = $.find('li:first-child').parents().get();
-    expect(parents.length).toBe(5);
+  it('rehydrates the q with parents via parents, fragment', function() {
+    expect($.find('li:first-child').parents().get().length).toBe(5);
+  });
+  
+  it('rehydrates the q with parents via parents, non fragment', function() {
+    var tt = document.querySelector('#testTarget');
+    tt.appendChild($.get(0));
+    expect($(tt).find('li#one').parents().get().length).toBe(6);
+  });
+  
+  it('can set a single attribute on each el in the q via attr', function() {
+    $.find('li').attr('data-spam', 'eggs');
+    expect($.get(0).getAttribute('data-spam')).toBe('eggs');
+    expect($.get(1).getAttribute('data-spam')).toBe('eggs');
+    expect($.get(2).getAttribute('data-spam')).toBe('eggs');
+    expect($.get(3).getAttribute('data-spam')).toBe('eggs');
+  });
+  
+  it('can set multiple attributes at once via attr', function() {
+    $.find('li').attr({'data-foo': 'bar', dir: 'rtl'});
+    expect($.get(0).getAttribute('data-foo')).toBe('bar');
+    expect($.get(0).getAttribute('dir')).toBe('rtl');
+    expect($.get(1).getAttribute('data-foo')).toBe('bar');
+    expect($.get(1).getAttribute('dir')).toBe('rtl');
+    expect($.get(2).getAttribute('data-foo')).toBe('bar');
+    expect($.get(2).getAttribute('dir')).toBe('rtl');
+    expect($.get(3).getAttribute('data-foo')).toBe('bar');
+    expect($.get(3).getAttribute('dir')).toBe('rtl');
   });
 });
 

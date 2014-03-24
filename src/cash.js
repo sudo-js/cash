@@ -8,6 +8,32 @@
     function isObject(arg) {return Object.prototype.toString.call(arg) === '[object Object]';}
     function isString(arg) {return typeof arg === 'string';}
     function isWindow(arg) {return arg === win;}
+    // ###addClass
+    // Add a class, or muliple classes, to each element in the `q`
+    //
+    // `param` {string} `cls`. Single or multiple class names (space delimited).
+    // `returns` cash
+    cash.addClass = function(cls) {
+      var ary = cls.split(' ');
+      this.q.forEach(function(el) {
+        ary.forEach(function(n) {el.classList.add(n);});
+      });
+      return this;
+    };
+    // ###attr
+    // Given a single attribute and value or a hash of them set it/them on each
+    // element in the `q`. This method does not function as a getter.
+    //
+    // `param` {string|object} `key`
+    // `param` {string} `val`. Used if the `key` is not an object
+    // `returns` cash
+    cash.attr = function(key, val) {
+      var ary = isString(key) ? undefined : keys(key),
+      set = ary ? function(el) {ary.forEach(function(i) {el.setAttribute(i, key[i]);});} :
+        function(el) {el.setAttribute(key, val);};
+      this.q.forEach(set);
+      return this;
+    };
     // ###cache
     // Hash that holds the event and display data
     cash.cache = {events: {}, display: {}};
@@ -35,7 +61,7 @@
     // `returns` cash
     cash.contains = function(el) {
       var res;
-      this.q.reverse().some(function(node) {
+      this.q.some(function(node) {
         if(node.contains(el)) return res = node;
       });
       return $(res);
@@ -57,13 +83,13 @@
     // each element in the `q`.
     // This method does not function as a getter (use getComputedStyle for that).
     //
-    // `param` {string | object} `k`
-    // `param` {string} `v`
+    // `param` {string|object} `key`
+    // `param` {string} `val`. Used if `key` is not an object
     // `returns` cash
-    cash.css = function(k, v) {
-      var ary = isString(k) ? undefined : keys(k),
-      set = ary ? function(el) {ary.forEach(function(i) {el.style[i] = addPx(k[i], i);});} :
-        function(el) {el.style[k] = addPx(v, k);};
+    cash.css = function(key, val) {
+      var ary = isString(key) ? undefined : keys(key),
+      set = ary ? function(el) {ary.forEach(function(i) {el.style[i] = addPx(key[i], i);});} :
+        function(el) {el.style[key] = addPx(val, key);};
       this.q.forEach(set);
       return this;
     };
@@ -154,7 +180,7 @@
       if(obj.verb === 'GET' && obj.params) {
         // assumed to be an object literal if not a string
         if(typeof obj.params !== 'string') obj.params = this.serialize(obj.params);
-        obj.url += ('?' + obj.params);
+        obj.url += ('?' + obj.params.replace(/%20/g, '+'));
       }
       xhr.open(obj.verb, obj.url, true, obj.user, obj.password);
       xhr.responseType = obj.responseType || 'text';
@@ -400,6 +426,18 @@
       });
       return this;
     };
+    // ###removeClass
+    // Remove a class, or muliple classes, from each element in the `q`
+    //
+    // `param` {string} `cls`. Single or multiple class names (space delimited).
+    // `returns` cash
+    cash.removeClass = function(cls) {
+      var ary = cls.split(' ');
+      this.q.forEach(function(el) {
+        ary.forEach(function(n) {el.classList.remove(n);});
+      });
+      return this;
+    };
     // ###serialize
     // Given a hash of data, convert it to a 'paramaterized' string and return it.
     //
@@ -469,6 +507,20 @@
           $(el).show() : $(el).hide();
       });
       return $(ary);
+    };
+    // ###toggleClass
+    // Given a class name (or multiple class names), add them if not already present. Remove if so.
+    //
+    // `param` {string} `cls`
+    // returns cash
+    cash.toggleClass = function(cls) {
+      var ary = cls.split(' ');
+      this.q.forEach(function(el) {
+        ary.forEach(function(n) {
+          el.classList.contains(n) ? el.classList.remove(n) : el.classList.add(n);
+        });
+      });
+      return this;
     };
     // ###trigger
     // Given an event type, init a DOM event and dispatch it to each element in the q.
