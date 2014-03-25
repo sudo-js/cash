@@ -8,6 +8,32 @@
     function isObject(arg) {return Object.prototype.toString.call(arg) === '[object Object]';}
     function isString(arg) {return typeof arg === 'string';}
     function isWindow(arg) {return arg === win;}
+    // ###addClass
+    // Add a class, or muliple classes, to each element in the `q`
+    //
+    // `param` {string} `cls`. Single or multiple class names (space delimited).
+    // `returns` cash
+    cash.addClass = function(cls) {
+      var ary = cls.split(' ');
+      this.q.forEach(function(el) {
+        ary.forEach(function(n) {el.classList.add(n);});
+      });
+      return this;
+    };
+    // ###attr
+    // Given a single attribute and value or a hash of them set it/them on each
+    // element in the `q`. This method does not function as a getter.
+    //
+    // `param` {string|object} `key`
+    // `param` {string} `val`. Used if the `key` is not an object
+    // `returns` cash
+    cash.attr = function(key, val) {
+      var ary = isString(key) ? undefined : keys(key),
+      set = ary ? function(el) {ary.forEach(function(i) {el.setAttribute(i, key[i]);});} :
+        function(el) {el.setAttribute(key, val);};
+      this.q.forEach(set);
+      return this;
+    };
     // ###cache
     // Hash that holds the event and display data
     cash.cache = {events: {}, display: {}};
@@ -23,7 +49,7 @@
       var ary = [];
       this.q.forEach(function(el) {
         while(el && !$.matches(el, sel)) el = !isDocument(el) && el.parentNode;
-        if(!(~ary.indexOf(el))) ary.push(el);
+        if(!~ary.indexOf(el)) ary.push(el);
       });
       return $(ary);
     };
@@ -35,7 +61,7 @@
     // `returns` cash
     cash.contains = function(el) {
       var res;
-      this.q.reverse().some(function(node) {
+      this.q.some(function(node) {
         if(node.contains(el)) return res = node;
       });
       return $(res);
@@ -50,20 +76,20 @@
     cash.create = function(str) {
       var wrap = document.createElement('div');
       wrap.innerHTML = str;
-      return $(wrap.firstElementChild);
+      return $(wrap.removeChild(wrap.firstElementChild));
     };
     // ###css
     // Given a key and a value, or a hash of key:value pairs, set each on the style property of
     // each element in the `q`.
     // This method does not function as a getter (use getComputedStyle for that).
     //
-    // `param` {string | object} `k`
-    // `param` {string} `v`
+    // `param` {string|object} `key`
+    // `param` {string} `val`. Used if `key` is not an object
     // `returns` cash
-    cash.css = function(k, v) {
-      var ary = isString(k) ? undefined : keys(k),
-      set = ary ? function(el) {ary.forEach(function(i) {el.style[i] = addPx(k[i], i);});} :
-        function(el) {el.style[k] = addPx(v, k);};
+    cash.css = function(key, val) {
+      var ary = isString(key) ? undefined : keys(key),
+      set = ary ? function(el) {ary.forEach(function(i) {el.style[i] = addPx(key[i], i);});} :
+        function(el) {el.style[key] = addPx(val, key);};
       this.q.forEach(set);
       return this;
     };
@@ -109,6 +135,17 @@
       });
       return $(ary);
     };
+    // ###get
+    // Return the entire `q` or a particular element located at an index by 
+    // passing nothing or a number respectively. Note that you can pass a 
+    // negative number to fetch from the **end** of the `q` (-1 for the last for example).
+    //
+    // `param` {number} `i`
+    // `returns` {array|element}
+    cash.get = function(i) {
+      // intentional coercion 
+      return i == null ? this.q : (i > -1 ? this.q[i]: this.q[this.q.length + (i)]);
+    };
     // ###getXhr
     // While getting a new XMLHttpRequest is standardized now, we are still going
     // to provide this syntactic sugar to allow the setting of global headers (will
@@ -143,7 +180,7 @@
       if(obj.verb === 'GET' && obj.params) {
         // assumed to be an object literal if not a string
         if(typeof obj.params !== 'string') obj.params = this.serialize(obj.params);
-        obj.url += ('?' + obj.params);
+        obj.url += ('?' + obj.params.replace(/%20/g, '+'));
       }
       xhr.open(obj.verb, obj.url, true, obj.user, obj.password);
       xhr.responseType = obj.responseType || 'text';
@@ -244,6 +281,16 @@
     // ###noop
     // Empty function
     cash.noop = function() {},
+    // #not
+    // As querySelector cannot take psuedo selectors we provide this method to
+    // easily filter the `q` to elements that do not match the passed in selector
+    //
+    // `param` {string} `sel`
+    // `returns` cash
+    cash.not = function(sel) {
+      this.q = this.q.filter(function(el) {return !$.matches(el, sel);});
+      return this;
+    };
     // ###off
     // Remove event bindings from the q which match the given type and/or function.
     // By supplying "*.yourNamespace" as the event type, you can remove all events
@@ -339,6 +386,33 @@
       });
       return this;
     };
+    // ###parent
+    // Rehydrate the `q` with the parent element of each element in the `q`
+    // 
+    // `returns` cash
+    cash.parent = function() {
+      var ary = [], p;
+      this.q.forEach(function(el) {
+        if(!~ary.indexOf(p = el.parentElement) && p) {
+          ary.push(p);
+        }
+      });
+      return $(ary);
+    };
+    // ###parents
+    // Rehydrate the `q` with the ascestor elements of each element in the `q`
+    // 
+    // `returns` cash
+    cash.parents = function() {
+      var ary = [], p;
+      this.q.forEach(function(el) {
+        p = el;
+        while((p = p.parentElement) && !isDocument(p)) {
+          if(!~ary.indexOf(p)) ary.push(p);
+        }
+      });
+      return $(ary);
+    };
     // ###remove
     // Used to not only remove the elements in the q from the DOM, but to 
     // remove any references they have in the $.cache as well.
@@ -349,6 +423,18 @@
         // not concerned with the display hash
         delete $.cache.events[el.cid];
         el.parentNode && el.parentNode.removeChild(el);
+      });
+      return this;
+    };
+    // ###removeClass
+    // Remove a class, or muliple classes, from each element in the `q`
+    //
+    // `param` {string} `cls`. Single or multiple class names (space delimited).
+    // `returns` cash
+    cash.removeClass = function(cls) {
+      var ary = cls.split(' ');
+      this.q.forEach(function(el) {
+        ary.forEach(function(n) {el.classList.remove(n);});
       });
       return this;
     };
@@ -422,6 +508,20 @@
       });
       return $(ary);
     };
+    // ###toggleClass
+    // Given a class name (or multiple class names), add them if not already present. Remove if so.
+    //
+    // `param` {string} `cls`
+    // returns cash
+    cash.toggleClass = function(cls) {
+      var ary = cls.split(' ');
+      this.q.forEach(function(el) {
+        ary.forEach(function(n) {
+          el.classList.contains(n) ? el.classList.remove(n) : el.classList.add(n);
+        });
+      });
+      return this;
+    };
     // ###trigger
     // Given an event type, init a DOM event and dispatch it to each element in the q.
     //
@@ -445,7 +545,6 @@
     // ###xhrHeaders
     // Any 'global' headers that should go out with every XHR request
     cash.xhrHeaders = {};
-
     // Not checking for window, or trying to play nice
     win.$ = cash;
 }(window));

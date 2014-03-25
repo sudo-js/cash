@@ -1,8 +1,8 @@
 describe('Core $', function() {
   
   beforeEach(function() {
-    $.create('<div id="foo" class="bar"></div>').q[0].innerHTML =
-      '<div id="baz"><ul><li></li><li></li></ul></div><div id="qux"><ul><li></li><li class="me"></li></ul></div>';
+    $.create('<div id="foo" class="bar"></div>').get(0).innerHTML =
+      '<div id="baz"><ul><li id="one"></li><li id="two"></li></ul></div><div id="qux"><ul><li id="three"></li><li class="me"></li></ul></div>';
   });
   
   it('is available globally as $', function() {
@@ -53,6 +53,16 @@ describe('Core $', function() {
     expect($.find('.me').q.length).toBe(1);
   });
   
+  it('fetches various from the q via get', function() {
+    expect(Array.isArray($.find('li').get())).toBe(true);
+    expect($.get(0).id).toBe('one');  
+    expect($.get(1).id).toBe('two');
+    expect($.get(2).id).toBe('three'); 
+    expect($.get(-2).id).toBe('three');
+    expect($.get(3).classList.contains('me')).toBe(true);  
+    expect($.get(-1).classList.contains('me')).toBe(true);
+  });
+  
   it('can reduce the q to a specified selectors parent via contains', function() {
     var parent = $.q[0].querySelectorAll('div')[1],
       me = parent.querySelector('.me');
@@ -77,6 +87,47 @@ describe('Core $', function() {
     $(div).find('li.me').remove();
     expect($(div).find('li').q.length).toBe(3);
     expect($.cache.events[$.q[0].cid]).toBeFalsy();
+  });
+  
+  it('reduces the q via not', function() {
+    expect($.find('div').q.length).toBe(2);
+    expect($.not('div#baz').q.length).toBe(1);
+  });
+  
+  it('rehydrates the q with parent elements via parent', function() {
+    expect($.find('li').parent().get().length).toBe(2);
+    expect($.get(0).tagName).toBe('UL');
+    expect($.get(1).tagName).toBe('UL');
+  });
+  
+  it('rehydrates the q with parents via parents, fragment', function() {
+    expect($.find('li:first-child').parents().get().length).toBe(5);
+  });
+  
+  it('rehydrates the q with parents via parents, non fragment', function() {
+    var tt = document.querySelector('#testTarget');
+    tt.appendChild($.get(0));
+    expect($(tt).find('li#one').parents().get().length).toBe(6);
+  });
+  
+  it('can set a single attribute on each el in the q via attr', function() {
+    $.find('li').attr('data-spam', 'eggs');
+    expect($.get(0).getAttribute('data-spam')).toBe('eggs');
+    expect($.get(1).getAttribute('data-spam')).toBe('eggs');
+    expect($.get(2).getAttribute('data-spam')).toBe('eggs');
+    expect($.get(3).getAttribute('data-spam')).toBe('eggs');
+  });
+  
+  it('can set multiple attributes at once via attr', function() {
+    $.find('li').attr({'data-foo': 'bar', dir: 'rtl'});
+    expect($.get(0).getAttribute('data-foo')).toBe('bar');
+    expect($.get(0).getAttribute('dir')).toBe('rtl');
+    expect($.get(1).getAttribute('data-foo')).toBe('bar');
+    expect($.get(1).getAttribute('dir')).toBe('rtl');
+    expect($.get(2).getAttribute('data-foo')).toBe('bar');
+    expect($.get(2).getAttribute('dir')).toBe('rtl');
+    expect($.get(3).getAttribute('data-foo')).toBe('bar');
+    expect($.get(3).getAttribute('dir')).toBe('rtl');
   });
 });
 
