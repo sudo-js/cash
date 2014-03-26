@@ -213,4 +213,40 @@ Passed no value `height` functions as a getter for the zeroth element.
     $(foo).find(bar).height(); //=> 25
     
 ####width([value])
-The same as height, except it's spelled differently and gets or sets the width property. 
+The same as height, except it's spelled differently and gets or sets the width property.
+
+###More soon...
+
+###API Summary
++ $(node|nodeList) Note: Does not return a unique instance, simply returns `cash`.
++ addClass(string)
++ attr(string|object[, string]) Note: Does not function as a getter.
++ closest(string)
++ contains(node) Note: Returns `cash` not the container.
++ create(string) Note: Returns `cash` not the created element
++ css(string|object[, string]) Note: Does not function as a getter.
++ deserialize(object)
++ extend(object, ...)
++ find(string)
++ get(number) Note: Can use negative numbers for RTL selection
++ getXhr(object)
++ height(string|number)
++ hide()
++ isObect(argument)
++ matches(element, string)
++ noop
++ not(string) Note: Accepts a string argument only.
++ off(string[, function, bool]) Note: bool is capture phase support.
++ offSet() Note: Does not function as a setter.
++ on(string, function[, string, object, bool]) Note: The order of arguments and the bool capture phase support.
++ parent()
++ parents()
++ remove()
++ removeClass()
++ serialize(object)
++ show()
++ toggle()
++ toggleClass()
++ trigger()
++ width()
+
