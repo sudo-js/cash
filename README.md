@@ -249,4 +249,5 @@ The same as height, except it's spelled differently and gets or sets the width p
 + toggleClass()
 + trigger()
 + width()
++ val(*) Note: Does not function as a getter.
 
