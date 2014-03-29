@@ -533,6 +533,13 @@
       this.q.forEach(function(el) {el.dispatchEvent && el.dispatchEvent(evt);});
       return this;
     };
+    // ###val
+    // Set the passed in value on each element in the `q`.
+    // This method does not function as a getter.
+    //
+    // `param` {*} `val`
+    // `returns` cash
+    cash.val = function(val) {this.q.forEach(function(el) {el.value = val;});};
     // ###width
     // Given a value this method is a setter for each element in the q.
     // If the arg is truthy and a number it is converted to a string with 'px'
