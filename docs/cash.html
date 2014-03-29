@@ -1326,6 +1326,25 @@ returns cash</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-62">&#182;</a>
               </div>
+              <h3 id="val">val</h3>
+<p>Set the passed in value on each element in the <code>q</code>.
+This method does not function as a getter.</p>
+<p><code>param</code> {*} <code>val</code>
+<code>returns</code> cash</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    cash.val = <span class="function"><span class="keyword">function</span><span class="params">(val)</span> {</span><span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>el.value = val;});};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-63">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-63">&#182;</a>
+              </div>
               <h3 id="width">width</h3>
 <p>Given a value this method is a setter for each element in the q.
 If the arg is truthy and a number it is converted to a string with &#39;px&#39;
@@ -1341,11 +1360,11 @@ Minus that, it returns the width of the 0th item in the q;</p>
         </li>
         
         
-        <li id="section-63">
+        <li id="section-64">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-63">&#182;</a>
+                <a class="pilcrow" href="#section-64">&#182;</a>
               </div>
               <h3 id="xhrheaders">xhrHeaders</h3>
 <p>Any &#39;global&#39; headers that should go out with every XHR request</p>
@@ -1357,11 +1376,11 @@ Minus that, it returns the width of the 0th item in the q;</p>
         </li>
         
         
-        <li id="section-64">
+        <li id="section-65">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-64">&#182;</a>
+                <a class="pilcrow" href="#section-65">&#182;</a>
               </div>
               <p>Not checking for window, or trying to play nice</p>
 
