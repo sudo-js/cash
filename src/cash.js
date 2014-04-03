@@ -405,9 +405,9 @@
     // private.
     cash._setCache_ = function(ref, el) {
       var cid = isWindow(el) ? 'window' : el.cid,
-        obj = this.cache[ref];
+        obj = $.cache[ref];
       if(!cid) {
-        el.cid = cid = String(++this.cid);
+        el.cid = cid = String(++$.cid);
         el.setAttribute($.cidAttribute, el.cid);
       }
       obj[cid] || (obj[cid] = ref === 'events' ? {} : undefined);
