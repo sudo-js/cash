@@ -39,6 +39,16 @@
     cash.cache = {events: {}, display: {}};
     // generate a unique id for elements
     cash.cid = 0;
+    cash.cidAttribute = 'data-cash-id';
+    // ###_clearCache_
+    // Clean up the cache for the given el
+    //
+    // `param` {Element} `el`
+    // `returns` el
+    cash._clearCache_ = function(el) {
+      delete $.cache.events[el.cid];
+      return el;
+    };
     // ###closest
     // Given a string selector, return the first parent node that matches it
     // for each element in the q.
@@ -136,14 +146,14 @@
       return $(ary);
     };
     // ###get
-    // Return the entire `q` or a particular element located at an index by 
-    // passing nothing or a number respectively. Note that you can pass a 
+    // Return the entire `q` or a particular element located at an index by
+    // passing nothing or a number respectively. Note that you can pass a
     // negative number to fetch from the **end** of the `q` (-1 for the last for example).
     //
     // `param` {number} `i`
     // `returns` {array|element}
     cash.get = function(i) {
-      // intentional coercion 
+      // intentional coercion
       return i == null ? this.q : (i > -1 ? this.q[i]: this.q[this.q.length + (i)]);
     };
     // ###height
@@ -168,7 +178,7 @@
       var obj = {
         height: {w:'innerHeight',d:'scrollHeight'},
         width: {w:'innerWidth',d:'scrollWidth'}
-        }, node = this.q[0], d = isDocument(node) ? node.documentElement : null, 
+        }, node = this.q[0], d = isDocument(node) ? node.documentElement : null,
         w = isWindow(node) ? node: null, type = obj[key], o;
       if(!val) return node ? (w ? w[type.w] : (d ? d[type.d] : (o = this.offset()) && o[key])) : 0;
       this.q.forEach(function(el) {
@@ -186,7 +196,7 @@
     // `returns` cash
     cash.init = function(arg) {
       // base case is already an array, then handle node(List) and falsey
-      this.q = Array.isArray(arg) ? arg : (arg ? ((arg instanceof NodeList || arg instanceof HTMLCollection) ? 
+      this.q = Array.isArray(arg) ? arg : (arg ? ((arg instanceof NodeList || arg instanceof HTMLCollection) ?
         slice.call(arg) : [arg]) : []);
       return this;
     };
@@ -232,10 +242,10 @@
     // By supplying "*.yourNamespace" as the event type, you can remove all events
     // in a namespace, or simply '*' to remove all events.
     // The optional third argument, 'cap', is a boolean than will need to be
-    // `true` if you bound the event originally with `cap = true`. 
+    // `true` if you bound the event originally with `cap = true`.
     // NOTE: You do not need to pass the 'cap' bool in the 'forced capture phase'
-    // case, that is the event is 'focus' or 'blur' and is delegated. Cash will 
-    // handle the capture phase bool for you in that case. 
+    // case, that is the event is 'focus' or 'blur' and is delegated. Cash will
+    // handle the capture phase bool for you in that case.
     //
     // `param` {string} `type`. An event trigger, can be namespaced
     // `param` {function}  `fn`. The function which should be removed, optional.
@@ -282,7 +292,7 @@
     // ###on
     // Given an event type, a callback, an optional selector for delegation, and
     // an optional hash of data to be appended to the event, bind them to each
-    // element in the q. Capture phase is supported by passing true as the 
+    // element in the q. Capture phase is supported by passing true as the
     // optional 5th argument. NOTE: if the event being bound is 'focus' or 'blur'
     // and a selector is present capture phase is forced as delegation will not work otherwise.
     //
@@ -324,7 +334,7 @@
     };
     // ###parent
     // Rehydrate the `q` with the parent element of each element in the `q`
-    // 
+    //
     // `returns` cash
     cash.parent = function() {
       var ary = [], p;
@@ -337,7 +347,7 @@
     };
     // ###parents
     // Rehydrate the `q` with the ascestor elements of each element in the `q`
-    // 
+    //
     // `returns` cash
     cash.parents = function() {
       var ary = [], p;
@@ -350,16 +360,21 @@
       return $(ary);
     };
     // ###remove
-    // Used to not only remove the elements in the q from the DOM, but to 
-    // remove any references they have in the $.cache as well.
+    // Used to not only remove the elements in the q from the DOM, but to
+    // remove any references they or their children have in the $.cache as well.
     //
     // `returns` cash
     cash.remove = function() {
+      var children, i;
       this.q.forEach(function(el) {
-        // not concerned with the display hash
-        delete $.cache.events[el.cid];
-        el.parentNode && el.parentNode.removeChild(el);
-      });
+        // clean up any children's cache that will no longer be in the dom
+        children = el.querySelectorAll('[' + $.cidAttribute + ']');
+        for(i=0;i<children.length;i++)
+          $._clearCache_(children[i]);
+        // clean up the cache of the el actually being removed from the dom
+        $._clearCache_(el);
+        if(el.parentNode) el.parentNode.removeChild(el);
+      }.bind(this));
       return this;
     };
     // ###removeClass
@@ -391,7 +406,10 @@
     cash._setCache_ = function(ref, el) {
       var cid = isWindow(el) ? 'window' : el.cid,
         obj = this.cache[ref];
-      if(!cid) el.cid = cid = String(++this.cid);
+      if(!cid) {
+        el.cid = cid = String(++this.cid);
+        el.setAttribute($.cidAttribute, el.cid);
+      }
       obj[cid] || (obj[cid] = ref === 'events' ? {} : undefined);
       return obj;
     };
