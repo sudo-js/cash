@@ -465,7 +465,8 @@ operate on the q.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="keyword">this</span>.q = Array.isArray(arg) ? arg : (arg ? (arg <span class="keyword">instanceof</span> NodeList ? slice.call(arg) : [arg]) : []);
+            <div class="content"><div class='highlight'><pre>      <span class="keyword">this</span>.q = Array.isArray(arg) ? arg : (arg ? ((arg <span class="keyword">instanceof</span> NodeList || arg <span class="keyword">instanceof</span> HTMLCollection) ? 
+        slice.call(arg) : [arg]) : []);
       <span class="keyword">return</span> <span class="keyword">this</span>;
     };</pre></div></div>
             
