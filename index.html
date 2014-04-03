@@ -73,7 +73,7 @@
             <div class="content"><div class='highlight'><pre>    cash.addClass = <span class="function"><span class="keyword">function</span><span class="params">(cls)</span> {</span>
       <span class="keyword">var</span> ary = cls.split(<span class="string">' '</span>);
       <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
-        ary.forEach(<span class="function"><span class="keyword">function</span><span class="params">(n)</span> {</span>el.classList.add(n);});
+        <span class="keyword">if</span>(el.classList) ary.forEach(<span class="function"><span class="keyword">function</span><span class="params">(n)</span> {</span>el.classList.add(n);});
       });
       <span class="keyword">return</span> <span class="keyword">this</span>;
     };</pre></div></div>
@@ -373,161 +373,6 @@ negative number to fetch from the <strong>end</strong> of the <code>q</code> (-1
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
-              <h3 id="getxhr">getXhr</h3>
-<p>While getting a new XMLHttpRequest is standardized now, we are still going
-to provide this syntactic sugar to allow the setting of global headers (will
-be set on each request) as well as the onload, onerrer, onloadend, timeout and
-ontimeout properties and methods to be set with one call.
-Does not have a default for obj.url all others are:
-  {
-    verb: &#39;GET&#39;,
-    responseType: &#39;text&#39;,
-    url: mandatory,
-    params: optional,
-    onload: _.noop,
-    onerror: optional,
-    onloadend: optional,
-    timeout: optional,
-    ontimeout: optional,
-    user: optional,
-    password: optional
-  }
-If the verb is &#39;GET&#39; and params is truthy it will be appended to the url as a
-queryString (after being serialized if a hash -- assumed to be a string if not).
-This method does not call send() so do that once you have the xhr back, remember
-to set any pertinant MIME types if sending data via setRequestHeader (unless its
-already in the $.xhrHeaders).</p>
-<p><code>param</code> {object} <code>obj</code>. attributes for the XHR
-<code>returns</code> {object} the xhr object</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    cash.getXhr = <span class="function"><span class="keyword">function</span><span class="params">(obj)</span> {</span>
-      <span class="keyword">var</span> xhr =  <span class="keyword">new</span> XMLHttpRequest();
-      obj.verb || (obj.verb = <span class="string">'GET'</span>);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-18">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
-              </div>
-              <p>check if we need a QS</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="keyword">if</span>(obj.verb === <span class="string">'GET'</span> &amp;&amp; obj.params) {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-19">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
-              </div>
-              <p>assumed to be an object literal if not a string</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">if</span>(<span class="keyword">typeof</span> obj.params !== <span class="string">'string'</span>) obj.params = <span class="keyword">this</span>.serialize(obj.params);
-        obj.url += (<span class="string">'?'</span> + obj.params.replace(<span class="regexp">/%20/g</span>, <span class="string">'+'</span>));
-      }
-      xhr.open(obj.verb, obj.url, <span class="literal">true</span>, obj.user, obj.password);
-      xhr.responseType = obj.responseType || <span class="string">'text'</span>;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-20">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
-              </div>
-              <p>so that some common use-case request headers can be set automagically, for blob,
-document, buffer and others handle manually after getting the xhr back.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="keyword">if</span>(xhr.responseType === <span class="string">'text'</span>) {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-21">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
-              </div>
-              <p>could be json or plain string TODO expand this to a hash lookup for other types later</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">if</span>(obj.contentType &amp;&amp; obj.contentType === <span class="string">'json'</span>) {
-          xhr.setRequestHeader(<span class="string">'Accept'</span>, <span class="string">'application/json'</span>);
-          xhr.setRequestHeader(<span class="string">'Content-Type'</span>, <span class="string">'application/json'</span>);
-        } <span class="keyword">else</span> {
-          xhr.setRequestHeader(<span class="string">'Accept'</span>, <span class="string">'text/plain'</span>);
-          xhr.setRequestHeader(<span class="string">'Content-Type'</span>, <span class="string">'text/plain'</span>);
-        }
-      }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-22">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
-              </div>
-              <p>set any custom headers</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      keys(<span class="keyword">this</span>.xhrHeaders).forEach(<span class="function"><span class="keyword">function</span><span class="params">(h)</span> {</span>xhr.setRequestHeader(h, $.xhrHeaders[h]);});</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-23">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
-              </div>
-              <p>The native xhr considers many status codes a success that we do not, wrap the onload
-so that we can call success or error based on code</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      xhr.onload = <span class="function"><span class="keyword">function</span><span class="params">(e)</span> {</span>
-        <span class="keyword">if</span>(<span class="keyword">this</span>.status &gt;= <span class="number">200</span> &amp;&amp; <span class="keyword">this</span>.status &lt; <span class="number">300</span> || <span class="keyword">this</span>.status === <span class="number">304</span>) <span class="keyword">this</span>._onload_(e);
-        <span class="keyword">else</span> <span class="keyword">this</span>.onerror(e);
-      };
-      xhr._onload_ = obj.onload || <span class="keyword">this</span>.noop;
-      xhr.onerror = obj.onerror || <span class="keyword">this</span>.noop;
-      <span class="keyword">if</span>(obj.onloadend) xhr.onloadend = obj.onloadend;
-      <span class="keyword">if</span>(obj.timeout) xhr.timeout = obj.timeout;
-      <span class="keyword">if</span>(obj.ontimeout) xhr.ontimeout = obj.ontimeout;
-      <span class="keyword">return</span> xhr;
-    };</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-24">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
-              </div>
               <h3 id="height">height</h3>
 <p>Given a value this method is a setter for each element in the q.
 If the arg is truthy and a number it is converted to a string with &#39;px&#39;
@@ -543,11 +388,11 @@ Minus that, it returns the height of the 0th item in the q;</p>
         </li>
         
         
-        <li id="section-25">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <h3 id="hide">hide</h3>
 <p>Makes elements in the q invisible in the DOM by modifying
@@ -561,11 +406,11 @@ the <code>display</code> attribute, if necessary.</p>
         </li>
         
         
-        <li id="section-26">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <h3 id="_hw_"><em>hw</em></h3>
 <p>Abstracted logic for the height and width operations
@@ -575,13 +420,13 @@ the <code>display</code> attribute, if necessary.</p>
             
             <div class="content"><div class='highlight'><pre>    cash._hw_ = <span class="function"><span class="keyword">function</span><span class="params">(key, val)</span> {</span>
       <span class="keyword">var</span> obj = {
-        height: {w:<span class="string">'innerHeight'</span>,d:<span class="string">'scrollHeight'</span>,e:<span class="string">'offsetHeight'</span>},
-        width: {w:<span class="string">'innerWidth'</span>,d:<span class="string">'scrollWidth'</span>,e:<span class="string">'offsetWidth'</span>}
-      }, node = <span class="keyword">this</span>.q[<span class="number">0</span>], type = obj[key];
-      <span class="function"><span class="keyword">function</span> <span class="title">what</span><span class="params">(el)</span> {</span><span class="keyword">return</span> isWindow(el) ? type.w : isDocument(el) ? type.d : type.e;}
-      <span class="keyword">if</span>(!val) <span class="keyword">return</span> node.style[what(node)];
+        height: {w:<span class="string">'innerHeight'</span>,d:<span class="string">'scrollHeight'</span>},
+        width: {w:<span class="string">'innerWidth'</span>,d:<span class="string">'scrollWidth'</span>}
+        }, node = <span class="keyword">this</span>.q[<span class="number">0</span>], d = isDocument(node) ? node.documentElement : <span class="literal">null</span>, 
+        w = isWindow(node) ? node: <span class="literal">null</span>, type = obj[key], o;
+      <span class="keyword">if</span>(!val) <span class="keyword">return</span> node ? (w ? w[type.w] : (d ? d[type.d] : (o = <span class="keyword">this</span>.offset()) &amp;&amp; o[key])) : <span class="number">0</span>;
       <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
-        el.style[what(el)] = addPx(val);
+        el.style[key] = addPx(val);
       });
       <span class="keyword">return</span> <span class="keyword">this</span>;
     };</pre></div></div>
@@ -589,11 +434,11 @@ the <code>display</code> attribute, if necessary.</p>
         </li>
         
         
-        <li id="section-27">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>init
 Breaking from the jQuery pattern, only a singile DOM node or NodeList is
@@ -610,28 +455,29 @@ operate on the q.</p>
         </li>
         
         
-        <li id="section-28">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>base case is already an array, then handle node(List) and falsey</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="keyword">this</span>.q = Array.isArray(arg) ? arg : (arg ? (arg <span class="keyword">instanceof</span> NodeList ? slice.call(arg) : [arg]) : []);
+            <div class="content"><div class='highlight'><pre>      <span class="keyword">this</span>.q = Array.isArray(arg) ? arg : (arg ? ((arg <span class="keyword">instanceof</span> NodeList || arg <span class="keyword">instanceof</span> HTMLCollection) ? 
+        slice.call(arg) : [arg]) : []);
       <span class="keyword">return</span> <span class="keyword">this</span>;
     };</pre></div></div>
             
         </li>
         
         
-        <li id="section-29">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <h3 id="isobject">isObject</h3>
 <p>Ye olde toString fallback to see if a passed in argument is an object.
@@ -647,11 +493,11 @@ does &#39;even&#39; the API a little</p>
         </li>
         
         
-        <li id="section-30">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <h3 id="matches">matches</h3>
 <p>Unfortunately the matchesSelector methods are all hidden behind prefixes ATM.
@@ -668,11 +514,11 @@ set the useable one, if not, then return the bool.</p>
         </li>
         
         
-        <li id="section-31">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <p>normalize the native selector match fn until all the prefixes are dropped</p>
 
@@ -688,11 +534,11 @@ set the useable one, if not, then return the bool.</p>
         </li>
         
         
-        <li id="section-32">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <h3 id="noop">noop</h3>
 <p>Empty function</p>
@@ -704,11 +550,11 @@ set the useable one, if not, then return the bool.</p>
         </li>
         
         
-        <li id="section-33">
+        <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-33">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <h1 id="not">not</h1>
 <p>As querySelector cannot take psuedo selectors we provide this method to
@@ -726,11 +572,11 @@ easily filter the <code>q</code> to elements that do not match the passed in sel
         </li>
         
         
-        <li id="section-34">
+        <li id="section-27">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <h3 id="off">off</h3>
 <p>Remove event bindings from the q which match the given type and/or function.
@@ -759,11 +605,11 @@ handle the capture phase bool for you in that case. </p>
         </li>
         
         
-        <li id="section-35">
+        <li id="section-28">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <p>we may have forced the cap</p>
 
@@ -779,17 +625,17 @@ handle the capture phase bool for you in that case. </p>
         </li>
         
         
-        <li id="section-36">
+        <li id="section-29">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               <p>remove the falsey indices that were deleted</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            events[k] = events[k].filter(<span class="function"><span class="keyword">function</span><span class="params">(i)</span> {</span><span class="keyword">return</span> i !== <span class="literal">undefined</span>;});
+            <div class="content"><div class='highlight'><pre>            <span class="keyword">if</span>(events[k]) events[k] = events[k].filter(<span class="function"><span class="keyword">function</span><span class="params">(i)</span> {</span><span class="keyword">return</span> i !== <span class="literal">undefined</span>;});
           });
         }
       });
@@ -799,11 +645,11 @@ handle the capture phase bool for you in that case. </p>
         </li>
         
         
-        <li id="section-37">
+        <li id="section-30">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-37">&#182;</a>
+                <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
               <h3 id="offset">offset</h3>
 <p>Get a hash of key:value pairs: <code>top</code>, <code>left</code>, <code>width</code> and <code>height</code> - representing
@@ -828,11 +674,11 @@ the position in the document of the 0th element in the q. This method is a gette
         </li>
         
         
-        <li id="section-38">
+        <li id="section-31">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-38">&#182;</a>
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <h3 id="on">on</h3>
 <p>Given an event type, a callback, an optional selector for delegation, and
@@ -856,11 +702,11 @@ and a selector is present capture phase is forced as delegation will not work ot
         </li>
         
         
-        <li id="section-39">
+        <li id="section-32">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-39">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <p>we force capture phase here so that delegation works</p>
 
@@ -876,11 +722,11 @@ and a selector is present capture phase is forced as delegation will not work ot
         </li>
         
         
-        <li id="section-40">
+        <li id="section-33">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-40">&#182;</a>
+                <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
               <p>pass the namespace along to the listener</p>
 
@@ -891,11 +737,11 @@ and a selector is present capture phase is forced as delegation will not work ot
         </li>
         
         
-        <li id="section-41">
+        <li id="section-34">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-41">&#182;</a>
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <p>pass any custom data along to the listener</p>
 
@@ -906,11 +752,11 @@ and a selector is present capture phase is forced as delegation will not work ot
         </li>
         
         
-        <li id="section-42">
+        <li id="section-35">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-42">&#182;</a>
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <p>base case is that this is not &#39;delegated&#39;</p>
 
@@ -921,11 +767,11 @@ and a selector is present capture phase is forced as delegation will not work ot
         </li>
         
         
-        <li id="section-43">
+        <li id="section-36">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-43">&#182;</a>
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <p>there is a sel, check for matches and call if so.</p>
 
@@ -937,11 +783,11 @@ and a selector is present capture phase is forced as delegation will not work ot
         </li>
         
         
-        <li id="section-44">
+        <li id="section-37">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-44">&#182;</a>
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
               <p>as defined by us rather than currentTarget</p>
 
@@ -955,11 +801,11 @@ and a selector is present capture phase is forced as delegation will not work ot
         </li>
         
         
-        <li id="section-45">
+        <li id="section-38">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-45">&#182;</a>
+                <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
               <p>cb === ours, fn === theirs.</p>
 
@@ -974,11 +820,11 @@ and a selector is present capture phase is forced as delegation will not work ot
         </li>
         
         
-        <li id="section-46">
+        <li id="section-39">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-46">&#182;</a>
+                <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
               <h3 id="parent">parent</h3>
 <p>Rehydrate the <code>q</code> with the parent element of each element in the <code>q</code></p>
@@ -999,11 +845,11 @@ and a selector is present capture phase is forced as delegation will not work ot
         </li>
         
         
-        <li id="section-47">
+        <li id="section-40">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-47">&#182;</a>
+                <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
               <h3 id="parents">parents</h3>
 <p>Rehydrate the <code>q</code> with the ascestor elements of each element in the <code>q</code></p>
@@ -1025,11 +871,11 @@ and a selector is present capture phase is forced as delegation will not work ot
         </li>
         
         
-        <li id="section-48">
+        <li id="section-41">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-48">&#182;</a>
+                <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
               <h3 id="remove">remove</h3>
 <p>Used to not only remove the elements in the q from the DOM, but to 
@@ -1044,11 +890,11 @@ remove any references they have in the $.cache as well.</p>
         </li>
         
         
-        <li id="section-49">
+        <li id="section-42">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-49">&#182;</a>
+                <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
               <p>not concerned with the display hash</p>
 
@@ -1063,11 +909,11 @@ remove any references they have in the $.cache as well.</p>
         </li>
         
         
-        <li id="section-50">
+        <li id="section-43">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-50">&#182;</a>
+                <a class="pilcrow" href="#section-43">&#182;</a>
               </div>
               <h3 id="removeclass">removeClass</h3>
 <p>Remove a class, or muliple classes, from each element in the <code>q</code></p>
@@ -1079,7 +925,7 @@ remove any references they have in the $.cache as well.</p>
             <div class="content"><div class='highlight'><pre>    cash.removeClass = <span class="function"><span class="keyword">function</span><span class="params">(cls)</span> {</span>
       <span class="keyword">var</span> ary = cls.split(<span class="string">' '</span>);
       <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
-        ary.forEach(<span class="function"><span class="keyword">function</span><span class="params">(n)</span> {</span>el.classList.remove(n);});
+        <span class="keyword">if</span>(el.classList) ary.forEach(<span class="function"><span class="keyword">function</span><span class="params">(n)</span> {</span>el.classList.remove(n);});
       });
       <span class="keyword">return</span> <span class="keyword">this</span>;
     };</pre></div></div>
@@ -1087,11 +933,11 @@ remove any references they have in the $.cache as well.</p>
         </li>
         
         
-        <li id="section-51">
+        <li id="section-44">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-51">&#182;</a>
+                <a class="pilcrow" href="#section-44">&#182;</a>
               </div>
               <h3 id="serialize">serialize</h3>
 <p>Given a hash of data, convert it to a &#39;paramaterized&#39; string and return it.</p>
@@ -1111,11 +957,11 @@ remove any references they have in the $.cache as well.</p>
         </li>
         
         
-        <li id="section-52">
+        <li id="section-45">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-52">&#182;</a>
+                <a class="pilcrow" href="#section-45">&#182;</a>
               </div>
               <h3 id="setcache">setCache</h3>
 <p>private.</p>
@@ -1133,11 +979,11 @@ remove any references they have in the $.cache as well.</p>
         </li>
         
         
-        <li id="section-53">
+        <li id="section-46">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-53">&#182;</a>
+                <a class="pilcrow" href="#section-46">&#182;</a>
               </div>
               <h3 id="show">show</h3>
 <p>Makes elements in the q visible in the DOM by modifying
@@ -1151,11 +997,11 @@ the <code>display</code> attribute, if necessary.</p>
         </li>
         
         
-        <li id="section-54">
+        <li id="section-47">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-54">&#182;</a>
+                <a class="pilcrow" href="#section-47">&#182;</a>
               </div>
               <h3 id="_sh_"><em>sh</em></h3>
 <p>Abstracted logic for the show and hide methods
@@ -1178,11 +1024,11 @@ the <code>display</code> attribute, if necessary.</p>
         </li>
         
         
-        <li id="section-55">
+        <li id="section-48">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-55">&#182;</a>
+                <a class="pilcrow" href="#section-48">&#182;</a>
               </div>
               <p>does an old display value exist?</p>
 
@@ -1195,11 +1041,11 @@ the <code>display</code> attribute, if necessary.</p>
         </li>
         
         
-        <li id="section-56">
+        <li id="section-49">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-56">&#182;</a>
+                <a class="pilcrow" href="#section-49">&#182;</a>
               </div>
               <p>the element is not visible and does not have an old display value</p>
 
@@ -1210,11 +1056,11 @@ the <code>display</code> attribute, if necessary.</p>
         </li>
         
         
-        <li id="section-57">
+        <li id="section-50">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-57">&#182;</a>
+                <a class="pilcrow" href="#section-50">&#182;</a>
               </div>
               <p>is the element hidden with inline styling?</p>
 
@@ -1227,11 +1073,11 @@ the <code>display</code> attribute, if necessary.</p>
         </li>
         
         
-        <li id="section-58">
+        <li id="section-51">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-58">&#182;</a>
+                <a class="pilcrow" href="#section-51">&#182;</a>
               </div>
               <p>the element is hidden through css</p>
 
@@ -1246,11 +1092,11 @@ the <code>display</code> attribute, if necessary.</p>
         </li>
         
         
-        <li id="section-59">
+        <li id="section-52">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-59">&#182;</a>
+                <a class="pilcrow" href="#section-52">&#182;</a>
               </div>
               <h3 id="toggle">toggle</h3>
 <p>Toggles the visibility of elements in the DOM by modifying
@@ -1271,11 +1117,11 @@ the <code>display</code> attribute, if necessary.</p>
         </li>
         
         
-        <li id="section-60">
+        <li id="section-53">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-60">&#182;</a>
+                <a class="pilcrow" href="#section-53">&#182;</a>
               </div>
               <h3 id="toggleclass">toggleClass</h3>
 <p>Given a class name (or multiple class names), add them if not already present. Remove if so.</p>
@@ -1287,9 +1133,11 @@ returns cash</p>
             <div class="content"><div class='highlight'><pre>    cash.toggleClass = <span class="function"><span class="keyword">function</span><span class="params">(cls)</span> {</span>
       <span class="keyword">var</span> ary = cls.split(<span class="string">' '</span>);
       <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
-        ary.forEach(<span class="function"><span class="keyword">function</span><span class="params">(n)</span> {</span>
-          el.classList.contains(n) ? el.classList.remove(n) : el.classList.add(n);
-        });
+        <span class="keyword">if</span>(el.classList) {
+          ary.forEach(<span class="function"><span class="keyword">function</span><span class="params">(n)</span> {</span>
+            el.classList.contains(n) ? el.classList.remove(n) : el.classList.add(n);
+          });
+        }
       });
       <span class="keyword">return</span> <span class="keyword">this</span>;
     };</pre></div></div>
@@ -1297,11 +1145,11 @@ returns cash</p>
         </li>
         
         
-        <li id="section-61">
+        <li id="section-54">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-61">&#182;</a>
+                <a class="pilcrow" href="#section-54">&#182;</a>
               </div>
               <h3 id="trigger">trigger</h3>
 <p>Given an event type, init a DOM event and dispatch it to each element in the q.</p>
@@ -1320,11 +1168,11 @@ returns cash</p>
         </li>
         
         
-        <li id="section-62">
+        <li id="section-55">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-62">&#182;</a>
+                <a class="pilcrow" href="#section-55">&#182;</a>
               </div>
               <h3 id="val">val</h3>
 <p>Set the passed in value on each element in the <code>q</code>.
@@ -1334,16 +1182,19 @@ This method does not function as a getter.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    cash.val = <span class="function"><span class="keyword">function</span><span class="params">(val)</span> {</span><span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>el.value = val;});};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    cash.val = <span class="function"><span class="keyword">function</span><span class="params">(val)</span> {</span>
+      <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>el.value = val;});
+      <span class="keyword">return</span> <span class="keyword">this</span>;
+    };</pre></div></div>
             
         </li>
         
         
-        <li id="section-63">
+        <li id="section-56">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-63">&#182;</a>
+                <a class="pilcrow" href="#section-56">&#182;</a>
               </div>
               <h3 id="width">width</h3>
 <p>Given a value this method is a setter for each element in the q.
@@ -1360,27 +1211,11 @@ Minus that, it returns the width of the 0th item in the q;</p>
         </li>
         
         
-        <li id="section-64">
+        <li id="section-57">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-64">&#182;</a>
-              </div>
-              <h3 id="xhrheaders">xhrHeaders</h3>
-<p>Any &#39;global&#39; headers that should go out with every XHR request</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    cash.xhrHeaders = {};</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-65">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-65">&#182;</a>
+                <a class="pilcrow" href="#section-57">&#182;</a>
               </div>
               <p>Not checking for window, or trying to play nice</p>
 
