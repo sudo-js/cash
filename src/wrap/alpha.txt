@@ -1,0 +1,10 @@
+(function(window) {
+var proto = Array.prototype, slice = proto.slice, keys = Object.keys,
+cssNum = {'column-count':1,'columns':1,'font-weight':1,'line-height':1,'opacity': 1,'z-index':1,'zoom':1};
+// value first as there may be no key
+function addPx(v, k) {return (typeof v === 'number' && (!k || !cssNum[k])) ? v + 'px' : v;}
+function cash(arg) {return cash.init(arg);}
+function isDocument(arg) {return arg && arg.nodeType === arg.DOCUMENT_NODE;}
+function isObject(arg) {return Object.prototype.toString.call(arg) === '[object Object]';}
+function isString(arg) {return typeof arg === 'string';}
+function isWindow(arg) {return arg === window;}

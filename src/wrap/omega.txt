@@ -1,0 +1,3 @@
+// Not checking for window, or trying to play nice
+window.$ = cash;
+}(window));
