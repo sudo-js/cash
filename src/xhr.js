@@ -1,4 +1,4 @@
-/*global cash*/
+/*global keys*/
 
 // ###getXhr
 // While getting a new XMLHttpRequest is standardized now, we are still going
@@ -56,7 +56,7 @@ cash.getXhr = function(obj) {
     }
   }
   // set any custom headers
-  Object.keys(this.xhrHeaders).forEach(function(h) {xhr.setRequestHeader(h, $.xhrHeaders[h]);});
+  keys(this.xhrHeaders).forEach(function(h) {xhr.setRequestHeader(h, $.xhrHeaders[h]);});
   // The native xhr considers many status codes a success that we do not, wrap the onload
   // so that we can call success or error based on code
   xhr.onload = function(e) {
