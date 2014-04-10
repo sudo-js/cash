@@ -31,7 +31,7 @@ afterEach(function() {
   $(tt).off('*');
 });
 
-describe('cash event binding', function() {
+describe('Event', function() {
 
   beforeEach(function() {
     document.querySelector('#testTarget').innerHTML =
@@ -164,8 +164,8 @@ describe('cash event binding', function() {
   
   it('on can be insructed to use the capture phase for on and off', function() {
     var tt = document.querySelector('#testTarget'), ary = [];
-    window.meFirst = function(e) {ary.push('capture');}
-    window.meSecond = function(e) {ary.push('bubble');}
+    window.meFirst = function(e) {ary.push('capture');};
+    window.meSecond = function(e) {ary.push('bubble');};
     
     $(tt).on('click', window.meFirst, null, null, true).on('click', window.meSecond);
     expect($.cache.events[tt.cid].click[0].cap).toBe(true);

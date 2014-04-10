@@ -1,4 +1,4 @@
-describe('cash utility methods', function() {
+describe('Utils', function() {
   it('uses the isObject method correctly', function() {
     expect($.isObject([])).toBe(false);
     expect($.isObject({})).toBe(true);

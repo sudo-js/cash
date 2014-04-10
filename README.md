@@ -166,7 +166,7 @@ the `q` with that container if found.
 
     $(things).contains(someElement);
 
-###Styles
+###Styles (CSS)
 Methods for the getting or setting of styles. 
 
 ####offset()
@@ -199,7 +199,7 @@ when passing arguments to the `css` method camel case the keys, do not pass them
     // multiple
     $(things).css({paddingTop: 10, marginLeft: 5});
 
-####height([value])
+####Height and Width
 To normalize the different attributes one needs to set on `window`, `document`,
 or an `element` for height, we provide this method. Passed a value (string or number), 
 `height` works as a setter for each element in the `q`. If the value is a string cash 
@@ -212,42 +212,81 @@ Passed no value `height` functions as a getter for the zeroth element.
 
     $(foo).find(bar).height(); //=> 25
     
-####width([value])
-The same as height, except it's spelled differently and gets or sets the width property.
+Width is the same as height, except it's spelled differently and gets or sets the width property.
 
-###More soon...
+#####More coming...
+
+####Modular Mother$&@%~!
+Run the Node.js `build` script to put together a concatonated source file. 
+
+    cd build/lib
+    node build cash.html
+    
+The file created will be in the `build/debug` directory.
+
+You don't like a particular method or set of them? 2k gzipped not small enuff? Make your
+own 'build file' then. List modules you want as script tags on a plain old HTML document.
+Don't forget to version your version with a version number as the title of the doc. Also, 
+the name of your HTML doc will be the name of the concatonated JS file (with extensions corrected obviously).
 
 ###API Summary
-+ $(node|nodeList) Note: Does not return a unique instance, simply returns `cash`.
-+ addClass(string)
+
+#####Attr Module
 + attr(string|object[, string]) Note: Does not function as a getter.
-+ closest(string)
-+ contains(node) Note: Returns `cash` not the container.
-+ create(string) Note: Returns `cash` not the created element
-+ css(string|object[, string]) Note: Does not function as a getter.
-+ deserialize(object)
-+ extend(object, ...)
-+ find(string)
-+ get(number) Note: Can use negative numbers for RTL selection
-+ getXhr(object)
-+ height(string|number)
-+ hide()
-+ isObect(argument)
-+ matches(element, string)
-+ noop
-+ not(string) Note: Accepts a string argument only.
-+ off(string[, function, bool]) Note: bool is capture phase support.
-+ offSet() Note: Does not function as a setter.
-+ on(string, function[, string, object, bool]) Note: The order of arguments and the bool capture phase support.
-+ parent()
-+ parents()
-+ remove()
++ removeAttr(string|Array) Note: Does not function as a getter.
+
+#####Class Module
++ addClass(string)
 + removeClass()
-+ serialize(object)
++ toggleClass()
+
+#####Core Module
++ $(node|nodeList) Note: Does not return a unique instance, simply returns `cash`.
++ get(number) Note: Can use negative numbers for RTL selection
++ isObect(argument)
++ noop
+
+#####Css Module
++ css(string|object[, string]) Note: Does not function as a getter.
++ offSet() Note: Does not function as a setter.
+
+#####Event Module
++ off(string[, function, bool]) Note: bool is capture phase support.
++ on(string, function[, string, object, bool]) Note: The order of arguments and the bool capture phase support.
++ trigger()
+
+#####Height Width Module
++ height(string|number)
++ width()
+
+#####Is Not Module
++ is(string) Note: Accepts a string argument only.
++ not(string) Note: Accepts a string argument only.
+
+#####Manipulation Module
++ create(string) Note: Returns `cash` not the created element
++ remove()
+
+#####Show Hide Module
++ hide()
 + show()
 + toggle()
-+ toggleClass()
-+ trigger()
-+ width()
+
+#####Traversal Module
++ closest(string)
++ contains(node) Note: Returns `cash` not the container.
++ find(string)
++ parent()
++ parents()
+
+#####Utils Module
++ deserialize(object)
++ extend(object, ...)
++ matches(element, string)
++ serialize(object)
+
+#####Val Module
 + val(*) Note: Does not function as a getter.
 
+#####Xhr Module
++ getXhr(object)
