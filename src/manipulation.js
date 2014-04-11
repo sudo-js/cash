@@ -16,9 +16,13 @@ cash.create = function(str) {
 //
 // `returns` cash
 cash.remove = function() {
+  var nodes, i;
   this.q.forEach(function(el) {
-    // not concerned with the display hash
-    delete $.cache.events[el.cid];
+    // child references must be removed first
+    nodes = el.querySelectorAll('[data-cid]');
+    for(i=0; i<nodes.length; i++) $._unsetCache_(nodes[i]);
+    // now the parent
+    $._unsetCache_(el);
     el.parentNode && el.parentNode.removeChild(el);
   });
   return this;

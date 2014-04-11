@@ -13,7 +13,16 @@ function isWindow(arg) {return arg === window;}
 // Hash that holds the event and display data
 cash.cache = {events: {}, display: {}};
 // generate a unique id for elements
-cash.cid = 0;
+cash._cid_ = 0;
+// ###_clearCache_
+// Clean up the cache for the given el.
+//
+// `param` {Element} `el`
+// `returns` el
+cash._unsetCache_ = function(el) {
+  delete this.cache.events[el.getAttribute('data-cid')];
+  return el;
+};
 // ###get
 // Return the entire `q` or a particular element located at an index by 
 // passing nothing or a number respectively. Note that you can pass a 
@@ -53,9 +62,9 @@ cash.noop = function() {},
 // ###setCache
 // private.
 cash._setCache_ = function(ref, el) {
-  var cid = isWindow(el) ? 'window' : el.cid,
+  var cid = isWindow(el) ? 'window' : el.getAttribute('data-cid'),
     obj = this.cache[ref];
-  if(!cid) el.cid = cid = String(++this.cid);
+  if(!cid) {cid = String(++this._cid_); el.setAttribute('data-cid', cid);}
   obj[cid] || (obj[cid] = ref === 'events' ? {} : undefined);
   return obj;
 };
@@ -178,7 +187,7 @@ cash.off = function(type, fn, cap) {
   var sp = type.split('.'), ev = sp[0], ns = sp.splice(1).join('.'),
     all = ev === '*', events, cid;
   this.q.forEach(function(el) {
-    cid = isWindow(el) ? 'window' : el.cid, events = $.cache.events[cid];
+    cid = isWindow(el) ? 'window' : el.getAttribute('data-cid'), events = $.cache.events[cid];
     if(events) {
       (all ? Object.keys(events) : [ev]).forEach(function(k) {
         events[k] && events[k].forEach(function(obj, i, ary) {
@@ -216,7 +225,7 @@ cash.on = function(type, fn, sel, data, cap) {
   // we force capture phase here so that delegation works
   if(!cap && (ev === 'focus' || ev === 'blur') && sel) cap = true;
   this.q.forEach(function(el) {
-    events = $._setCache_('events', el)[el.cid || 'window'];
+    events = $._setCache_('events', el)[el.getAttribute('data-cid') || 'window'];
     events[ev] || (events[ev] = []);
     cb = function(e) {
       var targ;
@@ -323,9 +332,13 @@ cash.create = function(str) {
 //
 // `returns` cash
 cash.remove = function() {
+  var nodes, i;
   this.q.forEach(function(el) {
-    // not concerned with the display hash
-    delete $.cache.events[el.cid];
+    // child references must be removed first
+    nodes = el.querySelectorAll('[data-cid]');
+    for(i=0; i<nodes.length; i++) $._unsetCache_(nodes[i]);
+    // now the parent
+    $._unsetCache_(el);
     el.parentNode && el.parentNode.removeChild(el);
   });
   return this;
@@ -353,19 +366,19 @@ cash._sh_ = function(key) {
   function notNone(arg) {return isShow ? arg === 'none': arg !== 'none';}
 
   this.q.forEach(function(el) {
-    var display = $._setCache_('display', el),
-      old = display[el.cid];
+    var display = $._setCache_('display', el), cid = el.getAttribute('data-cid'),
+      old = display[cid];
     if(state(el)) {
-      if(none(old)) delete display[el.cid];
+      if(none(old)) delete display[cid];
     // does an old display value exist?
-    } else if (old && none(old)) {
+    } else if(old && none(old)) {
       el.style.display = old;
-      delete display[el.cid];
+      delete display[cid];
     // the element is not visible and does not have an old display value
     } else {
       // is the element hidden with inline styling?
       if(el.style.display && notNone(el.style.display)) {
-        display[el.cid] = el.style.display;
+        display[cid] = el.style.display;
         el.style.display = isShow ? '' : 'none';
       // the element is hidden through css
       } else el.style.display = isShow ? 'block': 'none';
