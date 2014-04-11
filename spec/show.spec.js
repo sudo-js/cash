@@ -18,7 +18,7 @@ describe('Show', function () {
 
     expect(getComputedStyle(el).display).toBe('inline');
     expect(el.style.display).toBe('');
-    expect($.cache.display[el.cid]).toBe(undefined);
+    expect($.cache.display[el.getAttribute('data-cid')]).toBe(undefined);
   });
 
   it('shows an element with inline "display"', function() {
@@ -36,7 +36,7 @@ describe('Show', function () {
 
     expect(getComputedStyle(el).display).toEqual('block');
     expect(el.style.display).toEqual('block');
-    expect($.cache.display[el.cid]).toBe(undefined);
+    expect($.cache.display[el.getAttribute('data-cid')]).toBe(undefined);
   });
 
   it('shows an element with inline "display: none"', function() {
@@ -54,7 +54,7 @@ describe('Show', function () {
 
     expect(getComputedStyle(el).display).toEqual('inline');
     expect(el.style.display).toBe('');
-    expect($.cache.display[el.cid]).toEqual('none');
+    expect($.cache.display[el.getAttribute('data-cid')]).toEqual('none');
   });
 
   it('shows an element with css "display"', function() {
@@ -75,7 +75,7 @@ describe('Show', function () {
 
     expect(getComputedStyle(el).display).toEqual('block');
     expect(el.style.display).toEqual('');
-    expect($.cache.display[el.cid]).toBe(undefined);
+    expect($.cache.display[el.getAttribute('data-cid')]).toBe(undefined);
   });
 
   it('shows a node with css "display: none"', function() {
@@ -96,7 +96,7 @@ describe('Show', function () {
 
     expect(getComputedStyle(el).display).toEqual('block');
     expect(el.style.display).toEqual('block');
-    expect($.cache.display[el.cid]).toBe(undefined);
+    expect($.cache.display[el.getAttribute('data-cid')]).toBe(undefined);
   });
 
   it('shows an element with inline "display" and css "display: none"', function() {
@@ -117,7 +117,7 @@ describe('Show', function () {
 
     expect(getComputedStyle(el).display).toEqual('block');
     expect(el.style.display).toEqual('block');
-    expect($.cache.display[el.cid]).toBe(undefined);
+    expect($.cache.display[el.getAttribute('data-cid')]).toBe(undefined);
   });
 
   it('shows an element with inline "display: none" and css "display"', function() {
@@ -138,6 +138,6 @@ describe('Show', function () {
 
     expect(getComputedStyle(el).display).toEqual('block');
     expect(el.style.display).toEqual('');
-    expect($.cache.display[el.cid]).toBe('none');
+    expect($.cache.display[el.getAttribute('data-cid')]).toBe('none');
   });
 });

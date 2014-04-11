@@ -39,11 +39,6 @@ describe('Core', function() {
     expect($.q).toBe(ary);
   });
   
-  it('can create an element with class and id', function() {
-    expect($.q[0].id).toBe('foo');
-    expect($.q[0].classList.contains('bar')).toBe(true);
-  });
-  
   it('fetches various from the q via get', function() {
     expect(Array.isArray($.find('li').get())).toBe(true);
     expect($.get(0).id).toBe('one');  
