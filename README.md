@@ -14,7 +14,7 @@ Because if you are not supporting bad browsers you do not need the shims that
 were created to support them.
 
 ######Annotated Source 
-[Here](https:sudo-js.github.io/cash)
+[Here](http://sudo-js.github.io/cash)
 
 ##I Can Haz $?
 Cash **does** take the familaiar `$` name as it's global identifier. That's where
