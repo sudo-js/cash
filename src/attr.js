@@ -1,4 +1,4 @@
-/*global cash isString keys*/
+/*global cash isString keys isArray*/
 
 // ###attr
 // Given a single attribute and value or a hash of them set it/them on each
@@ -21,7 +21,7 @@ cash.attr = function(key, val) {
 // `param` {string|array} `key`
 // `returns` cash
 cash.removeAttr = function(key) {
-  var rem = Array.isArray(key) ? function(el) {key.forEach(function(a) {el.removeAttribute(a);});} :
+  var rem = isArray(key) ? function(el) {key.forEach(function(a) {el.removeAttribute(a);});} :
     function(el) {el.removeAttribute(key);};
   this.q.forEach(rem);
   return this;

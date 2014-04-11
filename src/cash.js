@@ -1,4 +1,4 @@
-/*global cash HTMLCollection slice isObject isWindow*/
+/*global cash HTMLCollection slice isObject isWindow isArray*/
 
 // ###cache
 // Hash that holds the event and display data
@@ -26,7 +26,7 @@ cash.get = function(i) {
 // `returns` cash
 cash.init = function(arg) {
   // base case is already an array, then handle node(List) and falsey
-  this.q = Array.isArray(arg) ? arg : (arg ? ((arg instanceof NodeList || arg instanceof HTMLCollection) ? 
+  this.q = isArray(arg) ? arg : (arg ? ((arg instanceof NodeList || arg instanceof HTMLCollection) ? 
     slice.call(arg) : [arg]) : []);
   return this;
 };

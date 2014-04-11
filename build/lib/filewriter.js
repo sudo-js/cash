@@ -27,11 +27,18 @@ Filewriter.prototype.extToJs = function(filename) {
 
 Filewriter.prototype.stripGlobals = function() {
   var full = this.debug + '/' + this.get('filename');
-  fs.readFileSync(this.tmp).toString().split('\n').forEach(function (line) { 
-    if(!(/\/*global/.test(line))) {
-      fs.appendFileSync(full, line.toString() + "\n");
-    }
-  });
+  // kill the file if it is there
+  fs.stat(full, function(err, stat) {
+    if(!err && stat.isFile()) fs.unlinkSync(full);
+    
+    fs.readFileSync(this.tmp).toString().split('\n').forEach(function (line) { 
+      if(!(/\/*global/.test(line))) {
+        fs.appendFileSync(full, line.toString() + "\n");
+      }
+    });
+    // now kill the tmp
+    fs.unlinkSync(this.tmp);
+  }.bind(this));
 };
 
 Filewriter.prototype.writeDebug = function(alpha, data, omega) {
