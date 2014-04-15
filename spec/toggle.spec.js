@@ -19,13 +19,13 @@ describe('Toggle', function() {
 
     expect(getComputedStyle(el).display).toEqual('none');
     expect(el.style.display).toEqual('none');
-    expect($.cache.display[el.cid]).toBe(undefined);
+    expect($.cache.display[el.getAttribute('cid')]).toBe(undefined);
 
     $(el).toggle();
 
     expect(getComputedStyle(el).display).toEqual('inline');
     expect(el.style.display).toEqual('');
-    expect($.cache.display[el.cid]).toBe('none');
+    expect($.cache.display[el.getAttribute('cid')]).toBe('none');
   });
 
   it('toggles correctly with inline "display: none"', function() {
@@ -43,13 +43,13 @@ describe('Toggle', function() {
 
     expect(getComputedStyle(el).display).toEqual('inline');
     expect(el.style.display).toEqual('');
-    expect($.cache.display[el.cid]).toBe('none');
+    expect($.cache.display[el.getAttribute('cid')]).toBe('none');
 
     $(el).toggle();
 
     expect(getComputedStyle(el).display).toEqual('none');
     expect(el.style.display).toEqual('none');
-    expect($.cache.display[el.cid]).toBe(undefined);
+    expect($.cache.display[el.getAttribute('cid')]).toBe(undefined);
   });
   
   it('toggles correctly with both', function() {
@@ -70,11 +70,11 @@ describe('Toggle', function() {
 
     expect(getComputedStyle(els[0]).display).toEqual('inline');
     expect(els[0].style.display).toEqual('');
-    expect($.cache.display[els[0].cid]).toBe('none');
+    expect($.cache.display[els[0].getAttribute('cid')]).toBe('none');
     
     expect(getComputedStyle(els[1]).display).toEqual('none');
     expect(els[1].style.display).toEqual('none');
-    expect($.cache.display[els[1].cid]).toBe(undefined);
+    expect($.cache.display[els[1].getAttribute('cid')]).toBe(undefined);
 
   });
 });

@@ -1,18 +1,37 @@
 describe('Manipulation', function() {
-  
   beforeEach(function() {
-    $.create('<div id="foo" class="bar"></div>').get(0).innerHTML =
-      '<div id="baz"><ul><li id="one"></li><li id="two"></li></ul></div><div id="qux"><ul><li id="three"></li><li class="me"></li></ul></div>';
+    document.querySelector('#testTarget').innerHTML = '<div id="testTargetChildA"><div id="testTargetChildB" /></div>';
+    $(document.querySelector('#testTargetChildA')).on('click', $.noop);
+    $(document.querySelector('#testTargetChildB')).on('click', $.noop);
+
   });
 
-  it('removes cache entries for an element removed with remove', function() {
-    var div = $.q[0];
-    expect($(div).find('li').q.length).toBe(4);
-    $(div).find('li.me').on('click', $.noop);
-    expect($.cache.events[$.q[0].cid]).toBeTruthy();
-    $(div).find('li.me').remove();
-    expect($(div).find('li').q.length).toBe(3);
-    expect($.cache.events[$.q[0].cid]).toBeFalsy();
+  it('cleans up the cache for the element and its children', function() {
+    var parent = document.querySelector('#testTargetChildA'),
+        child  = document.querySelector('#testTargetChildB');
+
+    expect(parent.getAttribute('cid')).toBeTruthy();
+
+    expect(child.getAttribute('cid')).toBeTruthy();
+
+    expect(Object.keys($.cache.events[parent.getAttribute('cid')]).length).toBe(1);
+    expect(Object.keys($.cache.events[child.getAttribute('cid')]).length).toBe(1);
+
+    $(parent).remove();
+
+    expect($.cache.events[parent.getAttribute('cid')]).toBeFalsy();
+    expect($.cache.events[child.getAttribute('cid')]).toBeFalsy();
+  });
+
+  it('removes the element from the dom', function() {
+    var parent = document.querySelector('#testTargetChildA');
+    $(parent).remove();
+    expect(parent.parentNode).toBeFalsy();
   });
   
+  it('can create an element with class and id', function() {
+    $.create('<div id="foo" class="bar"></div>');
+    expect($.q[0].id).toBe('foo');
+    expect($.q[0].classList.contains('bar')).toBe(true);
+  });
 });

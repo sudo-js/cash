@@ -13,7 +13,7 @@ function isWindow(arg) {return arg === window;}
 // Hash that holds the event and display data
 cash.cache = {events: {}, display: {}};
 // generate a unique id for elements
-cash.cid = 0;
+cash._cid_ = 0;
 // ###get
 // Return the entire `q` or a particular element located at an index by 
 // passing nothing or a number respectively. Note that you can pass a 
@@ -53,9 +53,12 @@ cash.noop = function() {},
 // ###setCache
 // private.
 cash._setCache_ = function(ref, el) {
-  var cid = isWindow(el) ? 'window' : el.cid,
+  var cid = isWindow(el) ? 'window' : el.getAttribute('cid'),
     obj = this.cache[ref];
-  if(!cid) el.cid = cid = String(++this.cid);
+  if(!cid) {
+    cid = String(++this._cid_);
+    el.setAttribute('cid', cid);
+  }
   obj[cid] || (obj[cid] = ref === 'events' ? {} : undefined);
   return obj;
 };
@@ -178,7 +181,7 @@ cash.off = function(type, fn, cap) {
   var sp = type.split('.'), ev = sp[0], ns = sp.splice(1).join('.'),
     all = ev === '*', events, cid;
   this.q.forEach(function(el) {
-    cid = isWindow(el) ? 'window' : el.cid, events = $.cache.events[cid];
+    cid = isWindow(el) ? 'window' : el.getAttribute('cid'), events = $.cache.events[cid];
     if(events) {
       (all ? Object.keys(events) : [ev]).forEach(function(k) {
         events[k] && events[k].forEach(function(obj, i, ary) {
@@ -216,7 +219,7 @@ cash.on = function(type, fn, sel, data, cap) {
   // we force capture phase here so that delegation works
   if(!cap && (ev === 'focus' || ev === 'blur') && sel) cap = true;
   this.q.forEach(function(el) {
-    events = $._setCache_('events', el)[el.cid || 'window'];
+    events = $._setCache_('events', el)[el.getAttribute('cid') || 'window'];
     events[ev] || (events[ev] = []);
     cb = function(e) {
       var targ;
@@ -305,6 +308,7 @@ cash.not = function(sel) {
   this.q = this.q.filter(function(el) {return !$.matches(el, sel);});
   return this;
 };
+
 // ###create
 // Given a string, create a DOM element and store place in at the q. Notice
 // that the input must be a single 'top-level' Element, but it may contain
@@ -323,9 +327,12 @@ cash.create = function(str) {
 //
 // `returns` cash
 cash.remove = function() {
+  function rem(el) {delete $.cache.events[el.getAttribute('cid')];}
   this.q.forEach(function(el) {
-    // not concerned with the display hash
-    delete $.cache.events[el.cid];
+    // unset any children
+    slice.call(el.querySelectorAll('[cid]')).forEach(rem);
+    // now the top-level parent
+    rem(el);
     el.parentNode && el.parentNode.removeChild(el);
   });
   return this;
@@ -353,19 +360,19 @@ cash._sh_ = function(key) {
   function notNone(arg) {return isShow ? arg === 'none': arg !== 'none';}
 
   this.q.forEach(function(el) {
-    var display = $._setCache_('display', el), old = display[el.cid],
+    var display = $._setCache_('display', el), cid = el.getAttribute('cid'), old = display[cid],
       comp = getComputedStyle(el).display, styl = el.style.display, z = (comp || styl);
     if(state(z)) {
-      if(none(old)) delete display[el.cid];
+      if(none(old)) delete display[cid];
     // does an old display value exist?
     } else if (old && none(old)) {
       el.style.display = old;
-      delete display[el.cid];
+      delete display[cid];
     // the element is not visible and does not have an old display value
     } else {
       // is the element hidden with inline styling?
       if(styl && notNone(styl)) {
-        display[el.cid] = styl;
+        display[cid] = styl;
         el.style.display = isShow ? '' : 'none';
       // the element is hidden through css
       } else el.style.display = isShow ? 'block': 'none';

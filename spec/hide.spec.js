@@ -19,7 +19,7 @@ describe('Hide', function () {
 
     expect(getComputedStyle(el).display).toBe('none');
     expect(el.style.display).toBe('none');
-    expect($.cache.display[el.cid]).toBe(undefined);
+    expect($.cache.display[el.getAttribute('cid')]).toBe(undefined);
   });
 
   it('hides an element with inline "display"', function() {
@@ -37,7 +37,7 @@ describe('Hide', function () {
 
     expect(getComputedStyle(el).display).toEqual('none');
     expect(el.style.display).toEqual('none');
-    expect($.cache.display[el.cid]).toBe('block');
+    expect($.cache.display[el.getAttribute('cid')]).toBe('block');
   });
 
   it('hides an element with inline "display: none"', function() {
@@ -55,7 +55,7 @@ describe('Hide', function () {
 
     expect(getComputedStyle(el).display).toEqual('none');
     expect(el.style.display).toBe('none');
-    expect($.cache.display[el.cid]).toBe(undefined);
+    expect($.cache.display[el.getAttribute('cid')]).toBe(undefined);
   });
 
   it('hides an element with css "display"', function() {
@@ -76,7 +76,7 @@ describe('Hide', function () {
 
     expect(getComputedStyle(el).display).toEqual('none');
     expect(el.style.display).toEqual('none');
-    expect($.cache.display[el.cid]).toBe(undefined);
+    expect($.cache.display[el.getAttribute('cid')]).toBe(undefined);
   });
 
   it('hides an element with css "display: none"', function() {
@@ -97,7 +97,7 @@ describe('Hide', function () {
 
     expect(getComputedStyle(el).display).toEqual('none');
     expect(el.style.display).toEqual('');
-    expect($.cache.display[el.cid]).toBe(undefined);
+    expect($.cache.display[el.getAttribute('cid')]).toBe(undefined);
   });
 
   it('hides an element with inline "display" and css "display: none"', function() {
@@ -118,7 +118,7 @@ describe('Hide', function () {
 
     expect(getComputedStyle(el).display).toEqual('none');
     expect(el.style.display).toEqual('none');
-    expect($.cache.display[el.cid]).toEqual('block');
+    expect($.cache.display[el.getAttribute('cid')]).toEqual('block');
   });
 
   it('hides an element with inline "display: none" and css "display"', function() {
@@ -139,6 +139,6 @@ describe('Hide', function () {
 
     expect(getComputedStyle(el).display).toEqual('none');
     expect(el.style.display).toEqual('none');
-    expect($.cache.display[el.cid]).toBe(undefined);
+    expect($.cache.display[el.getAttribute('cid')]).toBe(undefined);
   });
   });

@@ -22,19 +22,19 @@ cash._sh_ = function(key) {
   function notNone(arg) {return isShow ? arg === 'none': arg !== 'none';}
 
   this.q.forEach(function(el) {
-    var display = $._setCache_('display', el), old = display[el.cid],
+    var display = $._setCache_('display', el), cid = el.getAttribute('cid'), old = display[cid],
       comp = getComputedStyle(el).display, styl = el.style.display, z = (comp || styl);
     if(state(z)) {
-      if(none(old)) delete display[el.cid];
+      if(none(old)) delete display[cid];
     // does an old display value exist?
     } else if (old && none(old)) {
       el.style.display = old;
-      delete display[el.cid];
+      delete display[cid];
     // the element is not visible and does not have an old display value
     } else {
       // is the element hidden with inline styling?
       if(styl && notNone(styl)) {
-        display[el.cid] = styl;
+        display[cid] = styl;
         el.style.display = isShow ? '' : 'none';
       // the element is hidden through css
       } else el.style.display = isShow ? 'block': 'none';

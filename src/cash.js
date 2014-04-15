@@ -4,7 +4,7 @@
 // Hash that holds the event and display data
 cash.cache = {events: {}, display: {}};
 // generate a unique id for elements
-cash.cid = 0;
+cash._cid_ = 0;
 // ###get
 // Return the entire `q` or a particular element located at an index by 
 // passing nothing or a number respectively. Note that you can pass a 
@@ -44,9 +44,12 @@ cash.noop = function() {},
 // ###setCache
 // private.
 cash._setCache_ = function(ref, el) {
-  var cid = isWindow(el) ? 'window' : el.cid,
+  var cid = isWindow(el) ? 'window' : el.getAttribute('cid'),
     obj = this.cache[ref];
-  if(!cid) el.cid = cid = String(++this.cid);
+  if(!cid) {
+    cid = String(++this._cid_);
+    el.setAttribute('cid', cid);
+  }
   obj[cid] || (obj[cid] = ref === 'events' ? {} : undefined);
   return obj;
 };

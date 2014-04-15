@@ -25,4 +25,39 @@ describe('Attr', function() {
     expect($.get(3).getAttribute('dir')).toBe('rtl');
   });
   
+  it('can remove a single attribute on each el in the q via attr', function() {
+    $.find('li').attr('data-spam', 'eggs');
+    expect($.get(0).getAttribute('data-spam')).toBe('eggs');
+    expect($.get(1).getAttribute('data-spam')).toBe('eggs');
+    expect($.get(2).getAttribute('data-spam')).toBe('eggs');
+    expect($.get(3).getAttribute('data-spam')).toBe('eggs');
+    
+    $.removeAttr('data-spam');
+    expect($.get(0).getAttribute('data-spam')).toBeFalsy();
+    expect($.get(1).getAttribute('data-spam')).toBeFalsy();
+    expect($.get(2).getAttribute('data-spam')).toBeFalsy();
+    expect($.get(3).getAttribute('data-spam')).toBeFalsy();
+  });
+  
+  it('can unset multiple attributes at once via attr', function() {
+    $.find('li').attr({'data-foo': 'bar', dir: 'rtl'});
+    expect($.get(0).getAttribute('data-foo')).toBe('bar');
+    expect($.get(0).getAttribute('dir')).toBe('rtl');
+    expect($.get(1).getAttribute('data-foo')).toBe('bar');
+    expect($.get(1).getAttribute('dir')).toBe('rtl');
+    expect($.get(2).getAttribute('data-foo')).toBe('bar');
+    expect($.get(2).getAttribute('dir')).toBe('rtl');
+    expect($.get(3).getAttribute('data-foo')).toBe('bar');
+    expect($.get(3).getAttribute('dir')).toBe('rtl');
+    
+    $.removeAttr(['data-foo', 'dir']);
+    expect($.get(0).getAttribute('data-foo')).toBeFalsy();
+    expect($.get(0).getAttribute('dir')).toBeFalsy();
+    expect($.get(1).getAttribute('data-foo')).toBeFalsy();
+    expect($.get(1).getAttribute('dir')).toBeFalsy();
+    expect($.get(2).getAttribute('data-foo')).toBeFalsy();
+    expect($.get(2).getAttribute('dir')).toBeFalsy();
+    expect($.get(3).getAttribute('data-foo')).toBeFalsy();
+    expect($.get(3).getAttribute('dir')).toBeFalsy();
+  });
 });
