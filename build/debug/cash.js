@@ -348,14 +348,14 @@ cash.show = function() {return this._sh_('show');};
 // `private`
 cash._sh_ = function(key) {
   var isShow = key === 'show';
-  function state(el) {return isShow ? getComputedStyle(el).display !== 'none' : getComputedStyle(el).display === 'none';}
+  function state(z) {return isShow ? z !== 'none' : z === 'none';}
   function none(arg) {return isShow ? arg !== 'none': arg === 'none';}
   function notNone(arg) {return isShow ? arg === 'none': arg !== 'none';}
 
   this.q.forEach(function(el) {
-    var display = $._setCache_('display', el),
-      old = display[el.cid];
-    if(state(el)) {
+    var display = $._setCache_('display', el), old = display[el.cid],
+      comp = getComputedStyle(el).display, styl = el.style.display, z = (comp || styl);
+    if(state(z)) {
       if(none(old)) delete display[el.cid];
     // does an old display value exist?
     } else if (old && none(old)) {
@@ -364,8 +364,8 @@ cash._sh_ = function(key) {
     // the element is not visible and does not have an old display value
     } else {
       // is the element hidden with inline styling?
-      if(el.style.display && notNone(el.style.display)) {
-        display[el.cid] = el.style.display;
+      if(styl && notNone(styl)) {
+        display[el.cid] = styl;
         el.style.display = isShow ? '' : 'none';
       // the element is hidden through css
       } else el.style.display = isShow ? 'block': 'none';
@@ -474,7 +474,7 @@ cash.val = function(val) {
 // `returns` {object}
 cash.deserialize = function(str) {
   var obj = {}, ary;
-  str.split('&').forEach(function(spl) {
+  str && str.split('&').forEach(function(spl) {
     if(spl) {
       ary = spl.split('=');
       obj[decodeURIComponent(ary[0])] = decodeURIComponent(ary[1]);

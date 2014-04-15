@@ -7,7 +7,7 @@
 // `returns` {object}
 cash.deserialize = function(str) {
   var obj = {}, ary;
-  str.split('&').forEach(function(spl) {
+  str && str.split('&').forEach(function(spl) {
     if(spl) {
       ary = spl.split('=');
       obj[decodeURIComponent(ary[0])] = decodeURIComponent(ary[1]);
