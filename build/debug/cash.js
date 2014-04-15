@@ -305,6 +305,7 @@ cash.not = function(sel) {
   this.q = this.q.filter(function(el) {return !$.matches(el, sel);});
   return this;
 };
+
 // ###create
 // Given a string, create a DOM element and store place in at the q. Notice
 // that the input must be a single 'top-level' Element, but it may contain
@@ -323,9 +324,12 @@ cash.create = function(str) {
 //
 // `returns` cash
 cash.remove = function() {
+  function rem(el) {if(el.cid) delete $.cache.events[el.cid];}
   this.q.forEach(function(el) {
-    // not concerned with the display hash
-    delete $.cache.events[el.cid];
+    // children of el need to be unset first first
+    proto.forEach.call(el.childNodes, function(node) {rem(node);});
+    // now the parent
+    rem(el);
     el.parentNode && el.parentNode.removeChild(el);
   });
   return this;
