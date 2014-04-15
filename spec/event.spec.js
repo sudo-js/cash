@@ -40,7 +40,7 @@ describe('Event', function() {
 
   it('records the bound event in the cache', function() {
     $(document.querySelector('#testTarget')).on('click', window.callBack);
-    expect($.cache.events[$.q[0].cid]).toBeTruthy();
+    expect($.cache.events[$.q[0].getAttribute('cid')]).toBeTruthy();
     $(document.querySelector('#testTarget')).off('click');
   });
 
@@ -168,7 +168,7 @@ describe('Event', function() {
     window.meSecond = function(e) {ary.push('bubble');};
     
     $(tt).on('click', window.meFirst, null, null, true).on('click', window.meSecond);
-    expect($.cache.events[tt.cid].click[0].cap).toBe(true);
+    expect($.cache.events[tt.getAttribute('cid')].click[0].cap).toBe(true);
     $.trigger('click');
     expect(ary[0]).toBe('capture');
     expect(ary[1]).toBe('bubble');
@@ -197,8 +197,8 @@ describe('Event', function() {
     var tt = document.querySelector('#testTarget');
     tt.innerHTML = '<div><input type="text" name="one"></input><input type="text" name="two"></input></div>';
     $(tt).on('focus', window.handleFocus, 'input[name="two"]').on('blur', window.handleBlur, 'input[name="two"]');
-    expect($.cache.events[tt.cid].focus[0].cap).toBe(true);
-    expect($.cache.events[tt.cid].blur[0].cap).toBe(true);
+    expect($.cache.events[tt.getAttribute('cid')].focus[0].cap).toBe(true);
+    expect($.cache.events[tt.getAttribute('cid')].blur[0].cap).toBe(true);
     $(tt).find('input[name="two"]').trigger('focus');
     expect(window.focused).toBe(1);
     expect(window.whoCalled).toBe('two');

@@ -1,3 +1,5 @@
+/*global slice*/
+
 // ###create
 // Given a string, create a DOM element and store place in at the q. Notice
 // that the input must be a single 'top-level' Element, but it may contain
@@ -16,9 +18,12 @@ cash.create = function(str) {
 //
 // `returns` cash
 cash.remove = function() {
+  function rem(el) {delete $.cache.events[el.getAttribute('cid')];}
   this.q.forEach(function(el) {
-    // not concerned with the display hash
-    delete $.cache.events[el.cid];
+    // unset any children
+    //slice.call(el.querySelectorAll('[cid]')).forEach(rem);
+    // now the top-level parent
+    rem(el);
     el.parentNode && el.parentNode.removeChild(el);
   });
   return this;

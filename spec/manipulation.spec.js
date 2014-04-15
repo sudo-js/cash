@@ -9,10 +9,10 @@ describe('Manipulation', function() {
     var div = $.q[0];
     expect($(div).find('li').q.length).toBe(4);
     $(div).find('li.me').on('click', $.noop);
-    expect($.cache.events[$.q[0].cid]).toBeTruthy();
+    expect($.cache.events[$.q[0].getAttribute('cid')]).toBeTruthy();
     $(div).find('li.me').remove();
     expect($(div).find('li').q.length).toBe(3);
-    expect($.cache.events[$.q[0].cid]).toBeFalsy();
+    expect($.cache.events[$.q[0].getAttribute('cid')]).toBeFalsy();
   });
   
 });

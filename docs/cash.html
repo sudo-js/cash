@@ -83,7 +83,7 @@ cssNum = {<span class="string">'column-count'</span>:<span class="number">1</spa
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.cid = <span class="number">0</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>cash._cid_ = <span class="number">0</span>;</pre></div></div>
             
         </li>
         
@@ -211,9 +211,12 @@ does &#39;even&#39; the API a little</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>cash._setCache_ = <span class="function"><span class="keyword">function</span><span class="params">(ref, el)</span> {</span>
-  <span class="keyword">var</span> cid = isWindow(el) ? <span class="string">'window'</span> : el.cid,
+  <span class="keyword">var</span> cid = isWindow(el) ? <span class="string">'window'</span> : el.getAttribute(<span class="string">'cid'</span>),
     obj = <span class="keyword">this</span>.cache[ref];
-  <span class="keyword">if</span>(!cid) el.cid = cid = String(++<span class="keyword">this</span>.cid);
+  <span class="keyword">if</span>(!cid) {
+    cid = String(++<span class="keyword">this</span>._cid_);
+    el.setAttribute(<span class="string">'cid'</span>, cid);
+  }
   obj[cid] || (obj[cid] = ref === <span class="string">'events'</span> ? {} : <span class="literal">undefined</span>);
   <span class="keyword">return</span> obj;
 };</pre></div></div>
@@ -428,7 +431,7 @@ handle the capture phase bool for you in that case. </p>
   <span class="keyword">var</span> sp = type.split(<span class="string">'.'</span>), ev = sp[<span class="number">0</span>], ns = sp.splice(<span class="number">1</span>).join(<span class="string">'.'</span>),
     all = ev === <span class="string">'*'</span>, events, cid;
   <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
-    cid = isWindow(el) ? <span class="string">'window'</span> : el.cid, events = $.cache.events[cid];
+    cid = isWindow(el) ? <span class="string">'window'</span> : el.getAttribute(<span class="string">'cid'</span>), events = $.cache.events[cid];
     <span class="keyword">if</span>(events) {
       (all ? Object.keys(events) : [ev]).forEach(<span class="function"><span class="keyword">function</span><span class="params">(k)</span> {</span>
         events[k] &amp;&amp; events[k].forEach(<span class="function"><span class="keyword">function</span><span class="params">(obj, i, ary)</span> {</span></pre></div></div>
@@ -516,7 +519,7 @@ and a selector is present capture phase is forced as delegation will not work ot
             
             <div class="content"><div class='highlight'><pre>  <span class="keyword">if</span>(!cap &amp;&amp; (ev === <span class="string">'focus'</span> || ev === <span class="string">'blur'</span>) &amp;&amp; sel) cap = <span class="literal">true</span>;
   <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
-    events = $._setCache_(<span class="string">'events'</span>, el)[el.cid || <span class="string">'window'</span>];
+    events = $._setCache_(<span class="string">'events'</span>, el)[el.getAttribute(<span class="string">'cid'</span>) || <span class="string">'window'</span>];
     events[ev] || (events[ev] = []);
     cb = <span class="function"><span class="keyword">function</span><span class="params">(e)</span> {</span>
       <span class="keyword">var</span> targ;</pre></div></div>
@@ -797,6 +800,7 @@ remove any references they have in the $.cache as well.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>cash.remove = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+  <span class="function"><span class="keyword">function</span> <span class="title">rem</span><span class="params">(el)</span> {</span><span class="keyword">delete</span> $.cache.events[el.getAttribute(<span class="string">'cid'</span>)];}
   <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span></pre></div></div>
             
         </li>
@@ -808,11 +812,13 @@ remove any references they have in the $.cache as well.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
-              <p>not concerned with the display hash</p>
+              <p>unset any children
+slice.call(el.querySelectorAll(&#39;[cid]&#39;)).forEach(rem);
+now the top-level parent</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">delete</span> $.cache.events[el.cid];
+            <div class="content"><div class='highlight'><pre>    rem(el);
     el.parentNode &amp;&amp; el.parentNode.removeChild(el);
   });
   <span class="keyword">return</span> <span class="keyword">this</span>;
@@ -871,15 +877,15 @@ the <code>display</code> attribute, if necessary.</p>
             
             <div class="content"><div class='highlight'><pre>cash._sh_ = <span class="function"><span class="keyword">function</span><span class="params">(key)</span> {</span>
   <span class="keyword">var</span> isShow = key === <span class="string">'show'</span>;
-  <span class="function"><span class="keyword">function</span> <span class="title">state</span><span class="params">(el)</span> {</span><span class="keyword">return</span> isShow ? getComputedStyle(el).display !== <span class="string">'none'</span> : getComputedStyle(el).display === <span class="string">'none'</span>;}
+  <span class="function"><span class="keyword">function</span> <span class="title">state</span><span class="params">(z)</span> {</span><span class="keyword">return</span> isShow ? z !== <span class="string">'none'</span> : z === <span class="string">'none'</span>;}
   <span class="function"><span class="keyword">function</span> <span class="title">none</span><span class="params">(arg)</span> {</span><span class="keyword">return</span> isShow ? arg !== <span class="string">'none'</span>: arg === <span class="string">'none'</span>;}
   <span class="function"><span class="keyword">function</span> <span class="title">notNone</span><span class="params">(arg)</span> {</span><span class="keyword">return</span> isShow ? arg === <span class="string">'none'</span>: arg !== <span class="string">'none'</span>;}
 
   <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
-    <span class="keyword">var</span> display = $._setCache_(<span class="string">'display'</span>, el),
-      old = display[el.cid];
-    <span class="keyword">if</span>(state(el)) {
-      <span class="keyword">if</span>(none(old)) <span class="keyword">delete</span> display[el.cid];</pre></div></div>
+    <span class="keyword">var</span> display = $._setCache_(<span class="string">'display'</span>, el), cid = el.getAttribute(<span class="string">'cid'</span>), old = display[cid],
+      comp = getComputedStyle(el).display, styl = el.style.display, z = (comp || styl);
+    <span class="keyword">if</span>(state(z)) {
+      <span class="keyword">if</span>(none(old)) <span class="keyword">delete</span> display[cid];</pre></div></div>
             
         </li>
         
@@ -896,7 +902,7 @@ the <code>display</code> attribute, if necessary.</p>
             
             <div class="content"><div class='highlight'><pre>    } <span class="keyword">else</span> <span class="keyword">if</span> (old &amp;&amp; none(old)) {
       el.style.display = old;
-      <span class="keyword">delete</span> display[el.cid];</pre></div></div>
+      <span class="keyword">delete</span> display[cid];</pre></div></div>
             
         </li>
         
@@ -926,8 +932,8 @@ the <code>display</code> attribute, if necessary.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="keyword">if</span>(el.style.display &amp;&amp; notNone(el.style.display)) {
-        display[el.cid] = el.style.display;
+            <div class="content"><div class='highlight'><pre>      <span class="keyword">if</span>(styl &amp;&amp; notNone(styl)) {
+        display[cid] = styl;
         el.style.display = isShow ? <span class="string">''</span> : <span class="string">'none'</span>;</pre></div></div>
             
         </li>
@@ -1143,7 +1149,7 @@ This method does not function as a getter.</p>
             
             <div class="content"><div class='highlight'><pre>cash.deserialize = <span class="function"><span class="keyword">function</span><span class="params">(str)</span> {</span>
   <span class="keyword">var</span> obj = {}, ary;
-  str.split(<span class="string">'&amp;'</span>).forEach(<span class="function"><span class="keyword">function</span><span class="params">(spl)</span> {</span>
+  str &amp;&amp; str.split(<span class="string">'&amp;'</span>).forEach(<span class="function"><span class="keyword">function</span><span class="params">(spl)</span> {</span>
     <span class="keyword">if</span>(spl) {
       ary = spl.split(<span class="string">'='</span>);
       obj[decodeURIComponent(ary[<span class="number">0</span>])] = decodeURIComponent(ary[<span class="number">1</span>]);
