@@ -10,4 +10,9 @@ describe('Is and not', function() {
     expect($.not('div#baz').q.length).toBe(1);
   });
   
+  it('reduces the q via is', function() {
+    expect($.find('div').q.length).toBe(2);
+    expect($.is('div#baz').q.length).toBe(1);
+  });
+  
 });
