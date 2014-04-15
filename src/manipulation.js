@@ -21,7 +21,7 @@ cash.remove = function() {
   function rem(el) {delete $.cache.events[el.getAttribute('cid')];}
   this.q.forEach(function(el) {
     // unset any children
-    //slice.call(el.querySelectorAll('[cid]')).forEach(rem);
+    slice.call(el.querySelectorAll('[cid]')).forEach(rem);
     // now the top-level parent
     rem(el);
     el.parentNode && el.parentNode.removeChild(el);
