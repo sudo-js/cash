@@ -130,17 +130,13 @@ negative number to fetch from the <strong>end</strong> of the <code>q</code> (-1
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>init
-Breaking from the jQuery pattern, only a singile DOM node or NodeList is
-expected as arguments (though an array is acceptable). The passed in arg
-is normalized into an array and set as $.q. All chainable methods then
-operate on the q.</p>
-<p><code>param</code> {element|nodeList|array} <code>arg</code>
-<code>returns</code> cash</p>
+              <p>fetch the unique identifier for this element</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.init = <span class="function"><span class="keyword">function</span><span class="params">(arg)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>cash._getCid_ = <span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
+  <span class="keyword">return</span> isWindow(el) ? <span class="string">'window'</span> : isDocument(el) ? <span class="string">'document'</span> : el.getAttribute(<span class="string">'cid'</span>);
+};</pre></div></div>
             
         </li>
         
@@ -151,12 +147,20 @@ operate on the q.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>base case is already an array, then handle node(List) and falsey</p>
+              <p>init
+Breaking from the jQuery pattern, only a singile DOM node or NodeList is
+expected as arguments (though an array is acceptable). The passed in arg
+is normalized into an array and set as $.q. All chainable methods then
+operate on the q.</p>
+<p><code>param</code> {element|nodeList|array} <code>arg</code>
+<code>returns</code> cash</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="keyword">this</span>.q = isArray(arg) ? arg : (arg ? ((arg <span class="keyword">instanceof</span> NodeList || arg <span class="keyword">instanceof</span> HTMLCollection) ? 
-    slice.call(arg) : [arg]) : []);
+            <div class="content"><div class='highlight'><pre>cash.init = <span class="function"><span class="keyword">function</span><span class="params">(arg)</span> {</span>
+  arg || (arg = []);
+  <span class="keyword">this</span>.q = isArray(arg) ? arg : 
+    (arg <span class="keyword">instanceof</span> NodeList || arg <span class="keyword">instanceof</span> HTMLCollection) ? slice.call(arg) : [arg];
   <span class="keyword">return</span> <span class="keyword">this</span>;
 };</pre></div></div>
             
@@ -211,7 +215,7 @@ does &#39;even&#39; the API a little</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>cash._setCache_ = <span class="function"><span class="keyword">function</span><span class="params">(ref, el)</span> {</span>
-  <span class="keyword">var</span> cid = isWindow(el) ? <span class="string">'window'</span> : el.getAttribute(<span class="string">'cid'</span>),
+  <span class="keyword">var</span> cid = <span class="keyword">this</span>._getCid_(el),
     obj = <span class="keyword">this</span>.cache[ref];
   <span class="keyword">if</span>(!cid) {
     cid = String(++<span class="keyword">this</span>._cid_);
@@ -429,9 +433,9 @@ handle the capture phase bool for you in that case. </p>
             
             <div class="content"><div class='highlight'><pre>cash.off = <span class="function"><span class="keyword">function</span><span class="params">(type, fn, cap)</span> {</span>
   <span class="keyword">var</span> sp = type.split(<span class="string">'.'</span>), ev = sp[<span class="number">0</span>], ns = sp.splice(<span class="number">1</span>).join(<span class="string">'.'</span>),
-    all = ev === <span class="string">'*'</span>, events, cid;
+    all = ev === <span class="string">'*'</span>, events;
   <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
-    cid = isWindow(el) ? <span class="string">'window'</span> : el.getAttribute(<span class="string">'cid'</span>), events = $.cache.events[cid];
+    events = $.cache.events[$._getCid_(el)];
     <span class="keyword">if</span>(events) {
       (all ? Object.keys(events) : [ev]).forEach(<span class="function"><span class="keyword">function</span><span class="params">(k)</span> {</span>
         events[k] &amp;&amp; events[k].forEach(<span class="function"><span class="keyword">function</span><span class="params">(obj, i, ary)</span> {</span></pre></div></div>
@@ -519,7 +523,7 @@ and a selector is present capture phase is forced as delegation will not work ot
             
             <div class="content"><div class='highlight'><pre>  <span class="keyword">if</span>(!cap &amp;&amp; (ev === <span class="string">'focus'</span> || ev === <span class="string">'blur'</span>) &amp;&amp; sel) cap = <span class="literal">true</span>;
   <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
-    events = $._setCache_(<span class="string">'events'</span>, el)[el.getAttribute(<span class="string">'cid'</span>) || <span class="string">'window'</span>];
+    events = $._setCache_(<span class="string">'events'</span>, el)[$._getCid_(el)];
     events[ev] || (events[ev] = []);
     cb = <span class="function"><span class="keyword">function</span><span class="params">(e)</span> {</span>
       <span class="keyword">var</span> targ;</pre></div></div>
@@ -687,7 +691,7 @@ Minus that, it returns the height of the 0th item in the q;</p>
     width: {w:<span class="string">'innerWidth'</span>,d:<span class="string">'scrollWidth'</span>}
     }, node = <span class="keyword">this</span>.q[<span class="number">0</span>], d = isDocument(node) ? node.documentElement : <span class="literal">null</span>, 
     w = isWindow(node) ? node: <span class="literal">null</span>, type = obj[key], o;
-  <span class="keyword">if</span>(!val) <span class="keyword">return</span> node ? (w ? w[type.w] : (d ? d[type.d] : (o = <span class="keyword">this</span>.offset()) &amp;&amp; o[key])) : <span class="number">0</span>;
+  <span class="keyword">if</span>(!val) <span class="keyword">return</span> node ? w ? w[type.w] : d ? d[type.d] : (o = <span class="keyword">this</span>.offset()) &amp;&amp; o[key] : <span class="number">0</span>;
   <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
     el.style[key] = addPx(val);
   });
@@ -1089,9 +1093,7 @@ found into the new q.</p>
             <div class="content"><div class='highlight'><pre>cash.parent = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
   <span class="keyword">var</span> ary = [], p;
   <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
-    <span class="keyword">if</span>(!~ary.indexOf(p = el.parentElement) &amp;&amp; p) {
-      ary.push(p);
-    }
+    <span class="keyword">if</span>(!~ary.indexOf(p = el.parentElement) &amp;&amp; p) ary.push(p);
   });
   <span class="keyword">return</span> $(ary);
 };</pre></div></div>
