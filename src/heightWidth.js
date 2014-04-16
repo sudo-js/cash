@@ -18,7 +18,7 @@ cash._hw_ = function(key, val) {
     width: {w:'innerWidth',d:'scrollWidth'}
     }, node = this.q[0], d = isDocument(node) ? node.documentElement : null, 
     w = isWindow(node) ? node: null, type = obj[key], o;
-  if(!val) return node ? (w ? w[type.w] : (d ? d[type.d] : (o = this.offset()) && o[key])) : 0;
+  if(!val) return node ? w ? w[type.w] : d ? d[type.d] : (o = this.offset()) && o[key] : 0;
   this.q.forEach(function(el) {
     el.style[key] = addPx(val);
   });

@@ -49,9 +49,7 @@ cash.find = function(sel) {
 cash.parent = function() {
   var ary = [], p;
   this.q.forEach(function(el) {
-    if(!~ary.indexOf(p = el.parentElement) && p) {
-      ary.push(p);
-    }
+    if(!~ary.indexOf(p = el.parentElement) && p) ary.push(p);
   });
   return $(ary);
 };

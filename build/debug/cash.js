@@ -38,9 +38,9 @@ cash._getCid_ = function(el) {
 // `param` {element|nodeList|array} `arg`
 // `returns` cash
 cash.init = function(arg) {
-  // base case is already an array, then handle node(List) and falsey
-  this.q = isArray(arg) ? arg : (arg ? ((arg instanceof NodeList || arg instanceof HTMLCollection) ? 
-    slice.call(arg) : [arg]) : []);
+  arg || (arg = []);
+  this.q = isArray(arg) ? arg : 
+    (arg instanceof NodeList || arg instanceof HTMLCollection) ? slice.call(arg) : [arg];
   return this;
 };
 // ###isObject
@@ -276,7 +276,7 @@ cash._hw_ = function(key, val) {
     width: {w:'innerWidth',d:'scrollWidth'}
     }, node = this.q[0], d = isDocument(node) ? node.documentElement : null, 
     w = isWindow(node) ? node: null, type = obj[key], o;
-  if(!val) return node ? (w ? w[type.w] : (d ? d[type.d] : (o = this.offset()) && o[key])) : 0;
+  if(!val) return node ? w ? w[type.w] : d ? d[type.d] : (o = this.offset()) && o[key] : 0;
   this.q.forEach(function(el) {
     el.style[key] = addPx(val);
   });
@@ -446,9 +446,7 @@ cash.find = function(sel) {
 cash.parent = function() {
   var ary = [], p;
   this.q.forEach(function(el) {
-    if(!~ary.indexOf(p = el.parentElement) && p) {
-      ary.push(p);
-    }
+    if(!~ary.indexOf(p = el.parentElement) && p) ary.push(p);
   });
   return $(ary);
 };

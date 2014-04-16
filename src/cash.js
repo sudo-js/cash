@@ -29,9 +29,9 @@ cash._getCid_ = function(el) {
 // `param` {element|nodeList|array} `arg`
 // `returns` cash
 cash.init = function(arg) {
-  // base case is already an array, then handle node(List) and falsey
-  this.q = isArray(arg) ? arg : (arg ? ((arg instanceof NodeList || arg instanceof HTMLCollection) ? 
-    slice.call(arg) : [arg]) : []);
+  arg || (arg = []);
+  this.q = isArray(arg) ? arg : 
+    (arg instanceof NodeList || arg instanceof HTMLCollection) ? slice.call(arg) : [arg];
   return this;
 };
 // ###isObject
