@@ -1,5 +1,3 @@
-/*global isWindow*/
-
 // ###off
 // Remove event bindings from the q which match the given type and/or function.
 // By supplying "*.yourNamespace" as the event type, you can remove all events
@@ -15,9 +13,9 @@
 // `returns` cash
 cash.off = function(type, fn, cap) {
   var sp = type.split('.'), ev = sp[0], ns = sp.splice(1).join('.'),
-    all = ev === '*', events, cid;
+    all = ev === '*', events;
   this.q.forEach(function(el) {
-    cid = isWindow(el) ? 'window' : el.getAttribute('cid'), events = $.cache.events[cid];
+    events = $.cache.events[$._getCid_(el)];
     if(events) {
       (all ? Object.keys(events) : [ev]).forEach(function(k) {
         events[k] && events[k].forEach(function(obj, i, ary) {
@@ -55,7 +53,7 @@ cash.on = function(type, fn, sel, data, cap) {
   // we force capture phase here so that delegation works
   if(!cap && (ev === 'focus' || ev === 'blur') && sel) cap = true;
   this.q.forEach(function(el) {
-    events = $._setCache_('events', el)[el.getAttribute('cid') || 'window'];
+    events = $._setCache_('events', el)[$._getCid_(el)];
     events[ev] || (events[ev] = []);
     cb = function(e) {
       var targ;

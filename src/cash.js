@@ -1,4 +1,4 @@
-/*global cash HTMLCollection slice isObject isWindow isArray*/
+/*global cash HTMLCollection slice isObject isWindow isArray isDocument*/
 
 // ###cache
 // Hash that holds the event and display data
@@ -15,6 +15,10 @@ cash._cid_ = 0;
 cash.get = function(i) {
   // intentional coercion 
   return i == null ? this.q : (i > -1 ? this.q[i]: this.q[this.q.length + (i)]);
+};
+// fetch the unique identifier for this element
+cash._getCid_ = function(el) {
+  return isWindow(el) ? 'window' : isDocument(el) ? 'document' : el.getAttribute('cid');
 };
 // init
 // Breaking from the jQuery pattern, only a singile DOM node or NodeList is
@@ -44,7 +48,7 @@ cash.noop = function() {},
 // ###setCache
 // private.
 cash._setCache_ = function(ref, el) {
-  var cid = isWindow(el) ? 'window' : el.getAttribute('cid'),
+  var cid = this._getCid_(el),
     obj = this.cache[ref];
   if(!cid) {
     cid = String(++this._cid_);
