@@ -30,9 +30,9 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>(<span class="function"><span class="keyword">function</span><span class="params">(window)</span> {</span>
-<span class="keyword">var</span> proto = Array.prototype, slice = proto.slice, isArray = Array.isArray, keys = Object.keys,
-cssNum = {<span class="string">'column-count'</span>:<span class="number">1</span>,<span class="string">'columns'</span>:<span class="number">1</span>,<span class="string">'font-weight'</span>:<span class="number">1</span>,<span class="string">'line-height'</span>:<span class="number">1</span>,<span class="string">'opacity'</span>: <span class="number">1</span>,<span class="string">'z-index'</span>:<span class="number">1</span>,<span class="string">'zoom'</span>:<span class="number">1</span>};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(window)</span> </span>{
+<span class="hljs-keyword">var</span> proto = <span class="hljs-built_in">Array</span>.prototype, slice = proto.slice, isArray = <span class="hljs-built_in">Array</span>.isArray, keys = <span class="hljs-built_in">Object</span>.keys,
+cssNum = {<span class="hljs-string">'column-count'</span>:<span class="hljs-number">1</span>,<span class="hljs-string">'columns'</span>:<span class="hljs-number">1</span>,<span class="hljs-string">'font-weight'</span>:<span class="hljs-number">1</span>,<span class="hljs-string">'line-height'</span>:<span class="hljs-number">1</span>,<span class="hljs-string">'opacity'</span>: <span class="hljs-number">1</span>,<span class="hljs-string">'z-index'</span>:<span class="hljs-number">1</span>,<span class="hljs-string">'zoom'</span>:<span class="hljs-number">1</span>};</pre></div></div>
             
         </li>
         
@@ -47,12 +47,13 @@ cssNum = {<span class="string">'column-count'</span>:<span class="number">1</spa
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="function"><span class="keyword">function</span> <span class="title">addPx</span><span class="params">(v, k)</span> {</span><span class="keyword">return</span> (<span class="keyword">typeof</span> v === <span class="string">'number'</span> &amp;&amp; (!k || !cssNum[k])) ? v + <span class="string">'px'</span> : v;}
-<span class="function"><span class="keyword">function</span> <span class="title">cash</span><span class="params">(arg)</span> {</span><span class="keyword">return</span> cash.init(arg);}
-<span class="function"><span class="keyword">function</span> <span class="title">isDocument</span><span class="params">(arg)</span> {</span><span class="keyword">return</span> arg &amp;&amp; arg.nodeType === arg.DOCUMENT_NODE;}
-<span class="function"><span class="keyword">function</span> <span class="title">isObject</span><span class="params">(arg)</span> {</span><span class="keyword">return</span> Object.prototype.toString.call(arg) === <span class="string">'[object Object]'</span>;}
-<span class="function"><span class="keyword">function</span> <span class="title">isString</span><span class="params">(arg)</span> {</span><span class="keyword">return</span> <span class="keyword">typeof</span> arg === <span class="string">'string'</span>;}
-<span class="function"><span class="keyword">function</span> <span class="title">isWindow</span><span class="params">(arg)</span> {</span><span class="keyword">return</span> arg === window;}</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addPx</span><span class="hljs-params">(v, k)</span> </span>{<span class="hljs-keyword">return</span> (<span class="hljs-keyword">typeof</span> v === <span class="hljs-string">'number'</span> &amp;&amp; (!k || !cssNum[k])) ? v + <span class="hljs-string">'px'</span> : v;}
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">cash</span><span class="hljs-params">(arg)</span> </span>{<span class="hljs-keyword">return</span> cash.init(arg);}
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isDocument</span><span class="hljs-params">(arg)</span> </span>{<span class="hljs-keyword">return</span> arg &amp;&amp; arg.nodeType === arg.DOCUMENT_NODE;}
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isFunction</span><span class="hljs-params">(arg)</span> </span>{ <span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> arg === <span class="hljs-string">'function'</span>; }
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isObject</span><span class="hljs-params">(arg)</span> </span>{<span class="hljs-keyword">return</span> <span class="hljs-built_in">Object</span>.prototype.toString.call(arg) === <span class="hljs-string">'[object Object]'</span>;}
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isString</span><span class="hljs-params">(arg)</span> </span>{<span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> arg === <span class="hljs-string">'string'</span>;}
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isWindow</span><span class="hljs-params">(arg)</span> </span>{<span class="hljs-keyword">return</span> arg === <span class="hljs-built_in">window</span>;}</pre></div></div>
             
         </li>
         
@@ -83,7 +84,7 @@ cssNum = {<span class="string">'column-count'</span>:<span class="number">1</spa
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash._cid_ = <span class="number">0</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>cash._cid_ = <span class="hljs-number">0</span>;</pre></div></div>
             
         </li>
         
@@ -103,7 +104,7 @@ negative number to fetch from the <strong>end</strong> of the <code>q</code> (-1
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.get = <span class="function"><span class="keyword">function</span><span class="params">(i)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>cash.get = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(i)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -118,7 +119,7 @@ negative number to fetch from the <strong>end</strong> of the <code>q</code> (-1
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="keyword">return</span> i == <span class="literal">null</span> ? <span class="keyword">this</span>.q : (i &gt; -<span class="number">1</span> ? <span class="keyword">this</span>.q[i]: <span class="keyword">this</span>.q[<span class="keyword">this</span>.q.length + (i)]);
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">return</span> i == <span class="hljs-literal">null</span> ? <span class="hljs-keyword">this</span>.q : (i &gt; -<span class="hljs-number">1</span> ? <span class="hljs-keyword">this</span>.q[i]: <span class="hljs-keyword">this</span>.q[<span class="hljs-keyword">this</span>.q.length + (i)]);
 };</pre></div></div>
             
         </li>
@@ -134,8 +135,8 @@ negative number to fetch from the <strong>end</strong> of the <code>q</code> (-1
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash._getCid_ = <span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
-  <span class="keyword">return</span> isWindow(el) ? <span class="string">'window'</span> : isDocument(el) ? <span class="string">'document'</span> : el.getAttribute(<span class="string">'cid'</span>);
+            <div class="content"><div class='highlight'><pre>cash._getCid_ = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span> </span>{
+  <span class="hljs-keyword">return</span> isWindow(el) ? <span class="hljs-string">'window'</span> : isDocument(el) ? <span class="hljs-string">'document'</span> : el.getAttribute(<span class="hljs-string">'cid'</span>);
 };</pre></div></div>
             
         </li>
@@ -157,11 +158,11 @@ operate on the q.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.init = <span class="function"><span class="keyword">function</span><span class="params">(arg)</span> {</span>
+            <div class="content"><div class='highlight'><pre>cash.init = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(arg)</span> </span>{
   arg || (arg = []);
-  <span class="keyword">this</span>.q = isArray(arg) ? arg : 
-    (arg <span class="keyword">instanceof</span> NodeList || arg <span class="keyword">instanceof</span> HTMLCollection) ? slice.call(arg) : [arg];
-  <span class="keyword">return</span> <span class="keyword">this</span>;
+  <span class="hljs-keyword">this</span>.q = isArray(arg) ? arg : 
+    (arg <span class="hljs-keyword">instanceof</span> NodeList || arg <span class="hljs-keyword">instanceof</span> HTMLCollection) ? slice.call(arg) : [arg];
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 };</pre></div></div>
             
         </li>
@@ -176,7 +177,7 @@ operate on the q.</p>
               <h3 id="isobject">isObject</h3>
 <p>Ye olde toString fallback to see if a passed in argument is an object.
 Really you should test the other cases (Array.isArray for example) but this
-does &#39;even&#39; the API a little</p>
+does ‘even’ the API a little</p>
 <p><code>param</code> {*}</p>
 <p><code>returns</code> {bool}</p>
 
@@ -198,7 +199,7 @@ does &#39;even&#39; the API a little</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.noop = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>cash.noop = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{},</pre></div></div>
             
         </li>
         
@@ -214,15 +215,15 @@ does &#39;even&#39; the API a little</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash._setCache_ = <span class="function"><span class="keyword">function</span><span class="params">(ref, el)</span> {</span>
-  <span class="keyword">var</span> cid = <span class="keyword">this</span>._getCid_(el),
-    obj = <span class="keyword">this</span>.cache[ref];
-  <span class="keyword">if</span>(!cid) {
-    cid = String(++<span class="keyword">this</span>._cid_);
-    el.setAttribute(<span class="string">'cid'</span>, cid);
+            <div class="content"><div class='highlight'><pre>cash._setCache_ = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ref, el)</span> </span>{
+  <span class="hljs-keyword">var</span> cid = <span class="hljs-keyword">this</span>._getCid_(el),
+    obj = <span class="hljs-keyword">this</span>.cache[ref];
+  <span class="hljs-keyword">if</span>(!cid) {
+    cid = <span class="hljs-built_in">String</span>(++<span class="hljs-keyword">this</span>._cid_);
+    el.setAttribute(<span class="hljs-string">'cid'</span>, cid);
   }
-  obj[cid] || (obj[cid] = ref === <span class="string">'events'</span> ? {} : <span class="literal">undefined</span>);
-  <span class="keyword">return</span> obj;
+  obj[cid] || (obj[cid] = ref === <span class="hljs-string">'events'</span> ? {} : <span class="hljs-literal">undefined</span>);
+  <span class="hljs-keyword">return</span> obj;
 };</pre></div></div>
             
         </li>
@@ -234,21 +235,37 @@ does &#39;even&#39; the API a little</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
-              <h3 id="setattribute">setAttribute</h3>
-<p>Given a single attribute and value or a hash of them set it/them on each
-element in the <code>q</code>. This method does not function as a getter.</p>
-<p><code>param</code> {string|object} <code>key</code></p>
-<p><code>param</code> {string} <code>val</code>. Used if the <code>key</code> is not an object</p>
-<p><code>returns</code> cash</p>
+              <h3 id="-_all-_">_all_</h3>
+<p>Abstracted logic for the all and getAll methods</p>
+<p><code>private</code></p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.setAttribute = <span class="function"><span class="keyword">function</span><span class="params">(key, val)</span> {</span>
-  <span class="keyword">var</span> ary = isString(key) ? <span class="literal">undefined</span> : keys(key),
-  set = ary ? <span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>ary.forEach(<span class="function"><span class="keyword">function</span><span class="params">(i)</span> {</span>el.setAttribute(i, key[i]);});} :
-    <span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>el.setAttribute(key, val);};
-  <span class="keyword">this</span>.q.forEach(set);
-  <span class="keyword">return</span> <span class="keyword">this</span>;
+            <div class="content"><div class='highlight'><pre>cash._all = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(originalArgs, returnValues)</span> </span>{
+  <span class="hljs-keyword">var</span> meths = originalArgs[<span class="hljs-number">0</span>].split(<span class="hljs-string">'.'</span>),
+  args = slice.call(originalArgs, <span class="hljs-number">1</span>),
+  meth = meths[meths.length-<span class="hljs-number">1</span>],
+      assign = <span class="hljs-regexp">/=$/</span>.test(meth), r, f, i, v;
+  <span class="hljs-keyword">if</span>(assign) meth = meth.substr(<span class="hljs-number">0</span>,meth.length-<span class="hljs-number">1</span>);
+  <span class="hljs-keyword">if</span>(returnValues) r = [];
+
+  <span class="hljs-keyword">this</span>.q.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span></span>{
+    <span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>;i &lt; meths.length-<span class="hljs-number">1</span>;i++) {
+      f = e[meths[i]];
+      <span class="hljs-keyword">if</span>(isFunction(f)) e = f();
+      <span class="hljs-keyword">else</span> e = f;
+    }
+    <span class="hljs-keyword">if</span>(assign) v = e[meth] = args[<span class="hljs-number">0</span>];
+    <span class="hljs-keyword">else</span> {
+      f = e[meth];
+      <span class="hljs-keyword">if</span>(isFunction(f)) v = f.apply(e, args);
+      <span class="hljs-keyword">else</span> v = f;
+    }
+
+    <span class="hljs-keyword">if</span>(returnValues) r.push(v);
+  });
+
+  <span class="hljs-keyword">return</span> returnValues ? r : <span class="hljs-keyword">this</span>;
 };</pre></div></div>
             
         </li>
@@ -260,19 +277,21 @@ element in the <code>q</code>. This method does not function as a getter.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
-              <h3 id="removeattribute">removeAttribute</h3>
-<p>Given a single attribute name or an array of them, remove it/them from each
-element in the <code>q</code>.</p>
-<p><code>param</code> {string|array} <code>key</code></p>
+              <h3 id="all">all</h3>
+<p>Invokes the provided method or method chain with the provided arguments to all elements in q.
+Example usage:</p>
+<ul>
+<li>$(nodeList).all(‘setAttribute’, ‘foo’, ‘bar’);</li>
+<li>$(nodeList).all(‘classList.add’, ‘active’);</li>
+<li>$(nodeList).all(‘selected=’, true);</li>
+</ul>
+<p><code>param</code> {string} <code>methodName</code>. Can be a string representing a method name, an attribute, or a property. Can be chained with periods. Can end in a <code>=</code> to invoke an assignment.</p>
 <p><code>returns</code> cash</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.removeAttribute = <span class="function"><span class="keyword">function</span><span class="params">(key)</span> {</span>
-  <span class="keyword">var</span> rem = isArray(key) ? <span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>key.forEach(<span class="function"><span class="keyword">function</span><span class="params">(a)</span> {</span>el.removeAttribute(a);});} :
-    <span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>el.removeAttribute(key);};
-  <span class="keyword">this</span>.q.forEach(rem);
-  <span class="keyword">return</span> <span class="keyword">this</span>;
+            <div class="content"><div class='highlight'><pre>cash.all = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._all(<span class="hljs-built_in">arguments</span>, <span class="hljs-literal">false</span>);
 };</pre></div></div>
             
         </li>
@@ -284,19 +303,21 @@ element in the <code>q</code>.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
-              <h3 id="addclass">addClass</h3>
-<p>Add a class, or muliple classes, to each element in the <code>q</code></p>
-<p><code>param</code> {string} <code>cls</code>. Single or multiple class names (space delimited).</p>
-<p><code>returns</code> cash</p>
+              <h3 id="getall">getAll</h3>
+<p>Similar to all(), getAll invokes the provided method or method chain but instead of returning cash, returns the return values from each function invocation.
+Example usage:</p>
+<ul>
+<li>$(nodeList).all(‘getAttribute’, ‘foo’) #=&gt; [‘bar’, ‘biz’, ‘baz’];</li>
+<li>$(nodeList).all(‘classList.contains’, ‘active’) #=&gt; [true, false, true];</li>
+<li>$(nodeList).all(‘selected’) #=&gt; [true, false, false];</li>
+</ul>
+<p><code>param</code> {string} <code>methodName</code>. Can be a string representing a method name, an attribute, or a property. Can be chained with periods. Can end in a <code>=</code> to invoke an assignment.</p>
+<p><code>returns</code> {array}</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.addClass = <span class="function"><span class="keyword">function</span><span class="params">(cls)</span> {</span>
-  <span class="keyword">var</span> ary = cls.split(<span class="string">' '</span>);
-  <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
-    <span class="keyword">if</span>(el.classList) ary.forEach(<span class="function"><span class="keyword">function</span><span class="params">(n)</span> {</span>el.classList.add(n);});
-  });
-  <span class="keyword">return</span> <span class="keyword">this</span>;
+            <div class="content"><div class='highlight'><pre>cash.getAll = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._all(<span class="hljs-built_in">arguments</span>, <span class="hljs-literal">true</span>);
 };</pre></div></div>
             
         </li>
@@ -308,19 +329,21 @@ element in the <code>q</code>.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
-              <h3 id="removeclass">removeClass</h3>
-<p>Remove a class, or muliple classes, from each element in the <code>q</code></p>
-<p><code>param</code> {string} <code>cls</code>. Single or multiple class names (space delimited).</p>
+              <h3 id="setattribute">setAttribute</h3>
+<p>Given a single attribute and value or a hash of them set it/them on each
+element in the <code>q</code>. This method does not function as a getter.</p>
+<p><code>param</code> {string|object} <code>key</code></p>
+<p><code>param</code> {string} <code>val</code>. Used if the <code>key</code> is not an object</p>
 <p><code>returns</code> cash</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.removeClass = <span class="function"><span class="keyword">function</span><span class="params">(cls)</span> {</span>
-  <span class="keyword">var</span> ary = cls.split(<span class="string">' '</span>);
-  <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
-    <span class="keyword">if</span>(el.classList) ary.forEach(<span class="function"><span class="keyword">function</span><span class="params">(n)</span> {</span>el.classList.remove(n);});
-  });
-  <span class="keyword">return</span> <span class="keyword">this</span>;
+            <div class="content"><div class='highlight'><pre>cash.setAttribute = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(key, val)</span> </span>{
+  <span class="hljs-keyword">var</span> ary = isString(key) ? <span class="hljs-literal">undefined</span> : keys(key),
+  set = ary ? <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span> </span>{ary.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(i)</span> </span>{el.setAttribute(i, key[i]);});} :
+    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span> </span>{el.setAttribute(key, val);};
+  <span class="hljs-keyword">this</span>.q.forEach(set);
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 };</pre></div></div>
             
         </li>
@@ -332,23 +355,19 @@ element in the <code>q</code>.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
-              <h3 id="toggleclass">toggleClass</h3>
-<p>Given a class name (or multiple class names), add them if not already present. Remove if so.</p>
-<p><code>param</code> {string} <code>cls</code></p>
+              <h3 id="removeattribute">removeAttribute</h3>
+<p>Given a single attribute name or an array of them, remove it/them from each
+element in the <code>q</code>.</p>
+<p><code>param</code> {string|array} <code>key</code></p>
 <p><code>returns</code> cash</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.toggleClass = <span class="function"><span class="keyword">function</span><span class="params">(cls)</span> {</span>
-  <span class="keyword">var</span> ary = cls.split(<span class="string">' '</span>);
-  <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
-    <span class="keyword">if</span>(el.classList) {
-      ary.forEach(<span class="function"><span class="keyword">function</span><span class="params">(n)</span> {</span>
-        el.classList.contains(n) ? el.classList.remove(n) : el.classList.add(n);
-      });
-    }
-  });
-  <span class="keyword">return</span> <span class="keyword">this</span>;
+            <div class="content"><div class='highlight'><pre>cash.removeAttribute = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(key)</span> </span>{
+  <span class="hljs-keyword">var</span> rem = isArray(key) ? <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span> </span>{key.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(a)</span> </span>{el.removeAttribute(a);});} :
+    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span> </span>{el.removeAttribute(key);};
+  <span class="hljs-keyword">this</span>.q.forEach(rem);
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 };</pre></div></div>
             
         </li>
@@ -360,29 +379,20 @@ element in the <code>q</code>.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
-              <h3 id="off">off</h3>
-<p>Remove event bindings from the q which match the given type and/or function.
-By supplying &quot;<em>.yourNamespace&quot; as the event type, you can remove all events
-in a namespace, or simply &#39;</em>&#39; to remove all events.
-The optional third argument, &#39;cap&#39;, is a boolean than will need to be
-<code>true</code> if you bound the event originally with <code>cap = true</code>. 
-NOTE: You do not need to pass the &#39;cap&#39; bool in the &#39;forced capture phase&#39;
-case, that is the event is &#39;focus&#39; or &#39;blur&#39; and is delegated. Cash will 
-handle the capture phase bool for you in that case. </p>
-<p><code>param</code> {string} <code>type</code>. An event trigger, can be namespaced</p>
-<p><code>param</code> {function}  <code>fn</code>. The function which should be removed, optional.</p>
+              <h3 id="addclass">addClass</h3>
+<p>Add a class, or muliple classes, to each element in the <code>q</code></p>
+<p><code>param</code> {string} <code>cls</code>. Single or multiple class names (space delimited).</p>
 <p><code>returns</code> cash</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.off = <span class="function"><span class="keyword">function</span><span class="params">(type, fn, cap)</span> {</span>
-  <span class="keyword">var</span> sp = type.split(<span class="string">'.'</span>), ev = sp[<span class="number">0</span>], ns = sp.splice(<span class="number">1</span>).join(<span class="string">'.'</span>),
-    all = ev === <span class="string">'*'</span>, events;
-  <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
-    events = $.cache.events[$._getCid_(el)];
-    <span class="keyword">if</span>(events) {
-      (all ? Object.keys(events) : [ev]).forEach(<span class="function"><span class="keyword">function</span><span class="params">(k)</span> {</span>
-        events[k] &amp;&amp; events[k].forEach(<span class="function"><span class="keyword">function</span><span class="params">(obj, i, ary)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>cash.addClass = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(cls)</span> </span>{
+  <span class="hljs-keyword">var</span> ary = cls.split(<span class="hljs-string">' '</span>);
+  <span class="hljs-keyword">this</span>.q.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span> </span>{
+    <span class="hljs-keyword">if</span>(el.classList) ary.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(n)</span> </span>{el.classList.add(n);});
+  });
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+};</pre></div></div>
             
         </li>
         
@@ -393,16 +403,20 @@ handle the capture phase bool for you in that case. </p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
-              <p>we may have forced the cap</p>
+              <h3 id="removeclass">removeClass</h3>
+<p>Remove a class, or muliple classes, from each element in the <code>q</code></p>
+<p><code>param</code> {string} <code>cls</code>. Single or multiple class names (space delimited).</p>
+<p><code>returns</code> cash</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>          <span class="keyword">if</span>(!cap &amp;&amp; (k === <span class="string">'focus'</span> || k === <span class="string">'blur'</span>) &amp;&amp; obj.sel) cap = <span class="literal">true</span>;
-          <span class="keyword">if</span>((!ns || ns === obj.ns) &amp;&amp; (!fn || fn === obj.fn) &amp;&amp; (cap === obj.cap)) {
-            el.removeEventListener(k, obj.cb, obj.cap);
-            <span class="keyword">delete</span> ary[i];
-          }
-        });</pre></div></div>
+            <div class="content"><div class='highlight'><pre>cash.removeClass = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(cls)</span> </span>{
+  <span class="hljs-keyword">var</span> ary = cls.split(<span class="hljs-string">' '</span>);
+  <span class="hljs-keyword">this</span>.q.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span> </span>{
+    <span class="hljs-keyword">if</span>(el.classList) ary.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(n)</span> </span>{el.classList.remove(n);});
+  });
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+};</pre></div></div>
             
         </li>
         
@@ -413,15 +427,23 @@ handle the capture phase bool for you in that case. </p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
-              <p>remove the falsey indices that were deleted</p>
+              <h3 id="toggleclass">toggleClass</h3>
+<p>Given a class name (or multiple class names), add them if not already present. Remove if so.</p>
+<p><code>param</code> {string} <code>cls</code></p>
+<p><code>returns</code> cash</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">if</span>(events[k]) events[k] = events[k].filter(<span class="function"><span class="keyword">function</span><span class="params">(i)</span> {</span><span class="keyword">return</span> i !== <span class="literal">undefined</span>;});
+            <div class="content"><div class='highlight'><pre>cash.toggleClass = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(cls)</span> </span>{
+  <span class="hljs-keyword">var</span> ary = cls.split(<span class="hljs-string">' '</span>);
+  <span class="hljs-keyword">this</span>.q.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span> </span>{
+    <span class="hljs-keyword">if</span>(el.classList) {
+      ary.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(n)</span> </span>{
+        el.classList.contains(n) ? el.classList.remove(n) : el.classList.add(n);
       });
     }
   });
-  <span class="keyword">return</span> <span class="keyword">this</span>;
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 };</pre></div></div>
             
         </li>
@@ -433,24 +455,29 @@ handle the capture phase bool for you in that case. </p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
-              <h3 id="on">on</h3>
-<p>Given an event type, a callback, an optional selector for delegation, and
-an optional hash of data to be appended to the event, bind them to each
-element in the q. Capture phase is supported by passing true as the 
-optional 5th argument. NOTE: if the event being bound is &#39;focus&#39; or &#39;blur&#39;
-and a selector is present capture phase is forced as delegation will not work otherwise.</p>
-<p><code>param</code> {string} <code>type</code>. Can be &quot;namespaced&quot; i.e click.foo</p>
-<p><code>param</code> {function} <code>fn</code></p>
-<p><code>param</code> {string} <code>sel</code> optional CSS selector for delegation</p>
-<p><code>param</code> {object} <code>data</code> optional hash to be appended to the event object</p>
-<p><code>param</code> {bool} <code>cap</code> optional bool to force capture phase</p>
+              <h3 id="off">off</h3>
+<p>Remove event bindings from the q which match the given type and/or function.
+By supplying “<em>.yourNamespace” as the event type, you can remove all events
+in a namespace, or simply ‘</em>‘ to remove all events.
+The optional third argument, ‘cap’, is a boolean than will need to be
+<code>true</code> if you bound the event originally with <code>cap = true</code>.
+NOTE: You do not need to pass the ‘cap’ bool in the ‘forced capture phase’
+case, that is the event is ‘focus’ or ‘blur’ and is delegated. Cash will
+handle the capture phase bool for you in that case.</p>
+<p><code>param</code> {string} <code>type</code>. An event trigger, can be namespaced</p>
+<p><code>param</code> {function}  <code>fn</code>. The function which should be removed, optional.</p>
 <p><code>returns</code> cash</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.on = <span class="function"><span class="keyword">function</span><span class="params">(type, fn, sel, data, cap)</span> {</span>
-  <span class="keyword">var</span> sp = type.split(<span class="string">'.'</span>), ev = sp[<span class="number">0</span>], ns = sp.splice(<span class="number">1</span>).join(<span class="string">'.'</span>),
-    cb, events;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>cash.off = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(type, fn, cap)</span> </span>{
+  <span class="hljs-keyword">var</span> sp = type.split(<span class="hljs-string">'.'</span>), ev = sp[<span class="hljs-number">0</span>], ns = sp.splice(<span class="hljs-number">1</span>).join(<span class="hljs-string">'.'</span>),
+    all = ev === <span class="hljs-string">'*'</span>, events;
+  <span class="hljs-keyword">this</span>.q.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span> </span>{
+    events = $.cache.events[$._getCid_(el)];
+    <span class="hljs-keyword">if</span>(events) {
+      (all ? keys(events) : [ev]).forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(k)</span> </span>{
+        events[k] &amp;&amp; events[k].forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj, i, ary)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -461,16 +488,16 @@ and a selector is present capture phase is forced as delegation will not work ot
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
-              <p>we force capture phase here so that delegation works</p>
+              <p>we may have forced the cap</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="keyword">if</span>(!cap &amp;&amp; (ev === <span class="string">'focus'</span> || ev === <span class="string">'blur'</span>) &amp;&amp; sel) cap = <span class="literal">true</span>;
-  <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
-    events = $._setCache_(<span class="string">'events'</span>, el)[$._getCid_(el)];
-    events[ev] || (events[ev] = []);
-    cb = <span class="function"><span class="keyword">function</span><span class="params">(e)</span> {</span>
-      <span class="keyword">var</span> targ;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>          <span class="hljs-keyword">if</span>(!cap &amp;&amp; (k === <span class="hljs-string">'focus'</span> || k === <span class="hljs-string">'blur'</span>) &amp;&amp; obj.sel) cap = <span class="hljs-literal">true</span>;
+          <span class="hljs-keyword">if</span>((!ns || ns === obj.ns) &amp;&amp; (!fn || fn === obj.fn) &amp;&amp; (cap === obj.cap)) {
+            el.removeEventListener(k, obj.cb, obj.cap);
+            <span class="hljs-keyword">delete</span> ary[i];
+          }
+        });</pre></div></div>
             
         </li>
         
@@ -481,11 +508,16 @@ and a selector is present capture phase is forced as delegation will not work ot
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
-              <p>pass the namespace along to the listener</p>
+              <p>remove the falsey indices that were deleted</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="keyword">if</span>(ns) e.namespace = ns;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span>(events[k]) events[k] = events[k].filter(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(i)</span> </span>{<span class="hljs-keyword">return</span> i !== <span class="hljs-literal">undefined</span>;});
+      });
+    }
+  });
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+};</pre></div></div>
             
         </li>
         
@@ -496,11 +528,24 @@ and a selector is present capture phase is forced as delegation will not work ot
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
-              <p>pass any custom data along to the listener</p>
+              <h3 id="on">on</h3>
+<p>Given an event type, a callback, an optional selector for delegation, and
+an optional hash of data to be appended to the event, bind them to each
+element in the q. Capture phase is supported by passing true as the
+optional 5th argument. NOTE: if the event being bound is ‘focus’ or ‘blur’
+and a selector is present capture phase is forced as delegation will not work otherwise.</p>
+<p><code>param</code> {string} <code>type</code>. Can be “namespaced” i.e click.foo</p>
+<p><code>param</code> {function} <code>fn</code></p>
+<p><code>param</code> {string} <code>sel</code> optional CSS selector for delegation</p>
+<p><code>param</code> {object} <code>data</code> optional hash to be appended to the event object</p>
+<p><code>param</code> {bool} <code>cap</code> optional bool to force capture phase</p>
+<p><code>returns</code> cash</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="keyword">if</span>(data) e.data = data;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>cash.on = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(type, fn, sel, data, cap)</span> </span>{
+  <span class="hljs-keyword">var</span> sp = type.split(<span class="hljs-string">'.'</span>), ev = sp[<span class="hljs-number">0</span>], ns = sp.splice(<span class="hljs-number">1</span>).join(<span class="hljs-string">'.'</span>),
+    cb, events;</pre></div></div>
             
         </li>
         
@@ -511,11 +556,16 @@ and a selector is present capture phase is forced as delegation will not work ot
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
-              <p>base case is that this is not &#39;delegated&#39;</p>
+              <p>we force capture phase here so that delegation works</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="keyword">if</span>(!sel) fn.call(el, e);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span>(!cap &amp;&amp; (ev === <span class="hljs-string">'focus'</span> || ev === <span class="hljs-string">'blur'</span>) &amp;&amp; sel) cap = <span class="hljs-literal">true</span>;
+  <span class="hljs-keyword">this</span>.q.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span> </span>{
+    events = $._setCache_(<span class="hljs-string">'events'</span>, el)[$._getCid_(el)];
+    events[ev] || (events[ev] = []);
+    cb = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> </span>{
+      <span class="hljs-keyword">var</span> targ, els;</pre></div></div>
             
         </li>
         
@@ -526,12 +576,11 @@ and a selector is present capture phase is forced as delegation will not work ot
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
-              <p>there is a sel, check for matches and call if so.</p>
+              <p>pass the namespace along to the listener</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="keyword">else</span> <span class="keyword">if</span>(~$(el).find(sel).q.indexOf(e.target) || (targ = $.contains(e.target).q[<span class="number">0</span>])) {
-        targ || (targ = e.target);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span>(ns) e.namespace = ns;</pre></div></div>
             
         </li>
         
@@ -542,14 +591,11 @@ and a selector is present capture phase is forced as delegation will not work ot
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
-              <p>as defined by us rather than currentTarget</p>
+              <p>pass any custom data along to the listener</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        e.delegateTarget = targ;
-        fn.call(targ, e);
-      }
-    };</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span>(data) e.data = data;</pre></div></div>
             
         </li>
         
@@ -560,15 +606,11 @@ and a selector is present capture phase is forced as delegation will not work ot
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
-              <p>cb === ours, fn === theirs.</p>
+              <p>base case is that this is not ‘delegated’</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    events[ev].push({ns: ns, sel: sel, cb: cb, fn: fn, cap: cap});
-    el.addEventListener &amp;&amp; el.addEventListener(ev, cb, cap);
-  });
-  <span class="keyword">return</span> <span class="keyword">this</span>;
-};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span>(!sel) fn.call(el, e);</pre></div></div>
             
         </li>
         
@@ -579,19 +621,11 @@ and a selector is present capture phase is forced as delegation will not work ot
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
-              <h3 id="trigger">trigger</h3>
-<p>Given an event type, init a DOM event and dispatch it to each element in the q.</p>
-<p><code>param</code> {string} <code>e</code></p>
-<p><code>returns</code> cash</p>
+              <p>there is a sel, check for matches and call if so.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.trigger = <span class="function"><span class="keyword">function</span><span class="params">(e)</span> {</span>
-  <span class="keyword">var</span> evt = document.createEvent(<span class="string">'Event'</span>);
-  evt.initEvent(e, <span class="literal">true</span>, <span class="literal">true</span>);
-  <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>el.dispatchEvent &amp;&amp; el.dispatchEvent(evt);});
-  <span class="keyword">return</span> <span class="keyword">this</span>;
-};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">else</span> {</pre></div></div>
             
         </li>
         
@@ -602,17 +636,11 @@ and a selector is present capture phase is forced as delegation will not work ot
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
-              <h3 id="height">height</h3>
-<p>Given a value this method is a setter for each element in the q.
-If the arg is truthy and a number it is converted to a string with &#39;px&#39;
-added, if it is a string nothing is added.
-Minus that, it returns the height of the 0th item in the q;</p>
-<p><code>param</code> {number|string} <code>val</code>. Optional value to be set</p>
-<p><code>returns</code> {number|object} The height if a getter, cash if a setter</p>
+              <p>set element list context</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.height = <span class="function"><span class="keyword">function</span><span class="params">(val)</span> {</span><span class="keyword">return</span> <span class="keyword">this</span>._hw_(<span class="string">'height'</span>, val);};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        els = slice.call(el.querySelectorAll(sel));</pre></div></div>
             
         </li>
         
@@ -623,24 +651,11 @@ Minus that, it returns the height of the 0th item in the q;</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
-              <h3 id="-_hw-_">_hw_</h3>
-<p>Abstracted logic for the height and width operations</p>
-<p><code>private</code></p>
+              <p>check to see if any of our children matching the selector invoked the event</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash._hw_ = <span class="function"><span class="keyword">function</span><span class="params">(key, val)</span> {</span>
-  <span class="keyword">var</span> obj = {
-    height: {w:<span class="string">'innerHeight'</span>,d:<span class="string">'scrollHeight'</span>},
-    width: {w:<span class="string">'innerWidth'</span>,d:<span class="string">'scrollWidth'</span>}
-    }, node = <span class="keyword">this</span>.q[<span class="number">0</span>], d = isDocument(node) ? node.documentElement : <span class="literal">null</span>, 
-    w = isWindow(node) ? node: <span class="literal">null</span>, type = obj[key], o;
-  <span class="keyword">if</span>(!val) <span class="keyword">return</span> node ? w ? w[type.w] : d ? d[type.d] : (o = <span class="keyword">this</span>.offset()) &amp;&amp; o[key] : <span class="number">0</span>;
-  <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
-    el.style[key] = addPx(val);
-  });
-  <span class="keyword">return</span> <span class="keyword">this</span>;
-};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span>(~els.indexOf(e.target)) targ = e.target;</pre></div></div>
             
         </li>
         
@@ -651,17 +666,11 @@ Minus that, it returns the height of the 0th item in the q;</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
-              <h3 id="width">width</h3>
-<p>Given a value this method is a setter for each element in the q.
-If the arg is truthy and a number it is converted to a string with &#39;px&#39;
-added, if it is a string nothing is added.
-Minus that, it returns the width of the 0th item in the q;</p>
-<p><code>param</code> {number|string} <code>val</code>. Optional value to be set</p>
-<p><code>returns</code> {number|object} The height if a getter, cash if a setter</p>
+              <p>otherwise see if any of the children matching the selector have el as their child</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.width = <span class="function"><span class="keyword">function</span><span class="params">(val)</span> {</span><span class="keyword">return</span> <span class="keyword">this</span>._hw_(<span class="string">'width'</span>, val);};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">else</span> els.some(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(qel)</span></span>{ <span class="hljs-keyword">if</span>(qel.contains(e.target)) <span class="hljs-keyword">return</span> targ = qel; });</pre></div></div>
             
         </li>
         
@@ -672,18 +681,11 @@ Minus that, it returns the width of the 0th item in the q;</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
-              <h3 id="is">is</h3>
-<p>As querySelector cannot take psuedo selectors we provide this method to
-easily filter the <code>q</code> to elements that do match the passed in selector.</p>
-<p><code>param</code> {string} <code>sel</code></p>
-<p><code>returns</code> cash</p>
+              <p>couldn’t find the source based on the selector so we don’t match</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.is = <span class="function"><span class="keyword">function</span><span class="params">(sel)</span> {</span>
-  <span class="keyword">this</span>.q = <span class="keyword">this</span>.q.filter(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span><span class="keyword">return</span> $.matches(el, sel);});
-  <span class="keyword">return</span> <span class="keyword">this</span>;
-};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span>(targ) {</pre></div></div>
             
         </li>
         
@@ -694,18 +696,15 @@ easily filter the <code>q</code> to elements that do match the passed in selecto
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
-              <h3 id="not">not</h3>
-<p>As querySelector cannot take psuedo selectors we provide this method to
-easily filter the <code>q</code> to elements that do not match the passed in selector</p>
-<p><code>param</code> {string} <code>sel</code></p>
-<p><code>returns</code> cash</p>
+              <p>as defined by us rather than currentTarget</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.not = <span class="function"><span class="keyword">function</span><span class="params">(sel)</span> {</span>
-  <span class="keyword">this</span>.q = <span class="keyword">this</span>.q.filter(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span><span class="keyword">return</span> !$.matches(el, sel);});
-  <span class="keyword">return</span> <span class="keyword">this</span>;
-};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>          e.delegateTarget = targ;
+          fn.call(targ, e);
+        }
+      }
+    };</pre></div></div>
             
         </li>
         
@@ -716,19 +715,14 @@ easily filter the <code>q</code> to elements that do not match the passed in sel
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
-              <h3 id="createelement">createElement</h3>
-<p>Given a string, create a DOM element and store place in at the q. Notice
-that the input must be a single &#39;top-level&#39; Element, but it may contain
-any number of children.</p>
-<p><code>param</code> {string} <code>str</code>. An innerHTML compatible string</p>
-<p><code>returns</code> cash</p>
+              <p>cb === ours, fn === theirs.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.createElement = <span class="function"><span class="keyword">function</span><span class="params">(str)</span> {</span>
-  <span class="keyword">var</span> wrap = document.createElement(<span class="string">'div'</span>);
-  wrap.innerHTML = str;
-  <span class="keyword">return</span> $(wrap.removeChild(wrap.firstElementChild));
+            <div class="content"><div class='highlight'><pre>    events[ev].push({ns: ns, sel: sel, cb: cb, fn: fn, cap: cap});
+    el.addEventListener &amp;&amp; el.addEventListener(ev, cb, cap);
+  });
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 };</pre></div></div>
             
         </li>
@@ -740,16 +734,19 @@ any number of children.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
-              <h3 id="remove">remove</h3>
-<p>Used to not only remove the elements in the q from the DOM, but to 
-remove any references they have in the $.cache as well.</p>
+              <h3 id="trigger">trigger</h3>
+<p>Given an event type, init a DOM event and dispatch it to each element in the q.</p>
+<p><code>param</code> {string} <code>e</code></p>
 <p><code>returns</code> cash</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.remove = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
-  <span class="function"><span class="keyword">function</span> <span class="title">rem</span><span class="params">(el)</span> {</span><span class="keyword">delete</span> $.cache.events[el.getAttribute(<span class="string">'cid'</span>)];}
-  <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>cash.trigger = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> </span>{
+  <span class="hljs-keyword">var</span> evt = <span class="hljs-built_in">document</span>.createEvent(<span class="hljs-string">'Event'</span>);
+  evt.initEvent(e, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
+  <span class="hljs-keyword">this</span>.q.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span> </span>{el.dispatchEvent &amp;&amp; el.dispatchEvent(evt);});
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+};</pre></div></div>
             
         </li>
         
@@ -760,11 +757,17 @@ remove any references they have in the $.cache as well.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
-              <p>unset any children</p>
+              <h3 id="height">height</h3>
+<p>Given a value this method is a setter for each element in the q.
+If the arg is truthy and a number it is converted to a string with ‘px’
+added, if it is a string nothing is added.
+Minus that, it returns the height of the 0th item in the q;</p>
+<p><code>param</code> {number|string} <code>val</code>. Optional value to be set</p>
+<p><code>returns</code> {number|object} The height if a getter, cash if a setter</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    slice.call(el.querySelectorAll(<span class="string">'[cid]'</span>)).forEach(rem);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>cash.height = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(val)</span> </span>{<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._hw_(<span class="hljs-string">'height'</span>, val);};</pre></div></div>
             
         </li>
         
@@ -775,14 +778,23 @@ remove any references they have in the $.cache as well.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
-              <p>now the top-level parent</p>
+              <h3 id="-_hw-_">_hw_</h3>
+<p>Abstracted logic for the height and width operations</p>
+<p><code>private</code></p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    rem(el);
-    el.parentNode &amp;&amp; el.parentNode.removeChild(el);
+            <div class="content"><div class='highlight'><pre>cash._hw_ = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(key, val)</span> </span>{
+  <span class="hljs-keyword">var</span> obj = {
+    height: {w:<span class="hljs-string">'innerHeight'</span>,d:<span class="hljs-string">'scrollHeight'</span>},
+    width: {w:<span class="hljs-string">'innerWidth'</span>,d:<span class="hljs-string">'scrollWidth'</span>}
+    }, node = <span class="hljs-keyword">this</span>.q[<span class="hljs-number">0</span>], d = isDocument(node) ? node.documentElement : <span class="hljs-literal">null</span>, 
+    w = isWindow(node) ? node: <span class="hljs-literal">null</span>, type = obj[key], o;
+  <span class="hljs-keyword">if</span>(!val) <span class="hljs-keyword">return</span> node ? w ? w[type.w] : d ? d[type.d] : (o = <span class="hljs-keyword">this</span>.offset()) &amp;&amp; o[key] : <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">this</span>.q.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span> </span>{
+    el.style[key] = addPx(val);
   });
-  <span class="keyword">return</span> <span class="keyword">this</span>;
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 };</pre></div></div>
             
         </li>
@@ -794,14 +806,17 @@ remove any references they have in the $.cache as well.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
-              <h3 id="hide">hide</h3>
-<p>Makes elements in the q invisible in the DOM by modifying
-the <code>display</code> attribute, if necessary.</p>
-<p><code>returns</code> cash</p>
+              <h3 id="width">width</h3>
+<p>Given a value this method is a setter for each element in the q.
+If the arg is truthy and a number it is converted to a string with ‘px’
+added, if it is a string nothing is added.
+Minus that, it returns the width of the 0th item in the q;</p>
+<p><code>param</code> {number|string} <code>val</code>. Optional value to be set</p>
+<p><code>returns</code> {number|object} The height if a getter, cash if a setter</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.hide = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span><span class="keyword">return</span> <span class="keyword">this</span>._sh_(<span class="string">'hide'</span>);};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>cash.width = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(val)</span> </span>{<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._hw_(<span class="hljs-string">'width'</span>, val);};</pre></div></div>
             
         </li>
         
@@ -812,14 +827,18 @@ the <code>display</code> attribute, if necessary.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
-              <h3 id="show">show</h3>
-<p>Makes elements in the q visible in the DOM by modifying
-the <code>display</code> attribute, if necessary.</p>
+              <h3 id="is">is</h3>
+<p>As querySelector cannot take psuedo selectors we provide this method to
+easily filter the <code>q</code> to elements that do match the passed in selector.</p>
+<p><code>param</code> {string} <code>sel</code></p>
 <p><code>returns</code> cash</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.show = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span><span class="keyword">return</span> <span class="keyword">this</span>._sh_(<span class="string">'show'</span>);};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>cash.is = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(sel)</span> </span>{
+  <span class="hljs-keyword">this</span>.q = <span class="hljs-keyword">this</span>.q.filter(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span> </span>{<span class="hljs-keyword">return</span> $.matches(el, sel);});
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+};</pre></div></div>
             
         </li>
         
@@ -830,23 +849,18 @@ the <code>display</code> attribute, if necessary.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
-              <h3 id="-_sh-_">_sh_</h3>
-<p>Abstracted logic for the show and hide methods</p>
-<p><code>private</code></p>
+              <h3 id="not">not</h3>
+<p>As querySelector cannot take psuedo selectors we provide this method to
+easily filter the <code>q</code> to elements that do not match the passed in selector</p>
+<p><code>param</code> {string} <code>sel</code></p>
+<p><code>returns</code> cash</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash._sh_ = <span class="function"><span class="keyword">function</span><span class="params">(key)</span> {</span>
-  <span class="keyword">var</span> isShow = key === <span class="string">'show'</span>;
-  <span class="function"><span class="keyword">function</span> <span class="title">state</span><span class="params">(z)</span> {</span><span class="keyword">return</span> isShow ? z !== <span class="string">'none'</span> : z === <span class="string">'none'</span>;}
-  <span class="function"><span class="keyword">function</span> <span class="title">none</span><span class="params">(arg)</span> {</span><span class="keyword">return</span> isShow ? arg !== <span class="string">'none'</span>: arg === <span class="string">'none'</span>;}
-  <span class="function"><span class="keyword">function</span> <span class="title">notNone</span><span class="params">(arg)</span> {</span><span class="keyword">return</span> isShow ? arg === <span class="string">'none'</span>: arg !== <span class="string">'none'</span>;}
-
-  <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
-    <span class="keyword">var</span> display = $._setCache_(<span class="string">'display'</span>, el), cid = el.getAttribute(<span class="string">'cid'</span>), old = display[cid],
-      comp = getComputedStyle(el).display, styl = el.style.display, z = (comp || styl);
-    <span class="keyword">if</span>(state(z)) {
-      <span class="keyword">if</span>(none(old)) <span class="keyword">delete</span> display[cid];</pre></div></div>
+            <div class="content"><div class='highlight'><pre>cash.not = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(sel)</span> </span>{
+  <span class="hljs-keyword">this</span>.q = <span class="hljs-keyword">this</span>.q.filter(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span> </span>{<span class="hljs-keyword">return</span> !$.matches(el, sel);});
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+};</pre></div></div>
             
         </li>
         
@@ -857,13 +871,20 @@ the <code>display</code> attribute, if necessary.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
-              <p>does an old display value exist?</p>
+              <h3 id="createelement">createElement</h3>
+<p>Given a string, create a DOM element and store place in at the q. Notice
+that the input must be a single ‘top-level’ Element, but it may contain
+any number of children.</p>
+<p><code>param</code> {string} <code>str</code>. An innerHTML compatible string</p>
+<p><code>returns</code> cash</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    } <span class="keyword">else</span> <span class="keyword">if</span> (old &amp;&amp; none(old)) {
-      el.style.display = old;
-      <span class="keyword">delete</span> display[cid];</pre></div></div>
+            <div class="content"><div class='highlight'><pre>cash.createElement = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(str)</span> </span>{
+  <span class="hljs-keyword">var</span> wrap = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'div'</span>);
+  wrap.innerHTML = str;
+  <span class="hljs-keyword">return</span> $(wrap.removeChild(wrap.firstElementChild));
+};</pre></div></div>
             
         </li>
         
@@ -874,11 +895,16 @@ the <code>display</code> attribute, if necessary.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
-              <p>the element is not visible and does not have an old display value</p>
+              <h3 id="remove">remove</h3>
+<p>Used to not only remove the elements in the q from the DOM, but to 
+remove any references they have in the $.cache as well.</p>
+<p><code>returns</code> cash</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    } <span class="keyword">else</span> {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>cash.remove = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">rem</span><span class="hljs-params">(el)</span> </span>{<span class="hljs-keyword">delete</span> $.cache.events[el.getAttribute(<span class="hljs-string">'cid'</span>)];}
+  <span class="hljs-keyword">this</span>.q.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -889,13 +915,11 @@ the <code>display</code> attribute, if necessary.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-43">&#182;</a>
               </div>
-              <p>is the element hidden with inline styling?</p>
+              <p>unset any children</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="keyword">if</span>(styl &amp;&amp; notNone(styl)) {
-        display[cid] = styl;
-        el.style.display = isShow ? <span class="string">''</span> : <span class="string">'none'</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    slice.call(el.querySelectorAll(<span class="hljs-string">'[cid]'</span>)).forEach(rem);</pre></div></div>
             
         </li>
         
@@ -906,14 +930,14 @@ the <code>display</code> attribute, if necessary.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-44">&#182;</a>
               </div>
-              <p>the element is hidden through css</p>
+              <p>now the top-level parent</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      } <span class="keyword">else</span> el.style.display = isShow ? <span class="string">'block'</span>: <span class="string">'none'</span>;
-    }
+            <div class="content"><div class='highlight'><pre>    rem(el);
+    el.parentNode &amp;&amp; el.parentNode.removeChild(el);
   });
-  <span class="keyword">return</span> <span class="keyword">this</span>;
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 };</pre></div></div>
             
         </li>
@@ -925,21 +949,14 @@ the <code>display</code> attribute, if necessary.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-45">&#182;</a>
               </div>
-              <h3 id="toggle">toggle</h3>
-<p>Toggles the visibility of elements in the DOM by modifying
+              <h3 id="hide">hide</h3>
+<p>Makes elements in the q invisible in the DOM by modifying
 the <code>display</code> attribute, if necessary.</p>
 <p><code>returns</code> cash</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.toggle = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
-  <span class="keyword">var</span> ary = slice.call(<span class="keyword">this</span>.q);
-  ary.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
-    getComputedStyle(el).display === <span class="string">'none'</span> ?
-      $(el).show() : $(el).hide();
-  });
-  <span class="keyword">return</span> $(ary);
-};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>cash.hide = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._sh_(<span class="hljs-string">'hide'</span>);};</pre></div></div>
             
         </li>
         
@@ -950,23 +967,14 @@ the <code>display</code> attribute, if necessary.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-46">&#182;</a>
               </div>
-              <h3 id="setstyle">setStyle</h3>
-<p>Given a key and a value, or a hash of key:value pairs, set each on the style property of
-each element in the <code>q</code>.
-This method does not function as a getter (use getComputedStyle for that).</p>
-<p><code>param</code> {string|object} <code>key</code></p>
-<p><code>param</code> {string} <code>val</code>. Used if <code>key</code> is not an object</p>
+              <h3 id="show">show</h3>
+<p>Makes elements in the q visible in the DOM by modifying
+the <code>display</code> attribute, if necessary.</p>
 <p><code>returns</code> cash</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.setStyle = <span class="function"><span class="keyword">function</span><span class="params">(key, val)</span> {</span>
-  <span class="keyword">var</span> ary = isString(key) ? <span class="literal">undefined</span> : keys(key),
-  set = ary ? <span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>ary.forEach(<span class="function"><span class="keyword">function</span><span class="params">(i)</span> {</span>el.style[i] = addPx(key[i], i);});} :
-    <span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>el.style[key] = addPx(val, key);};
-  <span class="keyword">this</span>.q.forEach(set);
-  <span class="keyword">return</span> <span class="keyword">this</span>;
-};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>cash.show = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._sh_(<span class="hljs-string">'show'</span>);};</pre></div></div>
             
         </li>
         
@@ -977,25 +985,23 @@ This method does not function as a getter (use getComputedStyle for that).</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-47">&#182;</a>
               </div>
-              <h3 id="offset">offset</h3>
-<p>Get a hash of key:value pairs: <code>top</code>, <code>left</code>, <code>width</code> and <code>height</code> - representing
-the position in the document of the 0th element in the q. This method is a getter only
-(use <code>css()</code> as a setter). Takes into consideration the page[X|Y]Offsets for
-<code>left</code> and <code>top</code> as well as rounds the width and height</p>
-<p><code>returns</code> {object}</p>
+              <h3 id="-_sh-_">_sh_</h3>
+<p>Abstracted logic for the show and hide methods</p>
+<p><code>private</code></p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.offset = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
-  <span class="keyword">if</span>(!<span class="keyword">this</span>.q.length) <span class="keyword">return</span> <span class="literal">null</span>;
-  <span class="keyword">var</span> obj = <span class="keyword">this</span>.q[<span class="number">0</span>].getBoundingClientRect();
-  <span class="keyword">return</span> {
-    left: obj.left + window.pageXOffset,
-    top: obj.top + window.pageYOffset,
-    width: Math.round(obj.width),
-    height: Math.round(obj.height)
-  };
-};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>cash._sh_ = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(key)</span> </span>{
+  <span class="hljs-keyword">var</span> isShow = key === <span class="hljs-string">'show'</span>;
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">state</span><span class="hljs-params">(z)</span> </span>{<span class="hljs-keyword">return</span> isShow ? z !== <span class="hljs-string">'none'</span> : z === <span class="hljs-string">'none'</span>;}
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">none</span><span class="hljs-params">(arg)</span> </span>{<span class="hljs-keyword">return</span> isShow ? arg !== <span class="hljs-string">'none'</span>: arg === <span class="hljs-string">'none'</span>;}
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">notNone</span><span class="hljs-params">(arg)</span> </span>{<span class="hljs-keyword">return</span> isShow ? arg === <span class="hljs-string">'none'</span>: arg !== <span class="hljs-string">'none'</span>;}
+
+  <span class="hljs-keyword">this</span>.q.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span> </span>{
+    <span class="hljs-keyword">var</span> display = $._setCache_(<span class="hljs-string">'display'</span>, el), cid = el.getAttribute(<span class="hljs-string">'cid'</span>), old = display[cid],
+      comp = getComputedStyle(el).display, styl = el.style.display, z = (comp || styl);
+    <span class="hljs-keyword">if</span>(state(z)) {
+      <span class="hljs-keyword">if</span>(none(old)) <span class="hljs-keyword">delete</span> display[cid];</pre></div></div>
             
         </li>
         
@@ -1006,22 +1012,13 @@ the position in the document of the 0th element in the q. This method is a gette
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-48">&#182;</a>
               </div>
-              <h3 id="closest">closest</h3>
-<p>Given a string selector, return the first parent node that matches it
-for each element in the q.</p>
-<p><code>param</code> {string} <code>sel</code></p>
-<p><code>returns</code> cash</p>
+              <p>does an old display value exist?</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.closest = <span class="function"><span class="keyword">function</span><span class="params">(sel)</span> {</span>
-  <span class="keyword">var</span> ary = [];
-  <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
-    <span class="keyword">while</span>(el &amp;&amp; !$.matches(el, sel)) el = !isDocument(el) &amp;&amp; el.parentNode;
-    <span class="keyword">if</span>(!~ary.indexOf(el)) ary.push(el);
-  });
-  <span class="keyword">return</span> $(ary);
-};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (old &amp;&amp; none(old)) {
+      el.style.display = old;
+      <span class="hljs-keyword">delete</span> display[cid];</pre></div></div>
             
         </li>
         
@@ -1032,21 +1029,11 @@ for each element in the q.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-49">&#182;</a>
               </div>
-              <h3 id="contains">contains</h3>
-<p>See if any element in the current q contains the passed in element,
-setting the q as the container if found.</p>
-<p><code>param</code> {element} <code>el</code></p>
-<p><code>returns</code> cash</p>
+              <p>the element is not visible and does not have an old display value</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.contains = <span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
-  <span class="keyword">var</span> res;
-  <span class="keyword">this</span>.q.some(<span class="function"><span class="keyword">function</span><span class="params">(node)</span> {</span>
-    <span class="keyword">if</span>(node.contains(el)) <span class="keyword">return</span> res = node;
-  });
-  <span class="keyword">return</span> $(res);
-};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    } <span class="hljs-keyword">else</span> {</pre></div></div>
             
         </li>
         
@@ -1057,23 +1044,13 @@ setting the q as the container if found.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-50">&#182;</a>
               </div>
-              <h3 id="find">find</h3>
-<p>From the existing q, rebuild it by performing a querySelectorAll
-with the given selector on each element in the q, pushing those elements
-found into the new q.</p>
-<p><code>param</code> {string} <code>sel</code></p>
-<p><code>returns</code> cash</p>
+              <p>is the element hidden with inline styling?</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.find = <span class="function"><span class="keyword">function</span><span class="params">(sel)</span> {</span>
-  <span class="keyword">var</span> ary = [];
-  <span class="function"><span class="keyword">function</span> <span class="title">fn</span><span class="params">(n)</span> {</span>ary.push(n);}
-  <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
-    <span class="keyword">if</span>(el.querySelectorAll) proto.forEach.call(el.querySelectorAll(sel),fn);
-  });
-  <span class="keyword">return</span> $(ary);
-};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span>(styl &amp;&amp; notNone(styl)) {
+        display[cid] = styl;
+        el.style.display = isShow ? <span class="hljs-string">''</span> : <span class="hljs-string">'none'</span>;</pre></div></div>
             
         </li>
         
@@ -1084,18 +1061,14 @@ found into the new q.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-51">&#182;</a>
               </div>
-              <h3 id="parent">parent</h3>
-<p>Rehydrate the <code>q</code> with the parent element of each element in the <code>q</code></p>
-<p><code>returns</code> cash</p>
+              <p>the element is hidden through css</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.parent = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
-  <span class="keyword">var</span> ary = [], p;
-  <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
-    <span class="keyword">if</span>(!~ary.indexOf(p = el.parentElement) &amp;&amp; p) ary.push(p);
+            <div class="content"><div class='highlight'><pre>      } <span class="hljs-keyword">else</span> el.style.display = isShow ? <span class="hljs-string">'block'</span>: <span class="hljs-string">'none'</span>;
+    }
   });
-  <span class="keyword">return</span> $(ary);
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 };</pre></div></div>
             
         </li>
@@ -1107,21 +1080,20 @@ found into the new q.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-52">&#182;</a>
               </div>
-              <h3 id="parents">parents</h3>
-<p>Rehydrate the <code>q</code> with the ascestor elements of each element in the <code>q</code></p>
+              <h3 id="toggle">toggle</h3>
+<p>Toggles the visibility of elements in the DOM by modifying
+the <code>display</code> attribute, if necessary.</p>
 <p><code>returns</code> cash</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.parents = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
-  <span class="keyword">var</span> ary = [], p;
-  <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>
-    p = el;
-    <span class="keyword">while</span>((p = p.parentElement) &amp;&amp; !isDocument(p)) {
-      <span class="keyword">if</span>(!~ary.indexOf(p)) ary.push(p);
-    }
+            <div class="content"><div class='highlight'><pre>cash.toggle = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-keyword">var</span> ary = slice.call(<span class="hljs-keyword">this</span>.q);
+  ary.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span> </span>{
+    getComputedStyle(el).display === <span class="hljs-string">'none'</span> ?
+      $(el).show() : $(el).hide();
   });
-  <span class="keyword">return</span> $(ary);
+  <span class="hljs-keyword">return</span> $(ary);
 };</pre></div></div>
             
         </li>
@@ -1133,17 +1105,22 @@ found into the new q.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-53">&#182;</a>
               </div>
-              <h3 id="setvalue">setValue</h3>
-<p>Set the passed in value on each element in the <code>q</code>.
-This method does not function as a getter.</p>
-<p><code>param</code> {*} <code>val</code></p>
+              <h3 id="setstyle">setStyle</h3>
+<p>Given a key and a value, or a hash of key:value pairs, set each on the style property of
+each element in the <code>q</code>.
+This method does not function as a getter (use getComputedStyle for that).</p>
+<p><code>param</code> {string|object} <code>key</code></p>
+<p><code>param</code> {string} <code>val</code>. Used if <code>key</code> is not an object</p>
 <p><code>returns</code> cash</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.setValue = <span class="function"><span class="keyword">function</span><span class="params">(val)</span> {</span>
-  <span class="keyword">this</span>.q.forEach(<span class="function"><span class="keyword">function</span><span class="params">(el)</span> {</span>el.value = val;});
-  <span class="keyword">return</span> <span class="keyword">this</span>;
+            <div class="content"><div class='highlight'><pre>cash.setStyle = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(key, val)</span> </span>{
+  <span class="hljs-keyword">var</span> ary = isString(key) ? <span class="hljs-literal">undefined</span> : keys(key),
+  set = ary ? <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span> </span>{ary.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(i)</span> </span>{el.style[i] = addPx(key[i], i);});} :
+    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span> </span>{el.style[key] = addPx(val, key);};
+  <span class="hljs-keyword">this</span>.q.forEach(set);
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 };</pre></div></div>
             
         </li>
@@ -1155,22 +1132,24 @@ This method does not function as a getter.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-54">&#182;</a>
               </div>
-              <h3 id="deserialize">deserialize</h3>
-<p>Given a &#39;paramaterized&#39; string, convert it to a hash and return it</p>
-<p><code>param</code> {string} <code>str</code></p>
+              <h3 id="offset">offset</h3>
+<p>Get a hash of key:value pairs: <code>top</code>, <code>left</code>, <code>width</code> and <code>height</code> - representing
+the position in the document of the 0th element in the q. This method is a getter only
+(use <code>css()</code> as a setter). Takes into consideration the page[X|Y]Offsets for
+<code>left</code> and <code>top</code> as well as rounds the width and height</p>
 <p><code>returns</code> {object}</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.deserialize = <span class="function"><span class="keyword">function</span><span class="params">(str)</span> {</span>
-  <span class="keyword">var</span> obj = {}, ary;
-  str &amp;&amp; str.split(<span class="string">'&amp;'</span>).forEach(<span class="function"><span class="keyword">function</span><span class="params">(spl)</span> {</span>
-    <span class="keyword">if</span>(spl) {
-      ary = spl.split(<span class="string">'='</span>);
-      obj[decodeURIComponent(ary[<span class="number">0</span>])] = decodeURIComponent(ary[<span class="number">1</span>]);
-    }
-  });
-  <span class="keyword">return</span> obj;
+            <div class="content"><div class='highlight'><pre>cash.offset = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-keyword">if</span>(!<span class="hljs-keyword">this</span>.q.length) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+  <span class="hljs-keyword">var</span> obj = <span class="hljs-keyword">this</span>.q[<span class="hljs-number">0</span>].getBoundingClientRect();
+  <span class="hljs-keyword">return</span> {
+    left: obj.left + <span class="hljs-built_in">window</span>.pageXOffset,
+    top: obj.top + <span class="hljs-built_in">window</span>.pageYOffset,
+    width: <span class="hljs-built_in">Math</span>.round(obj.width),
+    height: <span class="hljs-built_in">Math</span>.round(obj.height)
+  };
 };</pre></div></div>
             
         </li>
@@ -1182,16 +1161,22 @@ This method does not function as a getter.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-55">&#182;</a>
               </div>
-              <h3 id="extend">extend</h3>
-<p>Copy the (non-inherited) key:value pairs from <n> source objects to a single target object.</p>
-<p><code>params</code> {objects} A target object followed by <n> source objects</p>
-<p><code>returns</code> {object} A single object</p>
+              <h3 id="closest">closest</h3>
+<p>Given a string selector, return the first parent node that matches it
+for each element in the q.</p>
+<p><code>param</code> {string} <code>sel</code></p>
+<p><code>returns</code> cash</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.extend = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
-  <span class="keyword">var</span> args = slice.call(arguments), targ = args.shift(), obj;
-  <span class="function"><span class="keyword">function</span> <span class="title">fn</span><span class="params">(k)</span> {</span>targ[k] = obj[k];}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>cash.closest = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(sel)</span> </span>{
+  <span class="hljs-keyword">var</span> ary = [];
+  <span class="hljs-keyword">this</span>.q.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span> </span>{
+    <span class="hljs-keyword">while</span>(el &amp;&amp; !$.matches(el, sel)) el = !isDocument(el) &amp;&amp; el.parentNode;
+    <span class="hljs-keyword">if</span>(!~ary.indexOf(el)) ary.push(el);
+  });
+  <span class="hljs-keyword">return</span> $(ary);
+};</pre></div></div>
             
         </li>
         
@@ -1202,12 +1187,20 @@ This method does not function as a getter.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-56">&#182;</a>
               </div>
-              <p>iterate over each passed in obj remaining</p>
+              <h3 id="contains">contains</h3>
+<p>See if any element in the current q contains the passed in element,
+setting the q as the container if found.</p>
+<p><code>param</code> {element} <code>el</code></p>
+<p><code>returns</code> cash</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="keyword">for</span>(; args.length &amp;&amp; (obj = args.shift());) {keys(obj).forEach(fn);}
-  <span class="keyword">return</span> targ;
+            <div class="content"><div class='highlight'><pre>cash.contains = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span> </span>{
+  <span class="hljs-keyword">var</span> res;
+  <span class="hljs-keyword">this</span>.q.some(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(node)</span> </span>{
+    <span class="hljs-keyword">if</span>(node.contains(el)) <span class="hljs-keyword">return</span> res = node;
+  });
+  <span class="hljs-keyword">return</span> $(res);
 };</pre></div></div>
             
         </li>
@@ -1219,17 +1212,23 @@ This method does not function as a getter.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-57">&#182;</a>
               </div>
-              <h3 id="matches">matches</h3>
-<p>Unfortunately the matchesSelector methods are all hidden behind prefixes ATM.
-set the useable one, if not, then return the bool.</p>
-<p><code>param</code> {element} <code>el</code>. A DOM 1 nodetype</p>
-<p><code>param</code> {string}  <code>sel</code>. A CSS selector</p>
-<p><code>returns</code> {bool}</p>
+              <h3 id="find">find</h3>
+<p>From the existing q, rebuild it by performing a querySelectorAll
+with the given selector on each element in the q, pushing those elements
+found into the new q.</p>
+<p><code>param</code> {string} <code>sel</code></p>
+<p><code>returns</code> cash</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.matches = <span class="function"><span class="keyword">function</span><span class="params">(el, sel)</span> {</span>
-  <span class="keyword">if</span> (el.nodeType !== <span class="number">1</span>) <span class="keyword">return</span> <span class="literal">false</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>cash.find = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(sel)</span> </span>{
+  <span class="hljs-keyword">var</span> ary = [];
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fn</span><span class="hljs-params">(n)</span> </span>{ary.push(n);}
+  <span class="hljs-keyword">this</span>.q.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span> </span>{
+    <span class="hljs-keyword">if</span>(el.querySelectorAll) proto.forEach.call(el.querySelectorAll(sel),fn);
+  });
+  <span class="hljs-keyword">return</span> $(ary);
+};</pre></div></div>
             
         </li>
         
@@ -1240,15 +1239,18 @@ set the useable one, if not, then return the bool.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-58">&#182;</a>
               </div>
-              <p>normalize the native selector match fn until all the prefixes are dropped</p>
+              <h3 id="parent">parent</h3>
+<p>Rehydrate the <code>q</code> with the parent element of each element in the <code>q</code></p>
+<p><code>returns</code> cash</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="keyword">if</span>(!<span class="keyword">this</span>._matchesSelector_) {
-    <span class="keyword">this</span>._matchesSelector_ = el.webkitMatchesSelector || el.mozMatchesSelector ||
-    el.msMatchesSelector || el.oMatchesSelector || el.matchesSelector;
-  }
-  <span class="keyword">return</span> <span class="keyword">this</span>._matchesSelector_.call(el, sel);
+            <div class="content"><div class='highlight'><pre>cash.parent = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-keyword">var</span> ary = [], p;
+  <span class="hljs-keyword">this</span>.q.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span> </span>{
+    <span class="hljs-keyword">if</span>(!~ary.indexOf(p = el.parentElement) &amp;&amp; p) ary.push(p);
+  });
+  <span class="hljs-keyword">return</span> $(ary);
 };</pre></div></div>
             
         </li>
@@ -1260,21 +1262,22 @@ set the useable one, if not, then return the bool.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-59">&#182;</a>
               </div>
-              <h3 id="serialize">serialize</h3>
-<p>Given a hash of data, convert it to a &#39;paramaterized&#39; string and return it.</p>
-<p><code>param</code> {object} <code>obj</code></p>
-<p><code>returns</code> {string}</p>
+              <h3 id="parents">parents</h3>
+<p>Rehydrate the <code>q</code> with the ascestor elements of each element in the <code>q</code></p>
+<p><code>returns</code> cash</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>cash.serialize = <span class="function"><span class="keyword">function</span><span class="params">(obj)</span> {</span>
-  <span class="keyword">var</span> ary = [];
-  keys(obj).forEach(<span class="function"><span class="keyword">function</span><span class="params">(key)</span> {</span>
-    ary.push(encodeURIComponent(key) +<span class="string">'='</span>+ encodeURIComponent(obj[key]));
+            <div class="content"><div class='highlight'><pre>cash.parents = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-keyword">var</span> ary = [], p;
+  <span class="hljs-keyword">this</span>.q.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span> </span>{
+    p = el;
+    <span class="hljs-keyword">while</span>((p = p.parentElement) &amp;&amp; !isDocument(p)) {
+      <span class="hljs-keyword">if</span>(!~ary.indexOf(p)) ary.push(p);
+    }
   });
-  <span class="keyword">return</span> ary.join(<span class="string">'&amp;'</span>);
-};
-cash.version = <span class="string">"0.2.0"</span>;</pre></div></div>
+  <span class="hljs-keyword">return</span> $(ary);
+};</pre></div></div>
             
         </li>
         
@@ -1285,12 +1288,164 @@ cash.version = <span class="string">"0.2.0"</span>;</pre></div></div>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-60">&#182;</a>
               </div>
+              <h3 id="setvalue">setValue</h3>
+<p>Set the passed in value on each element in the <code>q</code>.
+This method does not function as a getter.</p>
+<p><code>param</code> {*} <code>val</code></p>
+<p><code>returns</code> cash</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>cash.setValue = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(val)</span> </span>{
+  <span class="hljs-keyword">this</span>.q.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span> </span>{el.value = val;});
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-61">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-61">&#182;</a>
+              </div>
+              <h3 id="deserialize">deserialize</h3>
+<p>Given a ‘paramaterized’ string, convert it to a hash and return it</p>
+<p><code>param</code> {string} <code>str</code></p>
+<p><code>returns</code> {object}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>cash.deserialize = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(str)</span> </span>{
+  <span class="hljs-keyword">var</span> obj = {}, ary;
+  str &amp;&amp; str.split(<span class="hljs-string">'&amp;'</span>).forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(spl)</span> </span>{
+    <span class="hljs-keyword">if</span>(spl) {
+      ary = spl.split(<span class="hljs-string">'='</span>);
+      obj[<span class="hljs-built_in">decodeURIComponent</span>(ary[<span class="hljs-number">0</span>])] = <span class="hljs-built_in">decodeURIComponent</span>(ary[<span class="hljs-number">1</span>]);
+    }
+  });
+  <span class="hljs-keyword">return</span> obj;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-62">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-62">&#182;</a>
+              </div>
+              <h3 id="extend">extend</h3>
+<p>Copy the (non-inherited) key:value pairs from <n> source objects to a single target object.</p>
+<p><code>params</code> {objects} A target object followed by <n> source objects</p>
+<p><code>returns</code> {object} A single object</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>cash.extend = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-keyword">var</span> args = slice.call(<span class="hljs-built_in">arguments</span>), targ = args.shift(), obj;
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fn</span><span class="hljs-params">(k)</span> </span>{targ[k] = obj[k];}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-63">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-63">&#182;</a>
+              </div>
+              <p>iterate over each passed in obj remaining</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">for</span>(; args.length &amp;&amp; (obj = args.shift());) {keys(obj).forEach(fn);}
+  <span class="hljs-keyword">return</span> targ;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-64">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-64">&#182;</a>
+              </div>
+              <h3 id="matches">matches</h3>
+<p>Unfortunately the matchesSelector methods are all hidden behind prefixes ATM.
+set the useable one, if not, then return the bool.</p>
+<p><code>param</code> {element} <code>el</code>. A DOM 1 nodetype</p>
+<p><code>param</code> {string}  <code>sel</code>. A CSS selector</p>
+<p><code>returns</code> {bool}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>cash.matches = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el, sel)</span> </span>{
+  <span class="hljs-keyword">if</span> (el.nodeType !== <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-65">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-65">&#182;</a>
+              </div>
+              <p>normalize the native selector match fn until all the prefixes are dropped</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span>(!<span class="hljs-keyword">this</span>._matchesSelector_) {
+    <span class="hljs-keyword">this</span>._matchesSelector_ = el.webkitMatchesSelector || el.mozMatchesSelector ||
+    el.msMatchesSelector || el.oMatchesSelector || el.matchesSelector;
+  }
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._matchesSelector_.call(el, sel);
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-66">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-66">&#182;</a>
+              </div>
+              <h3 id="serialize">serialize</h3>
+<p>Given a hash of data, convert it to a ‘paramaterized’ string and return it.</p>
+<p><code>param</code> {object} <code>obj</code></p>
+<p><code>returns</code> {string}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>cash.serialize = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj)</span> </span>{
+  <span class="hljs-keyword">var</span> ary = [];
+  keys(obj).forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(key)</span> </span>{
+    ary.push(<span class="hljs-built_in">encodeURIComponent</span>(key) +<span class="hljs-string">'='</span>+ <span class="hljs-built_in">encodeURIComponent</span>(obj[key]));
+  });
+  <span class="hljs-keyword">return</span> ary.join(<span class="hljs-string">'&amp;'</span>);
+};
+cash.version = <span class="hljs-string">"0.2.0"</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-67">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-67">&#182;</a>
+              </div>
               <p>Not checking for window, or trying to play nice</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>window.$ = cash;
-}(window));</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">window</span>.$ = cash;
+}(<span class="hljs-built_in">window</span>));</pre></div></div>
             
         </li>
         

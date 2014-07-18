@@ -15,8 +15,10 @@ var Builder = function(filename, pf) {
 Builder.prototype = Object.create($.Model.prototype);
 
 Builder.prototype.build = function() {
+  var buildPath = this.get('filename');
+  if(!/\.html$/.test(buildPath)) buildPath += '.html';
   // the reader
-  this.FR = new Filereader(this.get('filename') + '.html', 
+  this.FR = new Filereader(buildPath,
     this.get('pathfinder'));
   // set the callback for parseHtmlFile
   this.FR.observe(this.readerScriptsParsed.bind(this));
@@ -37,12 +39,12 @@ Builder.prototype.readerScriptsParsed = function(change) {
       this.get('pathfinder'));
     this.printline("Writing `debug version` of file: " + FW.get('filename'));
     // include the version number in the string data
-    FW.writeDebug(this.FR.getAlpha(), this.FR.get('concat_source') + version, 
+    FW.writeDebug(this.FR.getAlpha(), this.FR.get('concat_source') + version,
       this.FR.getOmega());
-      
+
     console.log(' - stripping JSHint globals');
     FW.stripGlobals();
-    console.log(" - debug file written");	
+    console.log(" - debug file written");
   }
 };
 

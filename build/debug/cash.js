@@ -5,6 +5,7 @@ cssNum = {'column-count':1,'columns':1,'font-weight':1,'line-height':1,'opacity'
 function addPx(v, k) {return (typeof v === 'number' && (!k || !cssNum[k])) ? v + 'px' : v;}
 function cash(arg) {return cash.init(arg);}
 function isDocument(arg) {return arg && arg.nodeType === arg.DOCUMENT_NODE;}
+function isFunction(arg) { return typeof arg === 'function'; }
 function isObject(arg) {return Object.prototype.toString.call(arg) === '[object Object]';}
 function isString(arg) {return typeof arg === 'string';}
 function isWindow(arg) {return arg === window;}
@@ -69,6 +70,70 @@ cash._setCache_ = function(ref, el) {
   }
   obj[cid] || (obj[cid] = ref === 'events' ? {} : undefined);
   return obj;
+};
+
+
+// ###\_all\_
+// Abstracted logic for the all and getAll methods
+//
+// `private`
+cash._all = function(originalArgs, returnValues) {
+  var meths = originalArgs[0].split('.'),
+  args = slice.call(originalArgs, 1),
+  meth = meths[meths.length-1],
+      assign = /=$/.test(meth), r, f, i, v;
+  if(assign) meth = meth.substr(0,meth.length-1);
+  if(returnValues) r = [];
+
+  this.q.forEach(function(e){
+    for(i=0;i < meths.length-1;i++) {
+      f = e[meths[i]];
+      if(isFunction(f)) e = f();
+      else e = f;
+    }
+    if(assign) v = e[meth] = args[0];
+    else {
+      f = e[meth];
+      if(isFunction(f)) v = f.apply(e, args);
+      else v = f;
+    }
+
+    if(returnValues) r.push(v);
+  });
+
+  return returnValues ? r : this;
+};
+
+// ###all
+// Invokes the provided method or method chain with the provided arguments to all elements in q.
+// Example usage:
+// * $(nodeList).all('setAttribute', 'foo', 'bar');
+// * $(nodeList).all('classList.add', 'active');
+// * $(nodeList).all('selected=', true);
+//
+// `param` {string} `methodName`. Can be a string representing a method name, an attribute, or a property. Can be chained with periods. Can end in a `=` to invoke an assignment.
+//
+// `returns` cash
+//
+//
+cash.all = function() {
+  return this._all(arguments, false);
+};
+
+// ###getAll
+// Similar to all(), getAll invokes the provided method or method chain but instead of returning cash, returns the return values from each function invocation.
+// Example usage:
+// * $(nodeList).all('getAttribute', 'foo') #=> ['bar', 'biz', 'baz'];
+// * $(nodeList).all('classList.contains', 'active') #=> [true, false, true];
+// * $(nodeList).all('selected') #=> [true, false, false];
+//
+// `param` {string} `methodName`. Can be a string representing a method name, an attribute, or a property. Can be chained with periods. Can end in a `=` to invoke an assignment.
+//
+// `returns` {array}
+//
+//
+cash.getAll = function() {
+  return this._all(arguments, true);
 };
 
 // ###setAttribute
@@ -149,10 +214,10 @@ cash.toggleClass = function(cls) {
 // By supplying "*.yourNamespace" as the event type, you can remove all events
 // in a namespace, or simply '*' to remove all events.
 // The optional third argument, 'cap', is a boolean than will need to be
-// `true` if you bound the event originally with `cap = true`. 
+// `true` if you bound the event originally with `cap = true`.
 // NOTE: You do not need to pass the 'cap' bool in the 'forced capture phase'
-// case, that is the event is 'focus' or 'blur' and is delegated. Cash will 
-// handle the capture phase bool for you in that case. 
+// case, that is the event is 'focus' or 'blur' and is delegated. Cash will
+// handle the capture phase bool for you in that case.
 //
 // `param` {string} `type`. An event trigger, can be namespaced
 //
@@ -165,7 +230,7 @@ cash.off = function(type, fn, cap) {
   this.q.forEach(function(el) {
     events = $.cache.events[$._getCid_(el)];
     if(events) {
-      (all ? Object.keys(events) : [ev]).forEach(function(k) {
+      (all ? keys(events) : [ev]).forEach(function(k) {
         events[k] && events[k].forEach(function(obj, i, ary) {
           // we may have forced the cap
           if(!cap && (k === 'focus' || k === 'blur') && obj.sel) cap = true;
@@ -185,7 +250,7 @@ cash.off = function(type, fn, cap) {
 // ###on
 // Given an event type, a callback, an optional selector for delegation, and
 // an optional hash of data to be appended to the event, bind them to each
-// element in the q. Capture phase is supported by passing true as the 
+// element in the q. Capture phase is supported by passing true as the
 // optional 5th argument. NOTE: if the event being bound is 'focus' or 'blur'
 // and a selector is present capture phase is forced as delegation will not work otherwise.
 //
@@ -210,7 +275,7 @@ cash.on = function(type, fn, sel, data, cap) {
     events = $._setCache_('events', el)[$._getCid_(el)];
     events[ev] || (events[ev] = []);
     cb = function(e) {
-      var targ;
+      var targ, els;
       // pass the namespace along to the listener
       if(ns) e.namespace = ns;
       // pass any custom data along to the listener
@@ -218,11 +283,19 @@ cash.on = function(type, fn, sel, data, cap) {
       // base case is that this is not 'delegated'
       if(!sel) fn.call(el, e);
       // there is a sel, check for matches and call if so.
-      else if(~$(el).find(sel).q.indexOf(e.target) || (targ = $.contains(e.target).q[0])) {
-        targ || (targ = e.target);
-        // as defined by us rather than currentTarget
-        e.delegateTarget = targ;
-        fn.call(targ, e);
+      else {
+        // set element list context
+        els = slice.call(el.querySelectorAll(sel));
+        // check to see if any of our children matching the selector invoked the event
+        if(~els.indexOf(e.target)) targ = e.target;
+        // otherwise see if any of the children matching the selector have el as their child
+        else els.some(function(qel){ if(qel.contains(e.target)) return targ = qel; });
+        // couldn't find the source based on the selector so we don't match
+        if(targ) {
+          // as defined by us rather than currentTarget
+          e.delegateTarget = targ;
+          fn.call(targ, e);
+        }
       }
     };
     // cb === ours, fn === theirs.

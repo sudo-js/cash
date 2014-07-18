@@ -3,10 +3,10 @@
 // By supplying "*.yourNamespace" as the event type, you can remove all events
 // in a namespace, or simply '*' to remove all events.
 // The optional third argument, 'cap', is a boolean than will need to be
-// `true` if you bound the event originally with `cap = true`. 
+// `true` if you bound the event originally with `cap = true`.
 // NOTE: You do not need to pass the 'cap' bool in the 'forced capture phase'
-// case, that is the event is 'focus' or 'blur' and is delegated. Cash will 
-// handle the capture phase bool for you in that case. 
+// case, that is the event is 'focus' or 'blur' and is delegated. Cash will
+// handle the capture phase bool for you in that case.
 //
 // `param` {string} `type`. An event trigger, can be namespaced
 //
@@ -19,7 +19,7 @@ cash.off = function(type, fn, cap) {
   this.q.forEach(function(el) {
     events = $.cache.events[$._getCid_(el)];
     if(events) {
-      (all ? Object.keys(events) : [ev]).forEach(function(k) {
+      (all ? keys(events) : [ev]).forEach(function(k) {
         events[k] && events[k].forEach(function(obj, i, ary) {
           // we may have forced the cap
           if(!cap && (k === 'focus' || k === 'blur') && obj.sel) cap = true;
@@ -39,7 +39,7 @@ cash.off = function(type, fn, cap) {
 // ###on
 // Given an event type, a callback, an optional selector for delegation, and
 // an optional hash of data to be appended to the event, bind them to each
-// element in the q. Capture phase is supported by passing true as the 
+// element in the q. Capture phase is supported by passing true as the
 // optional 5th argument. NOTE: if the event being bound is 'focus' or 'blur'
 // and a selector is present capture phase is forced as delegation will not work otherwise.
 //
@@ -64,7 +64,7 @@ cash.on = function(type, fn, sel, data, cap) {
     events = $._setCache_('events', el)[$._getCid_(el)];
     events[ev] || (events[ev] = []);
     cb = function(e) {
-      var targ;
+      var targ, els;
       // pass the namespace along to the listener
       if(ns) e.namespace = ns;
       // pass any custom data along to the listener
@@ -72,11 +72,19 @@ cash.on = function(type, fn, sel, data, cap) {
       // base case is that this is not 'delegated'
       if(!sel) fn.call(el, e);
       // there is a sel, check for matches and call if so.
-      else if(~$(el).find(sel).q.indexOf(e.target) || (targ = $.contains(e.target).q[0])) {
-        targ || (targ = e.target);
-        // as defined by us rather than currentTarget
-        e.delegateTarget = targ;
-        fn.call(targ, e);
+      else {
+        // set element list context
+        els = slice.call(el.querySelectorAll(sel));
+        // check to see if any of our children matching the selector invoked the event
+        if(~els.indexOf(e.target)) targ = e.target;
+        // otherwise see if any of the children matching the selector have el as their child
+        else els.some(function(qel){ if(qel.contains(e.target)) return targ = qel; });
+        // couldn't find the source based on the selector so we don't match
+        if(targ) {
+          // as defined by us rather than currentTarget
+          e.delegateTarget = targ;
+          fn.call(targ, e);
+        }
       }
     };
     // cb === ours, fn === theirs.
