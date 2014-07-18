@@ -4,6 +4,7 @@
 // Given a 'paramaterized' string, convert it to a hash and return it
 //
 // `param` {string} `str`
+//
 // `returns` {object}
 cash.deserialize = function(str) {
   var obj = {}, ary;
@@ -19,6 +20,7 @@ cash.deserialize = function(str) {
 // Copy the (non-inherited) key:value pairs from <n> source objects to a single target object.
 //
 // `params` {objects} A target object followed by <n> source objects
+//
 // `returns` {object} A single object
 cash.extend = function() {
   var args = slice.call(arguments), targ = args.shift(), obj;
@@ -32,7 +34,9 @@ cash.extend = function() {
 // set the useable one, if not, then return the bool.
 //
 // `param` {element} `el`. A DOM 1 nodetype
+//
 // `param` {string}  `sel`. A CSS selector
+//
 // `returns` {bool}
 cash.matches = function(el, sel) {
   if (el.nodeType !== 1) return false;
@@ -47,6 +51,7 @@ cash.matches = function(el, sel) {
 // Given a hash of data, convert it to a 'paramaterized' string and return it.
 //
 // `param` {object} `obj`
+//
 // `returns` {string}
 cash.serialize = function(obj) {
   var ary = [];

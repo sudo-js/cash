@@ -5,7 +5,9 @@
 // element in the `q`. This method does not function as a getter.
 //
 // `param` {string|object} `key`
+//
 // `param` {string} `val`. Used if the `key` is not an object
+//
 // `returns` cash
 cash.attr = function(key, val) {
   var ary = isString(key) ? undefined : keys(key),
@@ -19,6 +21,7 @@ cash.attr = function(key, val) {
 // element in the `q`.
 //
 // `param` {string|array} `key`
+//
 // `returns` cash
 cash.removeAttr = function(key) {
   var rem = isArray(key) ? function(el) {key.forEach(function(a) {el.removeAttribute(a);});} :

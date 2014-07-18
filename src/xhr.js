@@ -26,6 +26,7 @@
 // already in the $.xhrHeaders).
 //
 // `param` {object} `obj`. attributes for the XHR
+//
 // `returns` {object} the xhr object
 cash.getXhr = function(obj) {
   var xhr =  new XMLHttpRequest(), isGet;

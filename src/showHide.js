@@ -12,8 +12,9 @@ cash.hide = function() {return this._sh_('hide');};
 //
 // `returns` cash
 cash.show = function() {return this._sh_('show');};
-// ###_sh_
+// ###\_sh\_
 // Abstracted logic for the show and hide methods
+//
 // `private`
 cash._sh_ = function(key) {
   var isShow = key === 'show';

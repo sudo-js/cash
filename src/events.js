@@ -9,7 +9,9 @@
 // handle the capture phase bool for you in that case. 
 //
 // `param` {string} `type`. An event trigger, can be namespaced
+//
 // `param` {function}  `fn`. The function which should be removed, optional.
+//
 // `returns` cash
 cash.off = function(type, fn, cap) {
   var sp = type.split('.'), ev = sp[0], ns = sp.splice(1).join('.'),
@@ -42,11 +44,17 @@ cash.off = function(type, fn, cap) {
 // and a selector is present capture phase is forced as delegation will not work otherwise.
 //
 // `param` {string} `type`. Can be "namespaced" i.e click.foo
+//
 // `param` {function} `fn`
+//
 // `param` {string} `sel` optional CSS selector for delegation
+//
 // `param` {object} `data` optional hash to be appended to the event object
+//
 // `param` {bool} `cap` optional bool to force capture phase
+//
 // `returns` cash
+//
 cash.on = function(type, fn, sel, data, cap) {
   var sp = type.split('.'), ev = sp[0], ns = sp.splice(1).join('.'),
     cb, events;
@@ -81,6 +89,7 @@ cash.on = function(type, fn, sel, data, cap) {
 // Given an event type, init a DOM event and dispatch it to each element in the q.
 //
 // `param` {string} `e`
+//
 // `returns` cash
 cash.trigger = function(e) {
   var evt = document.createEvent('Event');

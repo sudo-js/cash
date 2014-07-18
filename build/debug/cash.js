@@ -20,6 +20,7 @@ cash._cid_ = 0;
 // negative number to fetch from the **end** of the `q` (-1 for the last for example).
 //
 // `param` {number} `i`
+//
 // `returns` {array|element}
 cash.get = function(i) {
   // intentional coercion 
@@ -36,6 +37,7 @@ cash._getCid_ = function(el) {
 // operate on the q.
 //
 // `param` {element|nodeList|array} `arg`
+//
 // `returns` cash
 cash.init = function(arg) {
   arg || (arg = []);
@@ -49,13 +51,15 @@ cash.init = function(arg) {
 // does 'even' the API a little
 //
 // `param` {*}
+//
 // `returns` {bool}
 cash.isObject = isObject;
 // ###noop
 // Empty function
 cash.noop = function() {},
 // ###setCache
-// private.
+//
+// `private`
 cash._setCache_ = function(ref, el) {
   var cid = this._getCid_(el),
     obj = this.cache[ref];
@@ -72,7 +76,9 @@ cash._setCache_ = function(ref, el) {
 // element in the `q`. This method does not function as a getter.
 //
 // `param` {string|object} `key`
+//
 // `param` {string} `val`. Used if the `key` is not an object
+//
 // `returns` cash
 cash.attr = function(key, val) {
   var ary = isString(key) ? undefined : keys(key),
@@ -86,6 +92,7 @@ cash.attr = function(key, val) {
 // element in the `q`.
 //
 // `param` {string|array} `key`
+//
 // `returns` cash
 cash.removeAttr = function(key) {
   var rem = isArray(key) ? function(el) {key.forEach(function(a) {el.removeAttribute(a);});} :
@@ -98,6 +105,7 @@ cash.removeAttr = function(key) {
 // Add a class, or muliple classes, to each element in the `q`
 //
 // `param` {string} `cls`. Single or multiple class names (space delimited).
+//
 // `returns` cash
 cash.addClass = function(cls) {
   var ary = cls.split(' ');
@@ -110,6 +118,7 @@ cash.addClass = function(cls) {
 // Remove a class, or muliple classes, from each element in the `q`
 //
 // `param` {string} `cls`. Single or multiple class names (space delimited).
+//
 // `returns` cash
 cash.removeClass = function(cls) {
   var ary = cls.split(' ');
@@ -122,7 +131,8 @@ cash.removeClass = function(cls) {
 // Given a class name (or multiple class names), add them if not already present. Remove if so.
 //
 // `param` {string} `cls`
-// returns cash
+//
+// `returns` cash
 cash.toggleClass = function(cls) {
   var ary = cls.split(' ');
   this.q.forEach(function(el) {
@@ -141,7 +151,9 @@ cash.toggleClass = function(cls) {
 // This method does not function as a getter (use getComputedStyle for that).
 //
 // `param` {string|object} `key`
+//
 // `param` {string} `val`. Used if `key` is not an object
+//
 // `returns` cash
 cash.css = function(key, val) {
   var ary = isString(key) ? undefined : keys(key),
@@ -178,7 +190,9 @@ cash.offset = function() {
 // handle the capture phase bool for you in that case. 
 //
 // `param` {string} `type`. An event trigger, can be namespaced
+//
 // `param` {function}  `fn`. The function which should be removed, optional.
+//
 // `returns` cash
 cash.off = function(type, fn, cap) {
   var sp = type.split('.'), ev = sp[0], ns = sp.splice(1).join('.'),
@@ -211,11 +225,17 @@ cash.off = function(type, fn, cap) {
 // and a selector is present capture phase is forced as delegation will not work otherwise.
 //
 // `param` {string} `type`. Can be "namespaced" i.e click.foo
+//
 // `param` {function} `fn`
+//
 // `param` {string} `sel` optional CSS selector for delegation
+//
 // `param` {object} `data` optional hash to be appended to the event object
+//
 // `param` {bool} `cap` optional bool to force capture phase
+//
 // `returns` cash
+//
 cash.on = function(type, fn, sel, data, cap) {
   var sp = type.split('.'), ev = sp[0], ns = sp.splice(1).join('.'),
     cb, events;
@@ -250,6 +270,7 @@ cash.on = function(type, fn, sel, data, cap) {
 // Given an event type, init a DOM event and dispatch it to each element in the q.
 //
 // `param` {string} `e`
+//
 // `returns` cash
 cash.trigger = function(e) {
   var evt = document.createEvent('Event');
@@ -265,10 +286,12 @@ cash.trigger = function(e) {
 // Minus that, it returns the height of the 0th item in the q;
 //
 // `param` {number|string} `val`. Optional value to be set
+//
 // `returns` {number|object} The height if a getter, cash if a setter
 cash.height = function(val) {return this._hw_('height', val);};
-// ###_hw_
+// ###\_hw\_
 // Abstracted logic for the height and width operations
+//
 // `private`
 cash._hw_ = function(key, val) {
   var obj = {
@@ -289,23 +312,26 @@ cash._hw_ = function(key, val) {
 // Minus that, it returns the width of the 0th item in the q;
 //
 // `param` {number|string} `val`. Optional value to be set
+//
 // `returns` {number|object} The height if a getter, cash if a setter
 cash.width = function(val) {return this._hw_('width', val);};
-// #is
+// ###is
 // As querySelector cannot take psuedo selectors we provide this method to
 // easily filter the `q` to elements that do match the passed in selector.
 //
 // `param` {string} `sel`
+//
 // `returns` cash
 cash.is = function(sel) {
   this.q = this.q.filter(function(el) {return $.matches(el, sel);});
   return this;
 };
-// #not
+// ###not
 // As querySelector cannot take psuedo selectors we provide this method to
 // easily filter the `q` to elements that do not match the passed in selector
 //
 // `param` {string} `sel`
+//
 // `returns` cash
 cash.not = function(sel) {
   this.q = this.q.filter(function(el) {return !$.matches(el, sel);});
@@ -318,6 +344,7 @@ cash.not = function(sel) {
 // any number of children.
 //
 // `param` {string} `str`. An innerHTML compatible string
+//
 // `returns` cash
 cash.create = function(str) {
   var wrap = document.createElement('div');
@@ -353,8 +380,9 @@ cash.hide = function() {return this._sh_('hide');};
 //
 // `returns` cash
 cash.show = function() {return this._sh_('show');};
-// ###_sh_
+// ###\_sh\_
 // Abstracted logic for the show and hide methods
+//
 // `private`
 cash._sh_ = function(key) {
   var isShow = key === 'show';
@@ -402,6 +430,7 @@ cash.toggle = function() {
 // for each element in the q.
 //
 // `param` {string} `sel`
+//
 // `returns` cash
 cash.closest = function(sel) {
   var ary = [];
@@ -416,6 +445,7 @@ cash.closest = function(sel) {
 // setting the q as the container if found.
 //
 // `param` {element} `el`
+//
 // `returns` cash
 cash.contains = function(el) {
   var res;
@@ -430,6 +460,7 @@ cash.contains = function(el) {
 // found into the new q.
 //
 // `param` {string} `sel`
+//
 // `returns` cash
 cash.find = function(sel) {
   var ary = [];
@@ -469,6 +500,7 @@ cash.parents = function() {
 // This method does not function as a getter.
 //
 // `param` {*} `val`
+//
 // `returns` cash
 cash.val = function(val) {
   this.q.forEach(function(el) {el.value = val;});
@@ -479,6 +511,7 @@ cash.val = function(val) {
 // Given a 'paramaterized' string, convert it to a hash and return it
 //
 // `param` {string} `str`
+//
 // `returns` {object}
 cash.deserialize = function(str) {
   var obj = {}, ary;
@@ -494,6 +527,7 @@ cash.deserialize = function(str) {
 // Copy the (non-inherited) key:value pairs from <n> source objects to a single target object.
 //
 // `params` {objects} A target object followed by <n> source objects
+//
 // `returns` {object} A single object
 cash.extend = function() {
   var args = slice.call(arguments), targ = args.shift(), obj;
@@ -507,7 +541,9 @@ cash.extend = function() {
 // set the useable one, if not, then return the bool.
 //
 // `param` {element} `el`. A DOM 1 nodetype
+//
 // `param` {string}  `sel`. A CSS selector
+//
 // `returns` {bool}
 cash.matches = function(el, sel) {
   if (el.nodeType !== 1) return false;
@@ -522,6 +558,7 @@ cash.matches = function(el, sel) {
 // Given a hash of data, convert it to a 'paramaterized' string and return it.
 //
 // `param` {object} `obj`
+//
 // `returns` {string}
 cash.serialize = function(obj) {
   var ary = [];

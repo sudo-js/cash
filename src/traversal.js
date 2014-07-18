@@ -5,6 +5,7 @@
 // for each element in the q.
 //
 // `param` {string} `sel`
+//
 // `returns` cash
 cash.closest = function(sel) {
   var ary = [];
@@ -19,6 +20,7 @@ cash.closest = function(sel) {
 // setting the q as the container if found.
 //
 // `param` {element} `el`
+//
 // `returns` cash
 cash.contains = function(el) {
   var res;
@@ -33,6 +35,7 @@ cash.contains = function(el) {
 // found into the new q.
 //
 // `param` {string} `sel`
+//
 // `returns` cash
 cash.find = function(sel) {
   var ary = [];
