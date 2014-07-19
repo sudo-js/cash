@@ -1,0 +1,22 @@
+{
+  "name": "cash",
+  "version": "0.1.0",
+  "description": "Rethinking the `$`. Lean JavaScript absraction library ",
+  "main": "",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/sudo-js/cash.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sudo-js/cash/issues"
+  },
+  "homepage": "http://sudo-js.github.io/cash/"
+}
