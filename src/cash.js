@@ -11,6 +11,7 @@ cash._cid_ = 0;
 // negative number to fetch from the **end** of the `q` (-1 for the last for example).
 //
 // `param` {number} `i`
+//
 // `returns` {array|element}
 cash.get = function(i) {
   // intentional coercion 
@@ -27,6 +28,7 @@ cash._getCid_ = function(el) {
 // operate on the q.
 //
 // `param` {element|nodeList|array} `arg`
+//
 // `returns` cash
 cash.init = function(arg) {
   arg || (arg = []);
@@ -40,13 +42,15 @@ cash.init = function(arg) {
 // does 'even' the API a little
 //
 // `param` {*}
+//
 // `returns` {bool}
 cash.isObject = isObject;
 // ###noop
 // Empty function
 cash.noop = function() {},
 // ###setCache
-// private.
+//
+// `private`
 cash._setCache_ = function(ref, el) {
   var cid = this._getCid_(el),
     obj = this.cache[ref];

@@ -6,6 +6,7 @@
 // any number of children.
 //
 // `param` {string} `str`. An innerHTML compatible string
+//
 // `returns` cash
 cash.create = function(str) {
   var wrap = document.createElement('div');

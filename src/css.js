@@ -6,7 +6,9 @@
 // This method does not function as a getter (use getComputedStyle for that).
 //
 // `param` {string|object} `key`
+//
 // `param` {string} `val`. Used if `key` is not an object
+//
 // `returns` cash
 cash.css = function(key, val) {
   var ary = isString(key) ? undefined : keys(key),

@@ -4,6 +4,7 @@
 // Add a class, or muliple classes, to each element in the `q`
 //
 // `param` {string} `cls`. Single or multiple class names (space delimited).
+//
 // `returns` cash
 cash.addClass = function(cls) {
   var ary = cls.split(' ');
@@ -16,6 +17,7 @@ cash.addClass = function(cls) {
 // Remove a class, or muliple classes, from each element in the `q`
 //
 // `param` {string} `cls`. Single or multiple class names (space delimited).
+//
 // `returns` cash
 cash.removeClass = function(cls) {
   var ary = cls.split(' ');
@@ -28,7 +30,8 @@ cash.removeClass = function(cls) {
 // Given a class name (or multiple class names), add them if not already present. Remove if so.
 //
 // `param` {string} `cls`
-// returns cash
+//
+// `returns` cash
 cash.toggleClass = function(cls) {
   var ary = cls.split(' ');
   this.q.forEach(function(el) {

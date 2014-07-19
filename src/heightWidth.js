@@ -7,10 +7,12 @@
 // Minus that, it returns the height of the 0th item in the q;
 //
 // `param` {number|string} `val`. Optional value to be set
+//
 // `returns` {number|object} The height if a getter, cash if a setter
 cash.height = function(val) {return this._hw_('height', val);};
-// ###_hw_
+// ###\_hw\_
 // Abstracted logic for the height and width operations
+//
 // `private`
 cash._hw_ = function(key, val) {
   var obj = {
@@ -31,5 +33,6 @@ cash._hw_ = function(key, val) {
 // Minus that, it returns the width of the 0th item in the q;
 //
 // `param` {number|string} `val`. Optional value to be set
+//
 // `returns` {number|object} The height if a getter, cash if a setter
 cash.width = function(val) {return this._hw_('width', val);};
