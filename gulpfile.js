@@ -4,6 +4,8 @@ var fs = require('fs');
 // gulp
 var gulp = require('gulp');
 var gutil = require('gulp-util');
+var jshint = require('gulp-jshint');
+var stylish = require('jshint-stylish');
 
 // add-ons
 var beautify = require('js-beautify').js_beautify;
@@ -12,6 +14,12 @@ var beautify = require('js-beautify').js_beautify;
 var buildconfig = require('./buildconfig.json');
 var modules = buildconfig.modules;
 var dist = buildconfig.dist;
+
+gulp.task('jshint', function() {
+  return gulp.src('src/*.js')
+    .pipe(jshint())
+    .pipe(jshint.reporter('jshint-stylish'));
+});
 
 gulp.task('build', function() {
   var content = '';
