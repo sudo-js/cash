@@ -18,5 +18,10 @@
   "bugs": {
     "url": "https://github.com/sudo-js/cash/issues"
   },
-  "homepage": "http://sudo-js.github.io/cash/"
+  "homepage": "http://sudo-js.github.io/cash/",
+  "devDependencies": {
+    "gulp": "~3.8.6",
+    "gulp-util": "~3.0.0",
+    "js-beautify": "~1.5.1"
+  }
 }
