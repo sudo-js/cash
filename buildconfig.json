@@ -1,0 +1,19 @@
+{
+  "modules": [
+    "src/wrap/alpha.txt",
+    "src/cash.js",
+    "src/attr.js",
+    "src/class.js",
+    "src/css.js",
+    "src/events.js",
+    "src/heightWidth.js",
+    "src/isNot.js",
+    "src/manipulation.js",
+    "src/showHide.js",
+    "src/traversal.js",
+    "src/val.js",
+    "src/utils.js",
+    "src/wrap/omega.txt"
+  ],
+  "dist": "build/debug/cash.js"
+}
