@@ -1,7 +1,7 @@
 /*jsl:declare process*/
 
-var Pathfinder = require('./pathfinder.js'),
-  Builder = require('./builder.js'),
+var Pathfinder = require('./build/lib/pathfinder.js'),
+  Builder = require('./build/lib/builder.js'),
   PF = new Pathfinder(),
   i, curr;
 

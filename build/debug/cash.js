@@ -71,36 +71,6 @@ cash._setCache_ = function(ref, el) {
   return obj;
 };
 
-// ###attr
-// Given a single attribute and value or a hash of them set it/them on each
-// element in the `q`. This method does not function as a getter.
-//
-// `param` {string|object} `key`
-//
-// `param` {string} `val`. Used if the `key` is not an object
-//
-// `returns` cash
-cash.attr = function(key, val) {
-  var ary = isString(key) ? undefined : keys(key),
-  set = ary ? function(el) {ary.forEach(function(i) {el.setAttribute(i, key[i]);});} :
-    function(el) {el.setAttribute(key, val);};
-  this.q.forEach(set);
-  return this;
-};
-// ###removeAttr
-// Given a single attribute name or an array of them, remove it/them from each
-// element in the `q`.
-//
-// `param` {string|array} `key`
-//
-// `returns` cash
-cash.removeAttr = function(key) {
-  var rem = isArray(key) ? function(el) {key.forEach(function(a) {el.removeAttribute(a);});} :
-    function(el) {el.removeAttribute(key);};
-  this.q.forEach(rem);
-  return this;
-};
-
 // ###addClass
 // Add a class, or muliple classes, to each element in the `q`
 //
@@ -143,41 +113,6 @@ cash.toggleClass = function(cls) {
     }
   });
   return this;
-};
-
-// ###css
-// Given a key and a value, or a hash of key:value pairs, set each on the style property of
-// each element in the `q`.
-// This method does not function as a getter (use getComputedStyle for that).
-//
-// `param` {string|object} `key`
-//
-// `param` {string} `val`. Used if `key` is not an object
-//
-// `returns` cash
-cash.css = function(key, val) {
-  var ary = isString(key) ? undefined : keys(key),
-  set = ary ? function(el) {ary.forEach(function(i) {el.style[i] = addPx(key[i], i);});} :
-    function(el) {el.style[key] = addPx(val, key);};
-  this.q.forEach(set);
-  return this;
-};
-// ###offset
-// Get a hash of key:value pairs: `top`, `left`, `width` and `height` - representing
-// the position in the document of the 0th element in the q. This method is a getter only
-// (use `css()` as a setter). Takes into consideration the page[X|Y]Offsets for
-// `left` and `top` as well as rounds the width and height
-//
-// `returns` {object}
-cash.offset = function() {
-  if(!this.q.length) return null;
-  var obj = this.q[0].getBoundingClientRect();
-  return {
-    left: obj.left + window.pageXOffset,
-    top: obj.top + window.pageYOffset,
-    width: Math.round(obj.width),
-    height: Math.round(obj.height)
-  };
 };
 // ###off
 // Remove event bindings from the q which match the given type and/or function.
@@ -338,7 +273,7 @@ cash.not = function(sel) {
   return this;
 };
 
-// ###create
+// ###createElement
 // Given a string, create a DOM element and store place in at the q. Notice
 // that the input must be a single 'top-level' Element, but it may contain
 // any number of children.
@@ -346,7 +281,7 @@ cash.not = function(sel) {
 // `param` {string} `str`. An innerHTML compatible string
 //
 // `returns` cash
-cash.create = function(str) {
+cash.createElement = function(str) {
   var wrap = document.createElement('div');
   wrap.innerHTML = str;
   return $(wrap.removeChild(wrap.firstElementChild));
@@ -494,17 +429,6 @@ cash.parents = function() {
     }
   });
   return $(ary);
-};
-// ###val
-// Set the passed in value on each element in the `q`.
-// This method does not function as a getter.
-//
-// `param` {*} `val`
-//
-// `returns` cash
-cash.val = function(val) {
-  this.q.forEach(function(el) {el.value = val;});
-  return this;
 };
 
 // ###deserialize
