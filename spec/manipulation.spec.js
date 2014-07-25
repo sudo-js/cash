@@ -30,7 +30,7 @@ describe('Manipulation', function() {
   });
   
   it('can create an element with class and id', function() {
-    $.create('<div id="foo" class="bar"></div>');
+    $.createElement('<div id="foo" class="bar"></div>');
     expect($.q[0].id).toBe('foo');
     expect($.q[0].classList.contains('bar')).toBe(true);
   });

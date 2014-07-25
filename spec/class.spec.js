@@ -1,7 +1,7 @@
 describe('*Class methods', function() {
   
   beforeEach(function() {
-    var el = $.create('<div id="foo" class="bar"></div>').q[0];
+    var el = $.createElement('<div id="foo" class="bar"></div>').q[0];
     el.innerHTML = '<div id="baz"><ul><li></li><li></li></ul></div><div id="qux"><ul><li></li><li class="me"></li></ul></div>';
   });
   
