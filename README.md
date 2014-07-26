@@ -169,7 +169,7 @@ the `q` with that container if found.
 
     $(things).contains(someElement);
 
-###Styles (CSS)
+###Styles
 Methods for the getting or setting of styles. 
 
 ####offset()
@@ -183,7 +183,7 @@ position in the document of the 'zeroth' element in the `q`. Note that the
     
 Note: `offset` is a getter only.
 
-####css(key|obj[, value])
+####setStyle(key|obj[, value])
 Set one, or multiple, style properties on each element in the `q`.
 
 Though you could interact with the `element.style` object directly there are a 
@@ -191,10 +191,8 @@ few reasons that having this method available is advantageous. One, you can pass
 numbers and 'px' will be added when appropriate. Two, by passing a hash of key:value
 pairs the setting of multiple styles at once is possible.
 
-Note: `css` is a setter only.
-
 #####itGoesLikeThis, not-like-this
-when passing arguments to the `css` method camel case the keys, do not pass them
+when passing arguments to the `setStyle` method camel case the keys, do not pass them
 'dasherized`. This applies to both the single key and val case and the hash one.
 
     // the single style case
