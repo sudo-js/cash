@@ -16,7 +16,7 @@ Builder.prototype = Object.create($.Model.prototype);
 
 Builder.prototype.build = function() {
   // the reader
-  this.FR = new Filereader(this.get('filename'), 
+  this.FR = new Filereader(this.get('filename') + '.html', 
     this.get('pathfinder'));
   // set the callback for parseHtmlFile
   this.FR.observe(this.readerScriptsParsed.bind(this));

@@ -222,21 +222,25 @@ Width is the same as height, except it's spelled differently and gets or sets th
 ####Modular Mother$&@%~!
 Run the Node.js `build` script to put together a concatonated source file. 
 
-    cd build/lib
-    node build cash.html
+    node build cash
     
 The file created will be in the `build/debug` directory.
 
 You don't like a particular method or set of them? 2k gzipped not small enuff? Make your
-own 'build file' then. List modules you want as script tags on a plain old HTML document.
+own 'build file' then in 'root'. List modules you want as script tags on a plain old HTML document.
 Don't forget to version your version with a version number as the title of the doc. Also, 
-the name of your HTML doc will be the name of the concatonated JS file (with extensions corrected obviously).
+the name of your HTML file will be the name of the concatonated JS file (with extensions corrected obviously).
+Use it like so:
+
+    node build <filename>
+    
+The '.html' extension is not needed as the builder expects it to be an 'html' file.
 
 ###API Summary
 
-#####Attr Module
-+ attr(string|object[, string]) Note: Does not function as a getter.
-+ removeAttr(string|Array) Note: Does not function as a getter.
+#####Attribute Module
++ setAttribute(string|object[, string])
++ removeAttribute(string|Array)
 
 #####Class Module
 + addClass(string)
@@ -249,8 +253,8 @@ the name of your HTML doc will be the name of the concatonated JS file (with ext
 + isObect(argument)
 + noop
 
-#####Css Module
-+ css(string|object[, string]) Note: Does not function as a getter.
+#####Style Module
++ setStyle(string|object[, string])
 + offSet() Note: Does not function as a setter.
 
 #####Event Module
@@ -267,7 +271,7 @@ the name of your HTML doc will be the name of the concatonated JS file (with ext
 + not(string) Note: Accepts a string argument only.
 
 #####Manipulation Module
-+ create(string) Note: Returns `cash` not the created element
++ createElement(string) Note: Returns `cash` not the created element
 + remove()
 
 #####Show Hide Module
@@ -288,8 +292,8 @@ the name of your HTML doc will be the name of the concatonated JS file (with ext
 + matches(element, string)
 + serialize(object)
 
-#####Val Module
-+ val(*) Note: Does not function as a getter.
+#####Value Module
++ setValue(*)
 
 #####Xhr Module
 + getXhr(object)
