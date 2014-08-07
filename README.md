@@ -216,18 +216,18 @@ Passed no value `height` functions as a getter for the zeroth element.
 Width is the same as height, except it's spelled differently and gets or sets the width property.
 
 
-####All and getAll
+####Call, Assign, and Retrieve
 Cash provides a set of methods for accessing native functionality on a collection of elements.
-By invoking `all()` with a method or series of method names you are able to invoke native functionality
-on all elements currently in cash.q. `all()` returns `$` to enable chaining. If you would like to get back
-the return values from your native invocations, you can use `getAll()`.
+By invoking `call()` with a method or series of method names you are able to invoke native functionality
+on all elements currently in cash.q. `call()` returns `$` to enable chaining. If you would like to get back
+the return values from your native invocations, you can use `collect()`. If you need to assign values,
+use the `assign()` method.
 
-    $(foo).all('setAttribute', 'data-foo', 'bar');
-    $(foo).all('classList.add', 'foo');
-    $(foo).all('selected=', true);
-    $(foo).getAll('getAttribute', 'data-foo'); #=> ['bar', 'biz', 'baz']
-    $(foo).getAll('classList.contains', 'foo'); #=> [true, false, true]
-    $(foo).getAll('selected'); #=> [true, false, false]
+    $(foo).call('setAttribute', 'data-foo', 'bar');
+    $(foo).call('classList.add', 'foo');
+    $(foo).collect('getAttribute', 'data-foo'); #=> ['bar', 'biz', 'baz']
+    $(foo).collect('classList.contains', 'foo'); #=> [true, false, true]
+    $(foo).assign('checked', true);
 
 #####More coming...
 
