@@ -251,8 +251,9 @@ The '.html' extension is not needed as the builder expects it to be an 'html' fi
 ###API Summary
 
 #####All Module
-+ all(string[, *args])
-+ getAll(string[, *args])
++ call(string[, *args])
++ collect(string[, *args])
++ assign(string, argument)
 
 #####Attribute Module
 + setAttribute(string|object[, string])
