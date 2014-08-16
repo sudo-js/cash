@@ -1,34 +1,28 @@
-/*global cash isFunction */
-
+/*global cash isFunction slice*/
 
 // ###\_all\_
 // Abstracted logic for the call, assign, and collect methods
 //
 // `private`
-cash._all = function(originalArgs, assign, returnValues) {
-  var meths = originalArgs[0].split('.'),
-  args = slice.call(originalArgs, 1),
-  meth = meths[meths.length-1], r, f, i, v;
+cash._all = function(oArgs, assign, returns) {
+  var meths = oArgs[0].split('.'),
+  args = slice.call(oArgs, 1),
+  meth = meths.pop(), r = [], f, v;
 
-  if(returnValues) r = [];
-
-  this.q.forEach(function(e){
-    for(i=0;i < meths.length-1;i++) {
-      f = e[meths[i]];
-      if(isFunction(f)) e = f();
-      else e = f;
-    }
-    if(assign) v = e[meth] = args[0];
+  this.q.forEach(function(el) {
+    meths.forEach(function(prop) {
+      f = el[prop];
+      // TODO are we sure of a return here?
+      el = isFunction(f) ? f() : f;
+    });
+    if(assign) v = el[meth] = args[0];
     else {
-      f = e[meth];
-      if(isFunction(f)) v = f.apply(e, args);
-      else v = f;
+      f = el[meth];
+      v = isFunction(f) ? f.apply(el, args) : f;
     }
-
-    if(returnValues) r.push(v);
+    if(returns) r.push(v);
   });
-
-  return returnValues ? r : this;
+  return returns ? r : this;
 };
 
 // ###call

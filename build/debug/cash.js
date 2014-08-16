@@ -72,35 +72,29 @@ cash._setCache_ = function(ref, el) {
   return obj;
 };
 
-
 // ###\_all\_
 // Abstracted logic for the call, assign, and collect methods
 //
 // `private`
-cash._all = function(originalArgs, assign, returnValues) {
-  var meths = originalArgs[0].split('.'),
-  args = slice.call(originalArgs, 1),
-  meth = meths[meths.length-1], r, f, i, v;
+cash._all = function(oArgs, assign, returns) {
+  var meths = oArgs[0].split('.'),
+  args = slice.call(oArgs, 1),
+  meth = meths.pop(), r = [], f, v;
 
-  if(returnValues) r = [];
-
-  this.q.forEach(function(e){
-    for(i=0;i < meths.length-1;i++) {
-      f = e[meths[i]];
-      if(isFunction(f)) e = f();
-      else e = f;
-    }
-    if(assign) v = e[meth] = args[0];
+  this.q.forEach(function(el) {
+    meths.forEach(function(prop) {
+      f = el[prop];
+      // TODO are we sure of a return here?
+      el = isFunction(f) ? f() : f;
+    });
+    if(assign) v = el[meth] = args[0];
     else {
-      f = e[meth];
-      if(isFunction(f)) v = f.apply(e, args);
-      else v = f;
+      f = el[meth];
+      v = isFunction(f) ? f.apply(el, args) : f;
     }
-
-    if(returnValues) r.push(v);
+    if(returns) r.push(v);
   });
-
-  return returnValues ? r : this;
+  return returns ? r : this;
 };
 
 // ###call
@@ -143,80 +137,6 @@ cash.assign = function() {
 //
 cash.collect = function() {
   return this._all(arguments, false, true);
-};
-
-// ###setAttribute
-// Given a single attribute and value or a hash of them set it/them on each
-// element in the `q`. This method does not function as a getter.
-//
-// `param` {string|object} `key`
-//
-// `param` {string} `val`. Used if the `key` is not an object
-//
-// `returns` cash
-cash.setAttribute = function(key, val) {
-  var ary = isString(key) ? undefined : keys(key),
-  set = ary ? function(el) {ary.forEach(function(i) {el.setAttribute(i, key[i]);});} :
-    function(el) {el.setAttribute(key, val);};
-  this.q.forEach(set);
-  return this;
-};
-// ###removeAttribute
-// Given a single attribute name or an array of them, remove it/them from each
-// element in the `q`.
-//
-// `param` {string|array} `key`
-//
-// `returns` cash
-cash.removeAttribute = function(key) {
-  var rem = isArray(key) ? function(el) {key.forEach(function(a) {el.removeAttribute(a);});} :
-    function(el) {el.removeAttribute(key);};
-  this.q.forEach(rem);
-  return this;
-};
-
-// ###addClass
-// Add a class, or muliple classes, to each element in the `q`
-//
-// `param` {string} `cls`. Single or multiple class names (space delimited).
-//
-// `returns` cash
-cash.addClass = function(cls) {
-  var ary = cls.split(' ');
-  this.q.forEach(function(el) {
-    if(el.classList) ary.forEach(function(n) {el.classList.add(n);});
-  });
-  return this;
-};
-// ###removeClass
-// Remove a class, or muliple classes, from each element in the `q`
-//
-// `param` {string} `cls`. Single or multiple class names (space delimited).
-//
-// `returns` cash
-cash.removeClass = function(cls) {
-  var ary = cls.split(' ');
-  this.q.forEach(function(el) {
-    if(el.classList) ary.forEach(function(n) {el.classList.remove(n);});
-  });
-  return this;
-};
-// ###toggleClass
-// Given a class name (or multiple class names), add them if not already present. Remove if so.
-//
-// `param` {string} `cls`
-//
-// `returns` cash
-cash.toggleClass = function(cls) {
-  var ary = cls.split(' ');
-  this.q.forEach(function(el) {
-    if(el.classList) {
-      ary.forEach(function(n) {
-        el.classList.contains(n) ? el.classList.remove(n) : el.classList.add(n);
-      });
-    }
-  });
-  return this;
 };
 // ###off
 // Remove event bindings from the q which match the given type and/or function.
@@ -577,17 +497,6 @@ cash.parents = function() {
   });
   return $(ary);
 };
-// ###setValue
-// Set the passed in value on each element in the `q`.
-// This method does not function as a getter.
-//
-// `param` {*} `val`
-//
-// `returns` cash
-cash.setValue = function(val) {
-  this.q.forEach(function(el) {el.value = val;});
-  return this;
-};
 
 // ###deserialize
 // Given a 'paramaterized' string, convert it to a hash and return it
@@ -649,7 +558,7 @@ cash.serialize = function(obj) {
   });
   return ary.join('&');
 };
-cash.version = "0.2.0";
+cash.version = "0.3.0";
 // Not checking for window, or trying to play nice
 window.$ = cash;
 }(window));
