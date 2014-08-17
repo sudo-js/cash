@@ -54,7 +54,7 @@ operate on, and possibly modify the `q`, **including event callbacks**.
 
 It's not expensive to call `$()` so don't fear to simply reset the `q`.
 
-###Why You No Pass In String?
+###Why U No Pass In String?
 It would not be expensive or bloat the codebase to allow `$()` to take a string then
 perform a querySelectorAll with it, returning that back to `$()`. But I won't. Why?
 One, it promotes `God Dollar` and that's bad. An 'unscoped' call to `$` is a
@@ -63,8 +63,43 @@ dollar function to start accepting other args. It accepts a node or a collection
 of them and that's all.
 
 ##Chainable Methods
-Some jQuery-type methods are still needed, which ones will be an ongoing debate
-that is part of the future development of **cash**.
+Functions that operate on the `q` are what **cash** is all about, which ones to implement will be the 
+ongoing debate that is the future development of **cash**.
+
+###Call, Collect and Assign
+In order to keep code creep at a minimum, We are introducing these three methods that allow
+the invocation of native functionality on the elements in the `q`. What do I mean? Let's take
+the *Attribute methods for an example. We _could_ write seperate methods for the getting, setting, 
+and removal of attributes:
+
+    cash.setAttribute = function(foo, bar) {
+      // set attribute 'foo' to 'bar' on each element in the q 
+    };
+    
+    cash.removeAttribute = function(foo) {
+      // remove attribute 'foo' from each element in the q 
+    };
+    
+    cash.getAttribute = function(foo) {
+      // collect and return attribute 'foo' from each element in the q 
+    };
+    
+Instead we can have a single method capable invoking any of these (or any native 
+method for that matter):
+
+    // We use the call method, passing the method name we want to invoke
+    // as well as the arguments for it
+    $(foo).call('setAttribute', 'data-foo', 'bar'); // returns cash
+    // the same method for remove
+    $(foo).call('removeAttribute', 'data-foo');
+    // It in worth noting that we will use collect for methods that we expect
+    // to return a value
+    $(foo).collect('getAttribute', 'data-foo'); // retruns an array
+
+In the same way that we can consolidate the calling of methods on Elements we can
+also for 'direct assignments' like `checked`, `value` etc...
+
+    $(foo).assign('checked', true);
 
 ###Events
 The familiar `on` and `off` methods are provided as, though event binding is standardized
@@ -216,22 +251,7 @@ Passed no value `height` functions as a getter for the zeroth element.
 Width is the same as height, except it's spelled differently and gets or sets the width property.
 
 
-####Call, Assign, and Retrieve
-Cash provides a set of methods for accessing native functionality on a collection of elements.
-By invoking `call()` with a method or series of method names you are able to invoke native functionality
-on all elements currently in cash.q. `call()` returns `$` to enable chaining. If you would like to get back
-the return values from your native invocations, you can use `collect()`. If you need to assign values,
-use the `assign()` method.
-
-    $(foo).call('setAttribute', 'data-foo', 'bar');
-    $(foo).call('classList.add', 'foo');
-    $(foo).collect('getAttribute', 'data-foo'); #=> ['bar', 'biz', 'baz']
-    $(foo).collect('classList.contains', 'foo'); #=> [true, false, true]
-    $(foo).assign('checked', true);
-
-#####More coming...
-
-####Modular Mother$&@%~!
+####Modular By Design
 Run the Node.js `build` script to put together a concatonated source file.
 
     node build cash
@@ -254,15 +274,6 @@ The '.html' extension is not needed as the builder expects it to be an 'html' fi
 + call(string[, *args])
 + collect(string[, *args])
 + assign(string, argument)
-
-#####Attribute Module
-+ setAttribute(string|object[, string])
-+ removeAttribute(string|Array)
-
-#####Class Module
-+ addClass(string)
-+ removeClass()
-+ toggleClass()
 
 #####Core Module
 + $(node|nodeList) Note: Does not return a unique instance, simply returns `cash`.
@@ -308,9 +319,6 @@ The '.html' extension is not needed as the builder expects it to be an 'html' fi
 + extend(object, ...)
 + matches(element, string)
 + serialize(object)
-
-#####Value Module
-+ setValue(*)
 
 #####Xhr Module
 + getXhr(object)

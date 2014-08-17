@@ -5,20 +5,39 @@ describe('All Api', function() {
       '<div id="baz"><ul><li id="one"></li><li id="two"></li></ul></div><div id="qux"><ul><li id="three"></li><li class="me"></li></ul></div>';
   });
 
-  it('can send a native method to each element in q via all(nativeMethodName)', function() {
+  // ATTR
+  it('can set attributes)', function() {
     $.find('li').call('setAttribute', 'data-spam', 'eggs');
     expect($.get(0).getAttribute('data-spam')).toBe('eggs');
     expect($.get(1).getAttribute('data-spam')).toBe('eggs');
     expect($.get(2).getAttribute('data-spam')).toBe('eggs');
     expect($.get(3).getAttribute('data-spam')).toBe('eggs');
   });
-
-  it('can send series of native methods', function() {
-    $.find('li').call('classList.add', 'eggs');
-    expect($.get(0).classList.contains('eggs')).toBe(true);
-    expect($.get(1).classList.contains('eggs')).toBe(true);
-    expect($.get(2).classList.contains('eggs')).toBe(true);
-    expect($.get(3).classList.contains('eggs')).toBe(true);
+  
+  it('can get attributes and collect them)', function() {
+    $.find('li').call('setAttribute', 'data-spam', 'vikings');
+    expect($.collect('getAttribute', 'data-spam')).toEqual(['vikings','vikings','vikings','vikings']);
+  });
+  
+  it('can remove attributes)', function() {
+    $.find('li').call('setAttribute', 'data-spam', 'eggs');
+    expect($.collect('getAttribute', 'data-spam')).toEqual(['eggs','eggs','eggs','eggs']);
+    $.call('removeAttribute', 'data-spam');
+    expect($.collect('getAttribute', 'data-spam')).toEqual([null,null,null,null]);
+  });
+  
+  // CLASS
+  it('can invoke classlist add', function() {
+    $.find('li').call('classList.add', 'ni');
+    expect($.get(0).classList.contains('ni')).toBe(true);
+    expect($.get(1).classList.contains('ni')).toBe(true);
+    expect($.get(2).classList.contains('ni')).toBe(true);
+    expect($.get(3).classList.contains('ni')).toBe(true);
+  });
+  
+  it('can invoke classlist contains and remove', function() {
+    $.find('li').call('classList.add', 'shrubber');
+    expect($.collect('classList.contains', 'shrubber')).toEqual([true,true,true,true]);
   });
 
   it('can assign a value', function() {
