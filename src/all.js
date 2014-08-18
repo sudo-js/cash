@@ -4,7 +4,7 @@
 // Abstracted logic for the call, assign, and collect methods
 //
 // `private`
-cash._all = function(oArgs, assign, returns) {
+cash._all_ = function(oArgs, assign, returns) {
   var meths = oArgs[0].split('.'), args = slice.call(oArgs, 1),
   meth = meths.pop(), r = returns ? [] : undefined, f, v;
 
@@ -35,7 +35,7 @@ cash._all = function(oArgs, assign, returns) {
 // `returns` cash
 //
 cash.call = function() {
-  return this._all(arguments, false, false);
+  return this._all_(arguments, false, false);
 };
 
 // ###assign
@@ -48,7 +48,7 @@ cash.call = function() {
 // `param` {any} `value`. The value to be assigned.
 //
 cash.assign = function() {
-  return this._all(arguments, true, false);
+  return this._all_(arguments, true, false);
 };
 
 // ###collect
@@ -63,5 +63,5 @@ cash.assign = function() {
 // `returns` {array}
 //
 cash.collect = function() {
-  return this._all(arguments, false, true);
+  return this._all_(arguments, false, true);
 };
