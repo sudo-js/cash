@@ -5,6 +5,7 @@ cssNum = {'column-count':1,'columns':1,'font-weight':1,'line-height':1,'opacity'
 function addPx(v, k) {return (typeof v === 'number' && (!k || !cssNum[k])) ? v + 'px' : v;}
 function cash(arg) {return cash.init(arg);}
 function isDocument(arg) {return arg && arg.nodeType === arg.DOCUMENT_NODE;}
+function isFunction(arg) { return typeof arg === 'function'; }
 function isObject(arg) {return Object.prototype.toString.call(arg) === '[object Object]';}
 function isString(arg) {return typeof arg === 'string';}
 function isWindow(arg) {return arg === window;}
@@ -71,88 +72,80 @@ cash._setCache_ = function(ref, el) {
   return obj;
 };
 
-// ###setAttribute
-// Given a single attribute and value or a hash of them set it/them on each
-// element in the `q`. This method does not function as a getter.
+// ###\_all\_
+// Abstracted logic for the call, assign, and collect methods
 //
-// `param` {string|object} `key`
-//
-// `param` {string} `val`. Used if the `key` is not an object
-//
-// `returns` cash
-cash.setAttribute = function(key, val) {
-  var ary = isString(key) ? undefined : keys(key),
-  set = ary ? function(el) {ary.forEach(function(i) {el.setAttribute(i, key[i]);});} :
-    function(el) {el.setAttribute(key, val);};
-  this.q.forEach(set);
-  return this;
-};
-// ###removeAttribute
-// Given a single attribute name or an array of them, remove it/them from each
-// element in the `q`.
-//
-// `param` {string|array} `key`
-//
-// `returns` cash
-cash.removeAttribute = function(key) {
-  var rem = isArray(key) ? function(el) {key.forEach(function(a) {el.removeAttribute(a);});} :
-    function(el) {el.removeAttribute(key);};
-  this.q.forEach(rem);
-  return this;
+// `private`
+cash._all = function(oArgs, assign, returns) {
+  var meths = oArgs[0].split('.'), args = slice.call(oArgs, 1),
+  meth = meths.pop(), r = returns ? [] : undefined, f, v;
+
+  this.q.forEach(function(el) {
+    meths.forEach(function(prop) {
+      f = el[prop];
+      // TODO are we sure of a return here?
+      el = isFunction(f) ? f() : f;
+    });
+    if(assign) v = el[meth] = args[0];
+    else {
+      f = el[meth];
+      v = isFunction(f) ? f.apply(el, args) : f;
+    }
+    returns && r.push(v);
+  });
+  return returns ? r : this;
 };
 
-// ###addClass
-// Add a class, or muliple classes, to each element in the `q`
+// ###call
+// Invokes the provided method or method chain with the provided arguments to all elements in q.
+// Example usage:
+// * $(nodeList).call('setAttribute', 'foo', 'bar');
+// * $(nodeList).call('classList.add', 'active');
 //
-// `param` {string} `cls`. Single or multiple class names (space delimited).
+// `param` {string} `methodName`. Can be a string representing a method name, an attribute, or a property. Can be chained with periods.
 //
 // `returns` cash
-cash.addClass = function(cls) {
-  var ary = cls.split(' ');
-  this.q.forEach(function(el) {
-    if(el.classList) ary.forEach(function(n) {el.classList.add(n);});
-  });
-  return this;
+//
+cash.call = function() {
+  return this._all(arguments, false, false);
 };
-// ###removeClass
-// Remove a class, or muliple classes, from each element in the `q`
+
+// ###assign
+// Sets the value on all elements in the q. Setters can be chained with periods.
+// Example usage:
+// * $(nodeList).assign('checked', true)
+// * $(nodeList).assign('foo.bar', 'biz')
 //
-// `param` {string} `cls`. Single or multiple class names (space delimited).
+// `param` {string} `propertyName`. Can be a string representing an attribute or property. Can be chained with periods.
+// `param` {any} `value`. The value to be assigned.
 //
-// `returns` cash
-cash.removeClass = function(cls) {
-  var ary = cls.split(' ');
-  this.q.forEach(function(el) {
-    if(el.classList) ary.forEach(function(n) {el.classList.remove(n);});
-  });
-  return this;
+cash.assign = function() {
+  return this._all(arguments, true, false);
 };
-// ###toggleClass
-// Given a class name (or multiple class names), add them if not already present. Remove if so.
+
+// ###collect
+// Similar to call(), collect() invokes the provided method or method chain but instead of returning cash, returns the return values from each function invocation.
+// Example usage:
+// * $(nodeList).collect('getAttribute', 'foo') #=> ['bar', 'biz', 'baz'];
+// * $(nodeList).collect('classList.contains', 'active') #=> [true, false, true];
+// * $(nodeList).collect('checked') #=> [true, false, false];
 //
-// `param` {string} `cls`
+// `param` {string} `methodName`. Can be a string representing a method name, an attribute, or a property. Can be chained with periods.
 //
-// `returns` cash
-cash.toggleClass = function(cls) {
-  var ary = cls.split(' ');
-  this.q.forEach(function(el) {
-    if(el.classList) {
-      ary.forEach(function(n) {
-        el.classList.contains(n) ? el.classList.remove(n) : el.classList.add(n);
-      });
-    }
-  });
-  return this;
+// `returns` {array}
+//
+cash.collect = function() {
+  return this._all(arguments, false, true);
 };
 // ###off
 // Remove event bindings from the q which match the given type and/or function.
 // By supplying "*.yourNamespace" as the event type, you can remove all events
 // in a namespace, or simply '*' to remove all events.
 // The optional third argument, 'cap', is a boolean than will need to be
-// `true` if you bound the event originally with `cap = true`. 
+// `true` if you bound the event originally with `cap = true`.
 // NOTE: You do not need to pass the 'cap' bool in the 'forced capture phase'
-// case, that is the event is 'focus' or 'blur' and is delegated. Cash will 
-// handle the capture phase bool for you in that case. 
+// case, that is the event is 'focus' or 'blur' and is delegated. Cash will
+// handle the capture phase bool for you in that case.
 //
 // `param` {string} `type`. An event trigger, can be namespaced
 //
@@ -165,7 +158,7 @@ cash.off = function(type, fn, cap) {
   this.q.forEach(function(el) {
     events = $.cache.events[$._getCid_(el)];
     if(events) {
-      (all ? Object.keys(events) : [ev]).forEach(function(k) {
+      (all ? keys(events) : [ev]).forEach(function(k) {
         events[k] && events[k].forEach(function(obj, i, ary) {
           // we may have forced the cap
           if(!cap && (k === 'focus' || k === 'blur') && obj.sel) cap = true;
@@ -185,7 +178,7 @@ cash.off = function(type, fn, cap) {
 // ###on
 // Given an event type, a callback, an optional selector for delegation, and
 // an optional hash of data to be appended to the event, bind them to each
-// element in the q. Capture phase is supported by passing true as the 
+// element in the q. Capture phase is supported by passing true as the
 // optional 5th argument. NOTE: if the event being bound is 'focus' or 'blur'
 // and a selector is present capture phase is forced as delegation will not work otherwise.
 //
@@ -210,7 +203,7 @@ cash.on = function(type, fn, sel, data, cap) {
     events = $._setCache_('events', el)[$._getCid_(el)];
     events[ev] || (events[ev] = []);
     cb = function(e) {
-      var targ;
+      var targ, els;
       // pass the namespace along to the listener
       if(ns) e.namespace = ns;
       // pass any custom data along to the listener
@@ -218,11 +211,19 @@ cash.on = function(type, fn, sel, data, cap) {
       // base case is that this is not 'delegated'
       if(!sel) fn.call(el, e);
       // there is a sel, check for matches and call if so.
-      else if(~$(el).find(sel).q.indexOf(e.target) || (targ = $.contains(e.target).q[0])) {
-        targ || (targ = e.target);
-        // as defined by us rather than currentTarget
-        e.delegateTarget = targ;
-        fn.call(targ, e);
+      else {
+        // set element list context
+        els = slice.call(el.querySelectorAll(sel));
+        // check to see if any of our children matching the selector invoked the event
+        if(~els.indexOf(e.target)) targ = e.target;
+        // otherwise see if any of the children matching the selector have el as their child
+        else els.some(function(qel){ if(qel.contains(e.target)) return targ = qel; });
+        // couldn't find the source based on the selector so we don't match
+        if(targ) {
+          // as defined by us rather than currentTarget
+          e.delegateTarget = targ;
+          fn.call(targ, e);
+        }
       }
     };
     // cb === ours, fn === theirs.
@@ -495,17 +496,6 @@ cash.parents = function() {
   });
   return $(ary);
 };
-// ###setValue
-// Set the passed in value on each element in the `q`.
-// This method does not function as a getter.
-//
-// `param` {*} `val`
-//
-// `returns` cash
-cash.setValue = function(val) {
-  this.q.forEach(function(el) {el.value = val;});
-  return this;
-};
 
 // ###deserialize
 // Given a 'paramaterized' string, convert it to a hash and return it
@@ -567,7 +557,7 @@ cash.serialize = function(obj) {
   });
   return ary.join('&');
 };
-cash.version = "0.2.0";
+cash.version = "0.3.0";
 // Not checking for window, or trying to play nice
 window.$ = cash;
 }(window));

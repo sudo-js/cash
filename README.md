@@ -13,7 +13,7 @@ and DOM.
 Because if you are not supporting bad browsers you do not need the shims that
 were created to support them.
 
-######Annotated Source 
+######Annotated Source
 [Here](http://sudo-js.github.io/cash)
 
 ##I Can Haz $?
@@ -54,7 +54,7 @@ operate on, and possibly modify the `q`, **including event callbacks**.
 
 It's not expensive to call `$()` so don't fear to simply reset the `q`.
 
-###Why You No Pass In String?
+###Why U No Pass In String?
 It would not be expensive or bloat the codebase to allow `$()` to take a string then
 perform a querySelectorAll with it, returning that back to `$()`. But I won't. Why?
 One, it promotes `God Dollar` and that's bad. An 'unscoped' call to `$` is a
@@ -63,8 +63,43 @@ dollar function to start accepting other args. It accepts a node or a collection
 of them and that's all.
 
 ##Chainable Methods
-Some jQuery-type methods are still needed, which ones will be an ongoing debate
-that is part of the future development of **cash**.
+Functions that operate on the `q` are what **cash** is all about, which ones to implement will be the 
+ongoing debate that is the future development of **cash**.
+
+###Call, Collect and Assign
+In order to keep code creep at a minimum, We are introducing these three methods that allow
+the invocation of native functionality on the elements in the `q`. What do I mean? Let's take
+the *Attribute methods for an example. We _could_ write seperate methods for the getting, setting, 
+and removal of attributes:
+
+    cash.setAttribute = function(foo, bar) {
+      // set attribute 'foo' to 'bar' on each element in the q 
+    };
+    
+    cash.removeAttribute = function(foo) {
+      // remove attribute 'foo' from each element in the q 
+    };
+    
+    cash.getAttribute = function(foo) {
+      // collect and return attribute 'foo' from each element in the q 
+    };
+    
+Instead we can have a single method capable invoking any of these (or any native 
+method for that matter):
+
+    // We use the call method, passing the method name we want to invoke
+    // as well as the arguments for it
+    $(foo).call('setAttribute', 'data-foo', 'bar'); // returns cash
+    // the same method for remove
+    $(foo).call('removeAttribute', 'data-foo');
+    // It in worth noting that we will use collect for methods that we expect
+    // to return a value
+    $(foo).collect('getAttribute', 'data-foo'); // retruns an array
+
+In the same way that we can consolidate the calling of methods on Elements we can
+also for 'direct assignments' like `checked`, `value` etc...
+
+    $(foo).assign('checked', true);
 
 ###Events
 The familiar `on` and `off` methods are provided as, though event binding is standardized
@@ -132,7 +167,7 @@ The '*' character has a special meaning for the `off()` method. Passed with a na
 it will remove all listeners that share the namespace.
 
     $(things).off('*.foo');
-    
+
 In a more drastic move you can remove all listeners simply by passing the *.
 
     $(things).off('*');
@@ -152,41 +187,41 @@ falsey.
 Methods that alter the `q` based on some DOM related criteria.
 
 ####closest(selector)
-For each element in the `q` traverse upwards to find the first element that matches 
+For each element in the `q` traverse upwards to find the first element that matches
 the given CSS selector. The `q` will be accordingly rehydrated with the found elements.
 
     $(someInput).closest('form');
-    
+
 ####find(selector)
 Given a CSS selector query each element in the `q` for all matches to that selector.
 Rehdrate the `q` with any and all of those matches.
 
     $(someUl).find('li');
-  
+
 ####contains(element)
-Qeury each element in the `q` for which contains the passed in element. Reset 
+Qeury each element in the `q` for which contains the passed in element. Reset
 the `q` with that container if found.
 
     $(things).contains(someElement);
 
 ###Styles
-Methods for the getting or setting of styles. 
+Methods for the getting or setting of styles.
 
 ####offset()
-Calling this method will return a hash of key:value pairs that represent the 
-position in the document of the 'zeroth' element in the `q`. Note that the 
-`top` and `left` properties will take into account page[X|Y]Offset and the 
+Calling this method will return a hash of key:value pairs that represent the
+position in the document of the 'zeroth' element in the `q`. Note that the
+`top` and `left` properties will take into account page[X|Y]Offset and the
 `width` and `height` properties will be rounded.
 
     $(someElement).offset();
     // => {top: xx, left: xx, width: xx, left: xx}
-    
+
 Note: `offset` is a getter only.
 
 ####setStyle(key|obj[, value])
 Set one, or multiple, style properties on each element in the `q`.
 
-Though you could interact with the `element.style` object directly there are a 
+Though you could interact with the `element.style` object directly there are a
 few reasons that having this method available is advantageous. One, you can pass it
 numbers and 'px' will be added when appropriate. Two, by passing a hash of key:value
 pairs the setting of multiple styles at once is possible.
@@ -202,48 +237,43 @@ when passing arguments to the `setStyle` method camel case the keys, do not pass
 
 ####Height and Width
 To normalize the different attributes one needs to set on `window`, `document`,
-or an `element` for height, we provide this method. Passed a value (string or number), 
-`height` works as a setter for each element in the `q`. If the value is a string cash 
-will not attempt to append the unit of measure for you ('px' for example), if a 
+or an `element` for height, we provide this method. Passed a value (string or number),
+`height` works as a setter for each element in the `q`. If the value is a string cash
+will not attempt to append the unit of measure for you ('px' for example), if a
 number 'px' will be added.
 
     $(foo).find(bar).height(25);
-    
+
 Passed no value `height` functions as a getter for the zeroth element.
 
     $(foo).find(bar).height(); //=> 25
-    
+
 Width is the same as height, except it's spelled differently and gets or sets the width property.
 
-#####More coming...
 
-####Modular Mother$&@%~!
-Run the Node.js `build` script to put together a concatonated source file. 
+####Modular By Design
+Run the Node.js `build` script to put together a concatonated source file.
 
     node build cash
-    
+
 The file created will be in the `build/debug` directory.
 
 You don't like a particular method or set of them? 2k gzipped not small enuff? Make your
 own 'build file' then in 'root'. List modules you want as script tags on a plain old HTML document.
-Don't forget to version your version with a version number as the title of the doc. Also, 
+Don't forget to version your version with a version number as the title of the doc. Also,
 the name of your HTML file will be the name of the concatonated JS file (with extensions corrected obviously).
 Use it like so:
 
     node build <filename>
-    
+
 The '.html' extension is not needed as the builder expects it to be an 'html' file.
 
 ###API Summary
 
-#####Attribute Module
-+ setAttribute(string|object[, string])
-+ removeAttribute(string|Array)
-
-#####Class Module
-+ addClass(string)
-+ removeClass()
-+ toggleClass()
+#####All Module
++ call(string[, *args])
++ collect(string[, *args])
++ assign(string, argument)
 
 #####Core Module
 + $(node|nodeList) Note: Does not return a unique instance, simply returns `cash`.
@@ -289,9 +319,6 @@ The '.html' extension is not needed as the builder expects it to be an 'html' fi
 + extend(object, ...)
 + matches(element, string)
 + serialize(object)
-
-#####Value Module
-+ setValue(*)
 
 #####Xhr Module
 + getXhr(object)
