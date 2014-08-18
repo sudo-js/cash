@@ -77,9 +77,8 @@ cash._setCache_ = function(ref, el) {
 //
 // `private`
 cash._all = function(oArgs, assign, returns) {
-  var meths = oArgs[0].split('.'),
-  args = slice.call(oArgs, 1),
-  meth = meths.pop(), r = [], f, v;
+  var meths = oArgs[0].split('.'), args = slice.call(oArgs, 1),
+  meth = meths.pop(), r = returns ? [] : undefined, f, v;
 
   this.q.forEach(function(el) {
     meths.forEach(function(prop) {
@@ -92,7 +91,7 @@ cash._all = function(oArgs, assign, returns) {
       f = el[meth];
       v = isFunction(f) ? f.apply(el, args) : f;
     }
-    if(returns) r.push(v);
+    returns && r.push(v);
   });
   return returns ? r : this;
 };

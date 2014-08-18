@@ -6,7 +6,7 @@ describe('All Api', function() {
   });
 
   // ATTR
-  it('can set attributes)', function() {
+  it('can set attributes', function() {
     $.find('li').call('setAttribute', 'data-spam', 'eggs');
     expect($.get(0).getAttribute('data-spam')).toBe('eggs');
     expect($.get(1).getAttribute('data-spam')).toBe('eggs');
@@ -14,12 +14,12 @@ describe('All Api', function() {
     expect($.get(3).getAttribute('data-spam')).toBe('eggs');
   });
   
-  it('can get attributes and collect them)', function() {
+  it('can get attributes and collect them', function() {
     $.find('li').call('setAttribute', 'data-spam', 'vikings');
     expect($.collect('getAttribute', 'data-spam')).toEqual(['vikings','vikings','vikings','vikings']);
   });
   
-  it('can remove attributes)', function() {
+  it('can remove attributes', function() {
     $.find('li').call('setAttribute', 'data-spam', 'eggs');
     expect($.collect('getAttribute', 'data-spam')).toEqual(['eggs','eggs','eggs','eggs']);
     $.call('removeAttribute', 'data-spam');
@@ -38,37 +38,24 @@ describe('All Api', function() {
   it('can invoke classlist contains and remove', function() {
     $.find('li').call('classList.add', 'shrubber');
     expect($.collect('classList.contains', 'shrubber')).toEqual([true,true,true,true]);
+    expect($.call('classList.remove', 'shrubber').collect('classList.contains', 'shrubber'))
+      .toEqual([false,false,false,false]);
   });
-
-  it('can assign a value', function() {
+  
+  it('can invoke classlist toggle', function() {
     $.find('li');
-    expect($.get(0).checked).toBeFalsy();
-    expect($.get(1).checked).toBeFalsy();
-    expect($.get(2).checked).toBeFalsy();
-    expect($.get(3).checked).toBeFalsy();
-    $.assign('checked', true);
-    expect($.get(0).checked).toBe(true);
-    expect($.get(1).checked).toBe(true);
-    expect($.get(2).checked).toBe(true);
-    expect($.get(3).checked).toBe(true);
+    $.get(1).classList.add('caerbannog');
+    $.get(3).classList.add('caerbannog');
+    expect($.collect('classList.contains', 'caerbannog')).toEqual([false,true,false,true]);
+    // flip them
+    expect($.call('classList.toggle', 'caerbannog').collect('classList.contains', 'caerbannog'))
+      .toEqual([true,false,true,false]);
   });
 
-  it('can retrieve the return values of many elements with a series of methods', function() {
-    $.q[0].querySelector('li:first-child').setAttribute('data-spam', 'eggs');
-    var ret = $.find('li').collect('getAttribute', 'data-spam');
-    expect(ret[0]).toBe('eggs');
-    expect(ret[1]).toBe(null);
-    expect(ret[2]).toBe(null);
-    expect(ret[3]).toBe(null);
-  });
-
-  it('can retrieve the return values of many elements with a series of methods', function() {
-    $.q[0].querySelector('li:first-child').classList.add('eggs');
-    var ret = $.find('li').collect('classList.contains', 'eggs');
-    expect(ret[0]).toBe(true);
-    expect(ret[1]).toBe(false);
-    expect(ret[2]).toBe(false);
-    expect(ret[3]).toBe(false);
+  // VAL
+  it('can assign a value', function() {
+    expect($.find('li').collect('checked')).toEqual([undefined,undefined,undefined,undefined]);
+    expect($.assign('checked', true).collect('checked')).toEqual([true,true,true,true]);
   });
 
 });
