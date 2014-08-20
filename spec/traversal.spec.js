@@ -30,6 +30,10 @@ describe('Traversal', function() {
      expect($.find('li').closest('ul').q.length).toEqual(2);
   });
   
+  it('returns an empty q if nothing found with closest', function() {
+    expect($.find('li').closest('blink').q.length).toEqual(0);
+  });
+  
   it('rehydrates the q with parent elements via parent', function() {
     expect($.find('li').parent().get().length).toBe(2);
     expect($.get(0).tagName).toBe('UL');
