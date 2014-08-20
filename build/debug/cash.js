@@ -437,7 +437,7 @@ cash.closest = function(sel) {
   var ary = [];
   this.q.forEach(function(el) {
     while(el && !$.matches(el, sel)) el = !isDocument(el) && el.parentNode;
-    if(!~ary.indexOf(el)) ary.push(el);
+    if(el && !~ary.indexOf(el)) ary.push(el);
   });
   return $(ary);
 };
