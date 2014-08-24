@@ -1,3 +1,5 @@
+/*global slice keys isFunction*/
+
 // ###off
 // Remove event bindings from the q which match the given type and/or function.
 // By supplying "*.yourNamespace" as the event type, you can remove all events
@@ -95,6 +97,8 @@ cash.on = function(type, fn, sel, data, cap) {
 };
 // ###trigger
 // Given an event type, init a DOM event and dispatch it to each element in the q.
+// If a 'click' event and a native click method exists on the `el` we will call that
+// as per some browsers security polices.
 //
 // `param` {string} `e`
 //
@@ -102,6 +106,10 @@ cash.on = function(type, fn, sel, data, cap) {
 cash.trigger = function(e) {
   var evt = document.createEvent('Event');
   evt.initEvent(e, true, true);
-  this.q.forEach(function(el) {el.dispatchEvent && el.dispatchEvent(evt);});
+  this.q.forEach(function(el) {
+    // if triggering a click and the native method is there use it
+    if(e === 'click' && isFunction(el.click)) el.click();
+    else el.dispatchEvent && el.dispatchEvent(evt);
+  });
   return this;
 };

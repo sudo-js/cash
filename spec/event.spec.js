@@ -212,5 +212,12 @@ describe('Event', function() {
     expect(window.blurred).toBe(1);
     expect(window.whoCalled).toBe('');
   });
+  
+  it('will correctly use native click() on inputs', function() {
+    var tt = document.querySelector('#testTarget'), currentCount = window.counter,inp;
+    tt.insertAdjacentHTML('beforeend', '<input type="btn" id="clickTest">Test Click</input>');
+    $(tt.querySelector('#clickTest')).on('click', window.callBack).trigger('click');
+    expect(window.counter).toBe(currentCount + 1);
+  });
 
 });
