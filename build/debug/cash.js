@@ -207,7 +207,7 @@ cash.on = function(type, fn, sel, data, cap) {
       // pass the namespace along to the listener
       if(ns) e.namespace = ns;
       // pass any custom data along to the listener
-      if(data) e.data = data;
+      e.data = $.extend({}, data || {}, e.data);
       // base case is that this is not 'delegated'
       if(!sel) fn.call(el, e);
       // there is a sel, check for matches and call if so.
@@ -237,10 +237,13 @@ cash.on = function(type, fn, sel, data, cap) {
 //
 // `param` {string} `e`
 //
+// `param` {object} `data` optional hash which is passed along with the event as event.data
+//
 // `returns` cash
-cash.trigger = function(e) {
+cash.trigger = function(e, data) {
   var evt = document.createEvent('Event');
   evt.initEvent(e, true, true);
+  evt.data = data;
   this.q.forEach(function(el) {el.dispatchEvent && el.dispatchEvent(evt);});
   return this;
 };
