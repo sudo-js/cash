@@ -68,14 +68,23 @@ describe('Event', function() {
   });
 
   it('passes custom data with the event', function() {
-    var spy = spyOn(window, 'callBackWithData').andCallThrough();
+    var spy = spyOn(window, 'callBackWithData');
     $(document.querySelector('#testTarget')).on('click', window.callBackWithData, null,
       {custom: 'soCustom'}).trigger('click').off('click');
     expect(spy).toHaveBeenCalled();
+    expect(spy.calls[0].args[0].data).toEqual({custom: 'soCustom'});
     $(document.querySelector('#testTarget')).on('click', window.callBackWithData, 'div:last-child',
       {custom: 'soSoCustom'}).find('div:last-child').trigger('click');
     $(document.querySelector('#testTarget')).off('click');
-    expect(spy).toHaveBeenCalled();
+    expect(spy.calls[1].args[0].data).toEqual({custom: 'soSoCustom'});
+  });
+
+  it('allows data to be passed with trigger and extends the custom data', function() {
+    var spy = spyOn(window, 'callBackWithData');
+    $(document.querySelector('#testTarget')).on('click', window.callBackWithData, null,
+      {custom: 'soCustom'}).trigger('click', {custom: 'wildlyCustom'}).off('click');
+    var evt = spy.calls[0].args[0];
+    expect(evt.data).toEqual({custom: 'wildlyCustom'});
   });
 
   it('binds, unbinds and honors namespaced events', function() {
@@ -161,12 +170,12 @@ describe('Event', function() {
     expect(target.id).toEqual(li2.id);
 
   });
-  
+
   it('on can be insructed to use the capture phase for on and off', function() {
     var tt = document.querySelector('#testTarget'), ary = [];
     window.meFirst = function(e) {ary.push('capture');};
     window.meSecond = function(e) {ary.push('bubble');};
-    
+
     $(tt).on('click', window.meFirst, null, null, true).on('click', window.meSecond);
     expect($.cache.events[tt.getAttribute('cid')].click[0].cap).toBe(true);
     $.trigger('click');
@@ -176,13 +185,13 @@ describe('Event', function() {
     $.off('click', window.meFirst).trigger('click');
     expect(ary[2]).toBe('capture');
     expect(ary[3]).toBe('bubble');
-    
+
     $.off('click', window.meFirst, true).trigger('click');
     expect(ary[4]).toBe('bubble');
     $.off('click', window.meSecond).trigger('click');
-    expect(ary.length).toBe(5);  
+    expect(ary.length).toBe(5);
   });
-  
+
   it('will force capture on focus and blur if delegated', function() {
     window.focused = 0;
     window.blurred = 0;
