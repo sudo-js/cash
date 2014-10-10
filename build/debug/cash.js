@@ -1,4 +1,4 @@
-(function(window) {
+(function(window, exports) {
 var proto = Array.prototype, slice = proto.slice, isArray = Array.isArray, keys = Object.keys,
 cssNum = {'column-count':1,'columns':1,'font-weight':1,'line-height':1,'opacity': 1,'z-index':1,'zoom':1};
 // When calling addPx, send value first as there may be no key
@@ -558,6 +558,7 @@ cash.serialize = function(obj) {
   return ary.join('&');
 };
 cash.version = "0.3.0";
-// Not checking for window, or trying to play nice
-window.$ = cash;
-}(window));
+// Not trying to play nice, but we do check for node env
+if(exports) module.exports = cash; 
+else window.$ = cash;
+}(this, typeof exports !== 'undefined'));

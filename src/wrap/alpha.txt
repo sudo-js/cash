@@ -1,4 +1,4 @@
-(function(window) {
+(function(window, exports) {
 var proto = Array.prototype, slice = proto.slice, isArray = Array.isArray, keys = Object.keys,
 cssNum = {'column-count':1,'columns':1,'font-weight':1,'line-height':1,'opacity': 1,'z-index':1,'zoom':1};
 // When calling addPx, send value first as there may be no key
