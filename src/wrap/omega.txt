@@ -1,3 +1,4 @@
-// Not checking for window, or trying to play nice
-window.$ = cash;
-}(window));
+// Not trying to play nice, but we do check for node env
+if(exports) module.exports = cash; 
+else window.$ = cash;
+}(this, typeof exports !== 'undefined'));

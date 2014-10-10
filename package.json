@@ -1,0 +1,24 @@
+{
+  "name": "cash-js",
+  "description": "Rethinking the $",
+  "author": {
+    "name": "Rob Robbins",
+    "email": "rob.robb.ns@gmail.com"
+  },
+  "contributors": [
+    {
+      "name": "Mike Nelson",
+      "email": "get@mikeonrails.com"
+    }
+  ],
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ],
+  "version": "0.3.0",
+  "engines": {
+    "node": ">=0.2.6"
+  },
+  "main": "./build/debug/cash"
+}
