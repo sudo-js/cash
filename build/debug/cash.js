@@ -574,7 +574,7 @@ cash.serialize = function(obj) {
   });
   return ary.join('&');
 };
-cash.version = "0.3.1";
+cash.version = "0.3.2";
 // Not checking for window, or trying to play nice
 window.$ = cash;
 }(window));
