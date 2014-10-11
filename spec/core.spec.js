@@ -54,5 +54,12 @@ describe('Core', function() {
     expect($.get(-1).classList.contains('me')).toBe(true);
   });
   
+  it('can return a unique identifier', function() {
+    var current = $._cid_, next = $.getUid();
+    expect(parseInt(next, 10) - 1).toBe(current);
+    var prefixed = $.getUid('foo'), comp = 'foo' + (current + 2);
+    expect(prefixed).toBe(comp);
+  });
+  
 });
 

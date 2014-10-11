@@ -21,6 +21,16 @@ cash.get = function(i) {
 cash._getCid_ = function(el) {
   return isWindow(el) ? 'window' : isDocument(el) ? 'document' : el.getAttribute('cid');
 };
+// ###getUid
+// Return a unique identifier via the _cid_ with an optional passed in prefix
+//
+// `param` {string} `pre` Optional prefix for the identifier
+//
+// `returns` {string}
+cash.getUid = function(pre) {
+  var n = ++this._cid_;
+  return pre ? pre + n : String(n);
+};
 // init
 // Breaking from the jQuery pattern, only a singile DOM node or NodeList is
 // expected as arguments (though an array is acceptable). The passed in arg
@@ -55,7 +65,7 @@ cash._setCache_ = function(ref, el) {
   var cid = this._getCid_(el),
     obj = this.cache[ref];
   if(!cid) {
-    cid = String(++this._cid_);
+    cid = this.getUid();
     el.setAttribute('cid', cid);
   }
   obj[cid] || (obj[cid] = ref === 'events' ? {} : undefined);
