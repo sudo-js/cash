@@ -1,22 +1,22 @@
 cash
 ====
 
-###What Cash Is Not
+### What Cash Is Not
 Another replacement for jQuery. Cash does not attempt to be compatible with the
 jQuery API.
 
-###What Cash Is
+### What Cash Is
 A tiny library that absracts some pain points when working with native Javascript
 and DOM.
 
-####Why?
+#### Why?
 Because if you are not supporting bad browsers you do not need the shims that
 were created to support them.
 
-######Annotated Source
+###### Annotated Source
 [Here](http://sudo-js.github.io/cash)
 
-##I Can Haz $?
+## I Can Haz $?
 Cash **does** take the familaiar `$` name as it's global identifier. That's where
 the similarity ends. The cash `$()` **function** will only accept a DOM node or
 nodeList as an argument. We have standardized ways to search the DOM for elements
@@ -54,7 +54,7 @@ operate on, and possibly modify the `q`, **including event callbacks**.
 
 It's not expensive to call `$()` so don't fear to simply reset the `q`.
 
-###Why U No Pass In String?
+### Why U No Pass In String?
 It would not be expensive or bloat the codebase to allow `$()` to take a string then
 perform a querySelectorAll with it, returning that back to `$()`. But I won't. Why?
 One, it promotes `God Dollar` and that's bad. An 'unscoped' call to `$` is a
@@ -62,11 +62,11 @@ One, it promotes `God Dollar` and that's bad. An 'unscoped' call to `$` is a
 dollar function to start accepting other args. It accepts a node or a collection
 of them and that's all.
 
-##Chainable Methods
+## Chainable Methods
 Functions that operate on the `q` are what **cash** is all about, which ones to implement will be the 
 ongoing debate that is the future development of **cash**.
 
-###Call, Collect and Assign
+### Call, Collect and Assign
 In order to keep code creep at a minimum, We are introducing these three methods that allow
 the invocation of native functionality on the elements in the `q`. What do I mean? Let's take
 the *Attribute methods for an example. We _could_ write seperate methods for the getting, setting, 
@@ -101,12 +101,12 @@ also for 'direct assignments' like `checked`, `value` etc...
 
     $(foo).assign('checked', true);
 
-###Events
+### Events
 The familiar `on` and `off` methods are provided as, though event binding is standardized
 now in all good browsers, unbinding can produce much boilerplate in a large project.
 Particularly in a single-page-app where removing event listeners is paramount.
 
-####on(event, callback[,selector][, data][, cap])
+#### on(event, callback[,selector][, data][, cap])
 Adds an event listener to each element in the `q`. Very similar to the jQuery `on`
 method with the exception of the order of arguments:
 
@@ -116,11 +116,11 @@ method with the exception of the order of arguments:
 + **data** Optional object literal passed to the callback as `e.data`
 + **cap** Optional boolean that, if truthy, will force capture phase to be used.
 
-######delegateTarget
+###### delegateTarget
 All events bound by cash will have a delegateTarget attribute. If a selector was used
 (the event was delegated) the delegateTarget will match the provided selector.
 
-####off(event[, callback][, cap])
+#### off(event[, callback][, cap])
 Removes all events bound to the `event` name, or just the passed in `callback`
 (if present), for each element in the `q`. Maintaining the correct reference to
 a `callback` can be ugly so if you are looking to remove a specific `callback` on
@@ -131,19 +131,19 @@ You may use a `*` event name to capture sets of events. For instance, `*.ns` wou
 remove all events which were bound to the `ns` namespace. Similarly `*` would
 remove all events, regardless of event name or namespace.
 
-######Cap'n
+###### Cap'n
 The `cap` argument will need to be passed for the event to be unbound **if you
 passed the argument when binding it**.
 
 It is worth nothing that the `blur` and `focus` DOM events do not bubble and therefore
 do not (normally) work correctly with delegation. You can however use the capture phase
 to remedy this. Cash, if it sees that `on` is being used with either `focus` or
-`blur` **and** there is a `sel` (delegation being used) with force the `cap` arg
+`blur` **and** there is a `sel` (delegation being used) it will force the `cap` arg
 to true (therefore using capture phase). If `off` is called on either `focus` or
 `blur` and you had used delegation you **do not need to pass the cap** argument.
 Cash will know to use it for you.
 
-#####Event Namespacing
+##### Event Namespacing
 Similar in practice to the jQuery event namespace, you can append a value to an
 event name (or many of them) as a dot-delimited string:
 
@@ -162,7 +162,7 @@ pass the namespaced event name to `off`:
 
 There is no need to pass the second argument.
 
-#####Baby You're A *
+##### Baby You're A *
 The '*' character has a special meaning for the `off()` method. Passed with a namespace
 it will remove all listeners that share the namespace.
 
@@ -172,7 +172,7 @@ In a more drastic move you can remove all listeners simply by passing the *.
 
     $(things).off('*');
 
-######Caveat
+###### Caveat
 Cash does not override the native event passed to your listeners. This means that
 the `trigger` method cannot be used to fire **only** a namespaced event.
 
@@ -183,31 +183,31 @@ The latter would recieve the namespace attached to the event passed to it howeve
 `event.namespace` (it would be 'foo'). The former would not, `event.namespace` would be
 falsey.
 
-###Traversal
+### Traversal
 Methods that alter the `q` based on some DOM related criteria.
 
-####closest(selector)
+#### closest(selector)
 For each element in the `q` traverse upwards to find the first element that matches
 the given CSS selector. The `q` will be accordingly rehydrated with the found elements.
 
     $(someInput).closest('form');
 
-####find(selector)
+#### find(selector)
 Given a CSS selector query each element in the `q` for all matches to that selector.
 Rehdrate the `q` with any and all of those matches.
 
     $(someUl).find('li');
 
-####contains(element)
+#### contains(element)
 Qeury each element in the `q` for which contains the passed in element. Reset
 the `q` with that container if found.
 
     $(things).contains(someElement);
 
-###Styles
+### Styles
 Methods for the getting or setting of styles.
 
-####offset()
+#### offset()
 Calling this method will return a hash of key:value pairs that represent the
 position in the document of the 'zeroth' element in the `q`. Note that the
 `top` and `left` properties will take into account page[X|Y]Offset and the
@@ -218,7 +218,7 @@ position in the document of the 'zeroth' element in the `q`. Note that the
 
 Note: `offset` is a getter only.
 
-####setStyle(key|obj[, value])
+#### setStyle(key|obj[, value])
 Set one, or multiple, style properties on each element in the `q`.
 
 Though you could interact with the `element.style` object directly there are a
@@ -226,7 +226,7 @@ few reasons that having this method available is advantageous. One, you can pass
 numbers and 'px' will be added when appropriate. Two, by passing a hash of key:value
 pairs the setting of multiple styles at once is possible.
 
-#####itGoesLikeThis, not-like-this
+##### itGoesLikeThis, not-like-this
 when passing arguments to the `setStyle` method camel case the keys, do not pass them
 'dasherized`. This applies to both the single key and val case and the hash one.
 
@@ -235,7 +235,7 @@ when passing arguments to the `setStyle` method camel case the keys, do not pass
     // multiple
     $(things).css({paddingTop: 10, marginLeft: 5});
 
-####Height and Width
+#### Height and Width
 To normalize the different attributes one needs to set on `window`, `document`,
 or an `element` for height, we provide this method. Passed a value (string or number),
 `height` works as a setter for each element in the `q`. If the value is a string cash
@@ -251,7 +251,7 @@ Passed no value `height` functions as a getter for the zeroth element.
 Width is the same as height, except it's spelled differently and gets or sets the width property.
 
 
-####Modular By Design
+#### Modular By Design
 Run the Node.js `build` script to put together a concatonated source file.
 
     node build cash
@@ -268,57 +268,57 @@ Use it like so:
 
 The '.html' extension is not needed as the builder expects it to be an 'html' file.
 
-###API Summary
+### API Summary
 
-#####All Module
+##### All Module
 + call(string[, *args])
 + collect(string[, *args])
 + assign(string, argument)
 
-#####Core Module
+##### Core Module
 + $(node|nodeList) Note: Does not return a unique instance, simply returns `cash`.
 + get(number) Note: Can use negative numbers for RTL selection
 + isObect(argument)
 + noop
 
-#####Style Module
+##### Style Module
 + setStyle(string|object[, string])
 + offSet() Note: Does not function as a setter.
 
-#####Event Module
+##### Event Module
 + off(string[, function, bool]) Note: bool is capture phase support.
 + on(string, function[, string, object, bool]) Note: The order of arguments and the bool capture phase support.
 + trigger()
 
-#####Height Width Module
+##### Height Width Module
 + height(string|number)
 + width()
 
-#####Is Not Module
+##### Is Not Module
 + is(string) Note: Accepts a string argument only.
 + not(string) Note: Accepts a string argument only.
 
-#####Manipulation Module
+##### Manipulation Module
 + createElement(string) Note: Returns `cash` not the created element
 + remove()
 
-#####Show Hide Module
+##### Show Hide Module
 + hide()
 + show()
 + toggle()
 
-#####Traversal Module
+##### Traversal Module
 + closest(string)
 + contains(node) Note: Returns `cash` not the container.
 + find(string)
 + parent()
 + parents()
 
-#####Utils Module
+##### Utils Module
 + deserialize(object)
 + extend(object, ...)
 + matches(element, string)
 + serialize(object)
 
-#####Xhr Module
+##### Xhr Module
 + getXhr(object)
