@@ -47,7 +47,7 @@ export default class {
   //
   // * `returns` cash
   remove() {
-    function rem(el) {delete this.cache.events[el.getAttribute('cid')];}
+    const rem = el => { delete this.cache.events[el.getAttribute('cid')]; };
     this.q.forEach(function(el) {
       // unset any children
       slice.call(el.querySelectorAll('[cid]')).forEach(rem);

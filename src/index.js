@@ -7,8 +7,6 @@ class Cash extends Composite {
     this.cache = { events: {} };
     this._cid_ = 0;
   }
-  
-  noop() {}
 }
 
 export const cash = new Cash;

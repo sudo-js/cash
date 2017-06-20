@@ -3,6 +3,7 @@ const $ = $$.init.bind($$);
 
 const createElement = require('./functions').createElement;
 const isObject = require('./functions').isObject;
+const noop = require('./functions').noop;
 
 describe('Core', function() {
   
@@ -70,4 +71,34 @@ describe('Core', function() {
     expect(prefixed).toBe(comp);
   });
   
+  describe('remove', function() {
+    beforeEach(function() {
+      this.dom = createElement('<div><div id="testTargetChildA"><div id="testTargetChildB" /></div></div>');
+      $(this.dom.querySelector('#testTargetChildA')).on('click', noop);
+      $(this.dom.querySelector('#testTargetChildB')).on('click', noop);
+    });
+
+    it('cleans up the cache for the element and its children', function() {
+      let parent = this.dom.querySelector('#testTargetChildA'),
+        child  = this.dom.querySelector('#testTargetChildB');
+
+      expect(parent.getAttribute('cid')).toBeTruthy();
+
+      expect(child.getAttribute('cid')).toBeTruthy();
+
+      expect(Object.keys($$.cache.events[parent.getAttribute('cid')]).length).toBe(1);
+      expect(Object.keys($$.cache.events[child.getAttribute('cid')]).length).toBe(1);
+
+      $(parent).remove();
+
+      expect($$.cache.events[parent.getAttribute('cid')]).toBeFalsy();
+      expect($$.cache.events[child.getAttribute('cid')]).toBeFalsy();
+    });
+
+    it('removes the element from the dom', function() {
+      let parent = this.dom.querySelector('#testTargetChildA');
+      $(parent).remove();
+      expect(parent.parentNode).toBeFalsy();
+    });
+  });
 });

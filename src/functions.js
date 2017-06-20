@@ -15,6 +15,7 @@ export function isFunction(arg) { return typeof arg === 'function'; }
 export function isObject(arg) {return Object.prototype.toString.call(arg) === '[object Object]';}
 export function isString(arg) {return typeof arg === 'string';}
 export function isWindow(arg) {return arg === window;}
+export function noop() {}
 
 // ### createElement
 // * Given a string, create a nested DOM element. Notice
