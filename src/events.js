@@ -1,7 +1,8 @@
 import { slice, isFunction, keys } from './functions';
-import CoreTravCca from './cca';
+// Cca = [core, traversal]
+import Cca from './cca';
 
-export default class extends CoreTravCca {
+export default class extends Cca {
   // ### off
   // * Remove event bindings from the q which match the given type and/or function.
   // By supplying "*.yourNamespace" as the event type, you can remove all events

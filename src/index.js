@@ -1,6 +1,7 @@
-import CoreTravCcaEv from './events';
+// core, traversal, cca, events, is-not
+import Composite from './is-not';
 
-class Cash extends CoreTravCcaEv {
+class Cash extends Composite {
   constructor() {
     super();
     this.cache = { events: {} };

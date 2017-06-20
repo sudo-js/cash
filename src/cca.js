@@ -1,7 +1,8 @@
 import { slice, isFunction } from './functions';
-import CoreTrav from './traversal';
+// traversal = [core]
+import Traversal from './traversal';
 
-export default class extends CoreTrav {
+export default class extends Traversal {
   // Abstracted logic for the call, assign, and collect methods
   _all_(oArgs, assign, returns) {
     let meths = oArgs[0].split('.'), args = slice.call(oArgs, 1),

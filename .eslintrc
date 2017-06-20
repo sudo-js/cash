@@ -19,7 +19,6 @@
     "browser": true,
     "node": true,
     "phantomjs": true,
-    "jest": true,
     "jasmine": true
   },
 
