@@ -1,5 +1,5 @@
-// core, traversal, cca, events, is-not
-import Composite from './is-not';
+// core, traversal, cca, events, is-not, style, size
+import Composite from './size';
 
 class Cash extends Composite {
   constructor() {
