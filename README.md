@@ -63,28 +63,28 @@ dollar function to start accepting other args. It accepts a node or a collection
 of them and that's all.
 
 ## Chainable Methods
-Functions that operate on the `q` are what **cash** is all about, which ones to implement will be the 
+Functions that operate on the `q` are what **cash** is all about, which ones to implement will be the
 ongoing debate that is the future development of **cash**.
 
 ### Call, Collect and Assign
 In order to keep code creep at a minimum, We are introducing these three methods that allow
 the invocation of native functionality on the elements in the `q`. What do I mean? Let's take
-the *Attribute methods for an example. We _could_ write seperate methods for the getting, setting, 
+the *Attribute methods for an example. We _could_ write seperate methods for the getting, setting,
 and removal of attributes:
 
     cash.setAttribute = function(foo, bar) {
-      // set attribute 'foo' to 'bar' on each element in the q 
+      // set attribute 'foo' to 'bar' on each element in the q
     };
-    
+
     cash.removeAttribute = function(foo) {
-      // remove attribute 'foo' from each element in the q 
+      // remove attribute 'foo' from each element in the q
     };
-    
+
     cash.getAttribute = function(foo) {
-      // collect and return attribute 'foo' from each element in the q 
+      // collect and return attribute 'foo' from each element in the q
     };
-    
-Instead we can have a single method capable invoking any of these (or any native 
+
+Instead we can have a single method capable invoking any of these (or any native
 method for that matter):
 
     // We use the call method, passing the method name we want to invoke
@@ -218,7 +218,7 @@ position in the document of the 'zeroth' element in the `q`. Note that the
 
 Note: `offset` is a getter only.
 
-#### setStyle(key|obj[, value])
+#### style(key|obj[, value])
 Set one, or multiple, style properties on each element in the `q`.
 
 Though you could interact with the `element.style` object directly there are a
@@ -227,46 +227,13 @@ numbers and 'px' will be added when appropriate. Two, by passing a hash of key:v
 pairs the setting of multiple styles at once is possible.
 
 ##### itGoesLikeThis, not-like-this
-when passing arguments to the `setStyle` method camel case the keys, do not pass them
+when passing arguments to the `style` method camel case the keys, do not pass them
 'dasherized`. This applies to both the single key and val case and the hash one.
 
     // the single style case
-    $(things).css('paddingTop', 10);
+    $(things).style('paddingTop', 10);
     // multiple
-    $(things).css({paddingTop: 10, marginLeft: 5});
-
-#### Height and Width
-To normalize the different attributes one needs to set on `window`, `document`,
-or an `element` for height, we provide this method. Passed a value (string or number),
-`height` works as a setter for each element in the `q`. If the value is a string cash
-will not attempt to append the unit of measure for you ('px' for example), if a
-number 'px' will be added.
-
-    $(foo).find(bar).height(25);
-
-Passed no value `height` functions as a getter for the zeroth element.
-
-    $(foo).find(bar).height(); //=> 25
-
-Width is the same as height, except it's spelled differently and gets or sets the width property.
-
-
-#### Modular By Design
-Run the Node.js `build` script to put together a concatonated source file.
-
-    node build cash
-
-The file created will be in the `build/debug` directory.
-
-You don't like a particular method or set of them? 2k gzipped not small enuff? Make your
-own 'build file' then in 'root'. List modules you want as script tags on a plain old HTML document.
-Don't forget to version your version with a version number as the title of the doc. Also,
-the name of your HTML file will be the name of the concatonated JS file (with extensions corrected obviously).
-Use it like so:
-
-    node build <filename>
-
-The '.html' extension is not needed as the builder expects it to be an 'html' file.
+    $(things).style({paddingTop: 10, marginLeft: 5});
 
 ### API Summary
 
@@ -282,7 +249,9 @@ The '.html' extension is not needed as the builder expects it to be an 'html' fi
 + noop
 
 ##### Style Module
-+ setStyle(string|object[, string])
++ style(string|object[, string])
+
+##### Size Module
 + offSet() Note: Does not function as a setter.
 
 ##### Event Module
@@ -290,22 +259,9 @@ The '.html' extension is not needed as the builder expects it to be an 'html' fi
 + on(string, function[, string, object, bool]) Note: The order of arguments and the bool capture phase support.
 + trigger()
 
-##### Height Width Module
-+ height(string|number)
-+ width()
-
 ##### Is Not Module
 + is(string) Note: Accepts a string argument only.
 + not(string) Note: Accepts a string argument only.
-
-##### Manipulation Module
-+ createElement(string) Note: Returns `cash` not the created element
-+ remove()
-
-##### Show Hide Module
-+ hide()
-+ show()
-+ toggle()
 
 ##### Traversal Module
 + closest(string)
@@ -313,12 +269,3 @@ The '.html' extension is not needed as the builder expects it to be an 'html' fi
 + find(string)
 + parent()
 + parents()
-
-##### Utils Module
-+ deserialize(object)
-+ extend(object, ...)
-+ matches(element, string)
-+ serialize(object)
-
-##### Xhr Module
-+ getXhr(object)
