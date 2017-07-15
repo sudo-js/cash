@@ -1,5 +1,5 @@
 {
-  "name": "cash",
+  "name": "cash-js",
   "version": "1.0.0",
   "description": "Micro library for easing the pain of working with the DOM",
   "main": "src/index.js",
