@@ -1,6 +1,6 @@
-const $$ = require('./index').cash;
-const $ = $$.init.bind($$);
-  
+const $$ = require('./index').$$;
+const $ = require('./index').$;
+
 describe('Events', function() {
 
   beforeEach(function() {
@@ -25,13 +25,13 @@ describe('Events', function() {
       if(e.namespace !== 'foo') return;
       console.log('called with ' + e.namespace + ' namespace: ' + (++window.counterFoo));
     };
-    
+
     this.tt = document.createElement('div');
-    
+
     this.tt.innerHTML =
       '<div id="baz"><ul><li id="li1"></li><li id="li2"></li></ul></div><div id="qux"><ul><li></li><li class="me"></li></ul></div>';
   });
-  
+
   afterEach(function() {
     // make sure to clean up bound events
     $(this.tt).off('*');
@@ -156,12 +156,12 @@ describe('Events', function() {
     expect(target.id).toEqual(li2.id);
 
   });
-  
+
   it('on can be insructed to use the capture phase for on and off', function() {
     var ary = [];
     window.meFirst = function() {ary.push('capture');};
     window.meSecond = function() {ary.push('bubble');};
-    
+
     $(this.tt).on('click', window.meFirst, null, null, true).on('click', window.meSecond);
     expect($$.cache.events[this.tt.getAttribute('cid')].click[0].cap).toBe(true);
     $$.trigger('click');
@@ -171,13 +171,13 @@ describe('Events', function() {
     $$.off('click', window.meFirst).trigger('click');
     expect(ary[2]).toBe('capture');
     expect(ary[3]).toBe('bubble');
-    
+
     $$.off('click', window.meFirst, true).trigger('click');
     expect(ary[4]).toBe('bubble');
     $$.off('click', window.meSecond).trigger('click');
-    expect(ary.length).toBe(5);  
+    expect(ary.length).toBe(5);
   });
-  
+
   it('will force capture on focus and blur if delegated', function() {
     window.focused = 0;
     window.blurred = 0;
@@ -189,7 +189,7 @@ describe('Events', function() {
       window.blurred++;
       window.whoCalled = e.target.name;
     };
-    
+
     this.tt.innerHTML = '<div><input type="text" name="one"></input><input type="text" name="two"></input></div>';
     $(this.tt).on('focus', window.handleFocus, 'input[name="two"]').on('blur', window.handleBlur, 'input[name="two"]');
     expect($$.cache.events[this.tt.getAttribute('cid')].focus[0].cap).toBe(true);
@@ -207,7 +207,7 @@ describe('Events', function() {
     expect(window.blurred).toBe(1);
     expect(window.whoCalled).toBe('');
   });
-  
+
   it('will correctly use native click() on inputs', function() {
     var currentCount = window.counter;
     this.tt.insertAdjacentHTML('beforeend', '<input type="btn" id="clickTest">Test Click</input>');

@@ -269,3 +269,14 @@ when passing arguments to the `style` method camel case the keys, do not pass th
 + find(string)
 + parent()
 + parents()
+
+### A Note On Modules
+The package exports two constants you can use:
++ `$` The canonical dollar. This is what you pass some node list to and chain off of. Under
+  the covers its just the `init` method on the cash instance bound to cash.
++ `$$` Cash itself, this is useful for when you don't want to reset the `q`.
+
+See the specs for examples of both. __NOTE__ those specs are in es5, but in an es6
+module you would use the nicer import syntax:
+
+    import { $, $$ } from 'cash-js';

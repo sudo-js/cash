@@ -9,4 +9,5 @@ class Cash extends Composite {
   }
 }
 
-export const cash = new Cash;
+export const $$ = new Cash;
+export const $ = $$.init.bind($$);

@@ -1,6 +1,6 @@
 {
   "name": "cash-js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Micro library for easing the pain of working with the DOM",
   "main": "src/index.js",
   "directories": {
